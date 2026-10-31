@@ -19,6 +19,8 @@ Open daarna [http://localhost:4173](http://localhost:4173).
 
 De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPX-bestanden en routebeschrijvingen. Een groene stip op de kaart markeert het startpunt. Noord-Holland gebruikt vereenvoudigde GPS-lijnen voor een vlotte weergave; de afstand is daarop gebaseerd.
 
+Op mobiel kun je het routepaneel vanaf de handgreep omhoog slepen en na het kiezen van een route weer omlaag schuiven. Met de knop rechtsboven open je de kaart schermvullend.
+
 ## Een route delen
 
 Selecteer een route in de lijst om de deelbare URL bij te werken. De link opent direct het juiste routegebied, zoomt in op de route en toont de routebeschrijving. Bijvoorbeeld:

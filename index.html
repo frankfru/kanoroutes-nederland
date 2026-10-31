@@ -32,6 +32,7 @@
         min-width: 320px;
         min-height: 100vh;
         margin: 0;
+        overflow: hidden;
       }
 
       button,
@@ -338,9 +339,63 @@
         background: #e8eee8;
       }
 
+      .fullscreen-button {
+        position: absolute;
+        z-index: 1100;
+        top: 16px;
+        right: 16px;
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        color: #30453a;
+        background: #fff;
+        border: 1px solid #dfe6df;
+        border-radius: 9px;
+        box-shadow: 0 1px 5px #1a332033;
+        cursor: pointer;
+      }
+
+      .fullscreen-button:hover {
+        color: var(--green);
+        background: #f7faf7;
+      }
+
+      .fullscreen-button svg {
+        width: 19px;
+        height: 19px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+      }
+
+      .map-wrap.is-fullscreen {
+        position: fixed;
+        z-index: 2000;
+        inset: 0;
+      }
+
+      .map-wrap:fullscreen {
+        width: 100%;
+        height: 100%;
+      }
+
       #map {
         width: 100%;
         height: 100%;
+      }
+
+      .sheet-toggle {
+        display: none;
+      }
+
+      .sidebar-content {
+        display: flex;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
       }
 
       .map-label {
@@ -421,6 +476,7 @@
       @media (max-width: 720px) {
         .app {
           grid-template-rows: auto minmax(0, 1fr);
+          height: 100dvh;
           min-height: 0;
         }
 
@@ -443,22 +499,85 @@
         }
 
         .content {
-          grid-template-columns: minmax(0, 1fr);
-          grid-template-rows: minmax(230px, 42vh) minmax(0, 1fr);
+          position: relative;
+          display: block;
         }
 
         .map-wrap {
-          grid-row: 1;
+          position: absolute;
+          inset: 0;
         }
 
         .sidebar {
-          grid-row: 2;
-          border-top: 1px solid var(--line);
-          border-right: 0;
+          position: absolute;
+          z-index: 1200;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          height: min(78dvh, 680px);
+          min-height: 0;
+          overflow: hidden;
+          border: 1px solid var(--line);
+          border-bottom: 0;
+          border-radius: 18px 18px 0 0;
+          box-shadow: 0 -4px 24px #17251f1c;
+          transform: translateY(calc(100% - 68px));
+          transition: transform 220ms ease;
+          will-change: transform;
+        }
+
+        .sidebar.is-expanded {
+          transform: translateY(0);
+        }
+
+        .sheet-toggle {
+          display: flex;
+          min-height: 68px;
+          flex: 0 0 68px;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 8px 16px 10px;
+          color: #30453a;
+          background: #fff;
+          border: 0;
+          cursor: grab;
+          touch-action: none;
+        }
+
+        .sheet-toggle:active {
+          cursor: grabbing;
+        }
+
+        .sheet-toggle-content {
+          display: grid;
+          justify-items: center;
+          gap: 5px;
+          font-size: 12px;
+          font-weight: 650;
+        }
+
+        .sheet-grip {
+          width: 38px;
+          height: 4px;
+          background: #c8d2cb;
+          border-radius: 99px;
+        }
+
+        .sidebar-content {
+          min-height: 0;
+          overflow: auto;
+          overscroll-behavior: contain;
+          visibility: hidden;
+        }
+
+        .sidebar.is-expanded .sidebar-content {
+          visibility: visible;
         }
 
         .sidebar-heading {
-          padding: 14px 16px 10px;
+          flex: 0 0 auto;
+          padding: 12px 16px 10px;
         }
 
         .sidebar-heading h2 {
@@ -466,7 +585,23 @@
         }
 
         .search-wrap {
+          flex: 0 0 auto;
           margin: 0 14px 10px;
+        }
+
+        .list-actions {
+          flex: 0 0 auto;
+        }
+
+        #route-list {
+          overflow: visible;
+          min-height: auto;
+          flex: 0 0 auto;
+        }
+
+        .fullscreen-button {
+          top: 12px;
+          right: 12px;
         }
 
         .map-label {
@@ -477,6 +612,12 @@
         .map-legend {
           bottom: 12px;
           left: 10px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .sidebar {
+          transition: none;
         }
       }
     </style>
@@ -501,34 +642,44 @@
 
       <div class="content">
         <aside class="sidebar" aria-label="Routes">
-          <div class="sidebar-heading">
-            <p class="eyebrow">Jouw routeoverzicht</p>
-            <h2>GPX-routes</h2>
-            <p class="route-count" id="route-count">Routes laden…</p>
-            <div class="region-switch" role="group" aria-label="Kies een routegebied">
-              <button class="region-button" type="button" data-region="noord" aria-pressed="false">Noord-Nederland</button>
-              <button class="region-button" type="button" data-region="noord-holland" aria-pressed="true">Noord-Holland e.o.</button>
+          <button class="sheet-toggle" id="sheet-toggle" type="button" aria-expanded="false" aria-controls="sidebar-content" aria-label="Routes openen">
+            <span class="sheet-toggle-content"><span class="sheet-grip" aria-hidden="true"></span><span id="sheet-toggle-label">Routes bekijken</span></span>
+          </button>
+          <div class="sidebar-content" id="sidebar-content">
+            <div class="sidebar-heading">
+              <p class="eyebrow">Jouw routeoverzicht</p>
+              <h2>GPX-routes</h2>
+              <p class="route-count" id="route-count">Routes laden…</p>
+              <div class="region-switch" role="group" aria-label="Kies een routegebied">
+                <button class="region-button" type="button" data-region="noord" aria-pressed="false">Noord-Nederland</button>
+                <button class="region-button" type="button" data-region="noord-holland" aria-pressed="true">Noord-Holland e.o.</button>
+              </div>
+              <p class="source-note" id="source-note"></p>
             </div>
-            <p class="source-note" id="source-note"></p>
+            <label class="search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+                <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <input id="search" type="search" placeholder="Zoek een route…" autocomplete="off" aria-label="Zoek een route">
+            </label>
+            <div class="list-actions">
+              <button class="text-button" id="show-all" type="button">Alles tonen</button>
+              <button class="text-button" id="hide-all" type="button">Alles verbergen</button>
+            </div>
+            <div id="route-list" aria-live="polite"></div>
           </div>
-          <label class="search-wrap">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
-              <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-            <input id="search" type="search" placeholder="Zoek een route…" autocomplete="off" aria-label="Zoek een route">
-          </label>
-          <div class="list-actions">
-            <button class="text-button" id="show-all" type="button">Alles tonen</button>
-            <button class="text-button" id="hide-all" type="button">Alles verbergen</button>
-          </div>
-          <div id="route-list" aria-live="polite"></div>
         </aside>
 
         <section class="map-wrap" aria-label="Kaart met GPX-routes">
           <div id="map"></div>
           <div class="map-legend"><span class="startpoint-symbol" aria-hidden="true"></span>Startpunt</div>
           <div class="map-label" id="map-label">Noord-Holland en omgeving</div>
+          <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="Kaart op volledig scherm" title="Volledig scherm">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/>
+            </svg>
+          </button>
         </section>
       </div>
     </main>
@@ -546,6 +697,13 @@
         const routeCount = document.getElementById("route-count");
         const sourceNote = document.getElementById("source-note");
         const mapLabel = document.getElementById("map-label");
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarContent = document.getElementById("sidebar-content");
+        const sheetToggle = document.getElementById("sheet-toggle");
+        const sheetToggleLabel = document.getElementById("sheet-toggle-label");
+        const fullscreenButton = document.getElementById("fullscreen-button");
+        const mapWrap = document.querySelector(".map-wrap");
+        const mobileLayout = window.matchMedia("(max-width: 720px)");
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const layers = new Map();
         const popupContents = new Map();
@@ -605,6 +763,76 @@
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
         }).addTo(map);
+
+        function setSheetExpanded(expanded) {
+          const shouldExpand = mobileLayout.matches && expanded;
+          sidebar.classList.toggle("is-expanded", shouldExpand);
+          sheetToggle.setAttribute("aria-expanded", String(shouldExpand));
+          sheetToggle.setAttribute("aria-label", shouldExpand ? "Routes sluiten" : "Routes openen");
+          sheetToggleLabel.textContent = shouldExpand ? "Kaart bekijken" : "Routes bekijken";
+          sidebarContent.inert = mobileLayout.matches && !shouldExpand;
+        }
+
+        function syncFullscreenButton() {
+          const isFullscreen = document.fullscreenElement === mapWrap || mapWrap.classList.contains("is-fullscreen");
+          fullscreenButton.setAttribute("aria-label", isFullscreen ? "Volledig scherm sluiten" : "Kaart op volledig scherm");
+          fullscreenButton.title = isFullscreen ? "Volledig scherm sluiten" : "Volledig scherm";
+        }
+
+        function refreshMapSize() {
+          requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+        }
+
+        async function toggleFullscreen() {
+          try {
+            if (document.fullscreenElement === mapWrap) {
+              await document.exitFullscreen();
+            } else if (mapWrap.classList.contains("is-fullscreen")) {
+              mapWrap.classList.remove("is-fullscreen");
+            } else if (typeof mapWrap.requestFullscreen === "function") {
+              await mapWrap.requestFullscreen();
+            } else {
+              mapWrap.classList.add("is-fullscreen");
+            }
+            syncFullscreenButton();
+            refreshMapSize();
+          } catch (error) {
+            console.error("Volledig scherm openen mislukt:", error);
+            showError("De kaart kon niet op volledig scherm worden geopend.");
+          }
+        }
+
+        setSheetExpanded(false);
+        mobileLayout.addEventListener("change", () => setSheetExpanded(false));
+        sheetToggle.addEventListener("click", () => {
+          if (sheetToggle.dataset.swiped === "true") {
+            delete sheetToggle.dataset.swiped;
+            return;
+          }
+          setSheetExpanded(sheetToggle.getAttribute("aria-expanded") !== "true");
+          refreshMapSize();
+        });
+        let dragStartY = null;
+        sheetToggle.addEventListener("pointerdown", event => {
+          if (!mobileLayout.matches) return;
+          dragStartY = event.clientY;
+          sheetToggle.setPointerCapture(event.pointerId);
+        });
+        sheetToggle.addEventListener("pointerup", event => {
+          if (dragStartY === null) return;
+          const dragDistance = event.clientY - dragStartY;
+          dragStartY = null;
+          if (Math.abs(dragDistance) < 35) return;
+          sheetToggle.dataset.swiped = "true";
+          setSheetExpanded(dragDistance < 0);
+          refreshMapSize();
+        });
+        sheetToggle.addEventListener("pointercancel", () => { dragStartY = null; });
+        fullscreenButton.addEventListener("click", toggleFullscreen);
+        document.addEventListener("fullscreenchange", () => {
+          syncFullscreenButton();
+          refreshMapSize();
+        });
 
         function routeColor(index) {
           return colors[index % colors.length];
@@ -787,6 +1015,7 @@
                   map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 14 });
                   map.closePopup();
                   openRoutePopup(index);
+                  if (mobileLayout.matches) setSheetExpanded(false);
                 }
               });
 
