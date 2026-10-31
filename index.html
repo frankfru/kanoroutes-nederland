@@ -440,6 +440,10 @@
         box-shadow: 0 0 0 1px #168a63;
       }
 
+      .startpoint-symbol.is-hidden {
+        visibility: hidden;
+      }
+
       .map-error {
         position: absolute;
         z-index: 1000;
@@ -673,7 +677,7 @@
 
         <section class="map-wrap" aria-label="Kaart met GPX-routes">
           <div id="map"></div>
-          <div class="map-legend"><span class="startpoint-symbol" aria-hidden="true"></span>Startpunt</div>
+          <div class="map-legend"><span class="startpoint-symbol is-hidden" id="startpoint-legend-symbol" aria-hidden="true"></span><span id="startpoint-legend-label">Startpunt geselecteerde route</span></div>
           <div class="map-label" id="map-label">Noord-Holland en omgeving</div>
           <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="Kaart op volledig scherm" title="Volledig scherm">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -703,6 +707,7 @@
         const sheetToggleLabel = document.getElementById("sheet-toggle-label");
         const fullscreenButton = document.getElementById("fullscreen-button");
         const mapWrap = document.querySelector(".map-wrap");
+        const startpointLegendSymbol = document.getElementById("startpoint-legend-symbol");
         const mobileLayout = window.matchMedia("(max-width: 720px)");
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const layers = new Map();
@@ -886,9 +891,12 @@
                   weight: 4,
                   opacity: 0.78
                 });
+              } else if (child instanceof L.CircleMarker) {
+                child.setStyle({ opacity: 0, fillOpacity: 0 });
               }
             });
           });
+          startpointLegendSymbol.classList.add("is-hidden");
           routeButtons.forEach(button => {
             button.closest(".route-row").classList.remove("selected");
             button.setAttribute("aria-pressed", "false");
@@ -911,14 +919,21 @@
                 if (selected) child.bringToFront();
               } else if (selected && child instanceof L.Polyline) {
                 child.bringToFront();
+              } else if (child instanceof L.CircleMarker) {
+                child.setStyle({
+                  opacity: selected ? 1 : 0,
+                  fillOpacity: selected ? 1 : 0
+                });
               }
             });
             if (selected) {
+              startpointLegendSymbol.classList.remove("is-hidden");
               layer.eachLayer(child => {
                 if (child instanceof L.CircleMarker) child.bringToFront();
               });
             }
           });
+          if (selectedRoute === null) startpointLegendSymbol.classList.add("is-hidden");
           routeButtons.forEach((button, routeIndex) => {
             const selected = routeIndex === selectedRoute;
             button.closest(".route-row").classList.toggle("selected", selected);
@@ -1119,7 +1134,8 @@
               color: "#fff",
               weight: 2,
               fillColor: "#168a63",
-              fillOpacity: 1,
+              opacity: 0,
+              fillOpacity: 0,
               interactive: false
             }).addTo(layer);
 
