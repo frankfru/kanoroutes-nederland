@@ -1155,6 +1155,32 @@
                 lineJoin: "round",
                 interactive: true
               }).addTo(layer);
+              hitArea.on("mouseover", () => {
+                if (selectedRoute === index) return;
+                layer.eachLayer(child => {
+                  if (child instanceof L.Polyline && child.options.routeCasing === true) {
+                    child.setStyle({ weight: 8 });
+                    child.bringToFront();
+                  } else if (child instanceof L.Polyline && child.options.interactive === false) {
+                    child.setStyle({ weight: 4.5, opacity: 1 });
+                    child.bringToFront();
+                  }
+                });
+              });
+              hitArea.on("mouseout", () => {
+                if (selectedRoute === index) return;
+                const dimmed = selectedRoute !== null;
+                layer.eachLayer(child => {
+                  if (child instanceof L.Polyline && child.options.routeCasing === true) {
+                    child.setStyle({ weight: 6, opacity: 0.95 });
+                  } else if (child instanceof L.Polyline && child.options.interactive === false) {
+                    child.setStyle({
+                      weight: dimmed ? 2.5 : 3,
+                      opacity: dimmed ? 0.4 : 0.78
+                    });
+                  }
+                });
+              });
               hitArea.on("click", () => {
                 toggleRouteSelection(index);
                 if (selectedRoute === index) openRoutePopup(index);
