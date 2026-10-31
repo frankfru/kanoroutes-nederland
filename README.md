@@ -29,5 +29,5 @@ Selecteer een route in de lijst om de deelbare URL bij te werken. De link opent 
 
 ## Bronnen
 
-- Noord-Holland en omgeving: [AKV Odysseus — Routes kanotochten](https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/). Het overzicht is samengesteld door Peter Groen.
+- Noord-Holland-routes en clublogo: [AKV Odysseus](https://www.akvodysseus.nl/). Het routeoverzicht is samengesteld door Peter Groen; de routes staan op de pagina [Routes kanotochten](https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/).
 - Achtergrondkaart: [OpenStreetMap](https://www.openstreetmap.org/copyright).

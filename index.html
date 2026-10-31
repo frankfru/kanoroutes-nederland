@@ -66,20 +66,12 @@
         min-width: 0;
       }
 
-      .brand-mark {
-        display: grid;
-        width: 42px;
-        height: 42px;
+      .brand-logo {
+        display: block;
+        width: 48px;
+        height: 48px;
         flex: 0 0 auto;
-        place-items: center;
-        color: #fff;
-        background: var(--green);
-        border-radius: 13px;
-      }
-
-      .brand-mark svg {
-        width: 24px;
-        height: 24px;
+        object-fit: contain;
       }
 
       h1 {
@@ -489,9 +481,9 @@
           padding: 10px 14px;
         }
 
-        .brand-mark {
-          width: 38px;
-          height: 38px;
+        .brand-logo {
+          width: 42px;
+          height: 42px;
         }
 
         h1 {
@@ -630,12 +622,13 @@
     <main class="app">
       <header class="topbar">
         <div class="brand">
-          <div class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M3 16.5c2.4-2 4.7-2 7.1 0s4.7 2 7.1 0 4.7-2 7.1 0M3 11.5c2.4-2 4.7-2 7.1 0s4.7 2 7.1 0 4.7-2 7.1 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M12 3.2v5.1m-2.1-3L12 3.2l2.1 2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
+          <img
+            class="brand-logo"
+            src="https://www.akvodysseus.nl/wp-content/uploads/2021/05/cropped-WhatsApp-Image-2021-05-12-at-10.14.57.jpeg"
+            alt="Logo AKV Odysseus"
+            width="48"
+            height="48"
+          >
           <div>
             <h1>Kanoroutes Nederland</h1>
             <p class="subtitle">Verken routes op en rond het water</p>
