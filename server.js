@@ -8,7 +8,8 @@ const files = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
   ["/routes-data.js", ["routes-data.js", "text/javascript; charset=utf-8"]],
-  ["/routes-noord-holland-data.js", ["routes-noord-holland-data.js", "text/javascript; charset=utf-8"]]
+  ["/routes-noord-holland-data.js", ["routes-noord-holland-data.js", "text/javascript; charset=utf-8"]],
+  ["/routes-kanoroutes-data.js", ["routes-kanoroutes-data.js", "text/javascript; charset=utf-8"]]
 ]);
 
 const server = http.createServer(async (request, response) => {

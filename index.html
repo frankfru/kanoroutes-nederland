@@ -667,6 +667,7 @@
               <div class="region-switch" role="group" aria-label="Kies een routegebied">
                 <button class="region-button" type="button" data-region="noord" aria-pressed="false">Noord-Nederland</button>
                 <button class="region-button" type="button" data-region="noord-holland" aria-pressed="true">Noord-Holland e.o.</button>
+                <button class="region-button" type="button" data-region="kanoroutes" aria-pressed="false">Nederland</button>
               </div>
               <p class="source-note" id="source-note"></p>
             </div>
@@ -733,6 +734,7 @@
         let activeRoutes = [];
         let activeRegion = null;
         let northHollandLoadPromise;
+        let kanoroutesLoadPromise;
         let regionLoadId = 0;
 
         function routeSlug(name) {
@@ -997,7 +999,9 @@
 
           const groups = new Map();
           activeRoutes.forEach((route, index) => {
-            if (!route.name.toLocaleLowerCase("nl").includes(normalizedFilter)) return;
+            const searchableText =
+              `${route.name} ${route.location || ""} ${route.folder || route.group || ""}`.toLocaleLowerCase("nl");
+            if (!searchableText.includes(normalizedFilter)) return;
             const group = route.folder || route.group || "GPS Groningen";
             if (!groups.has(group)) groups.set(group, []);
             groups.get(group).push({ route, index });
@@ -1166,12 +1170,15 @@
               ? `<p class="popup-detail"><a href="${escapeHtml(route.pdf)}" target="_blank" rel="noopener noreferrer">Routebeschrijving openen (PDF)</a></p>`
               : "";
             const sourceLink = typeof route.source === "string"
-              ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">Originele GPX downloaden</a></p>`
+              ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">${/\.zip(?:$|[?#])/i.test(route.source) ? "Originele GPS-route downloaden (ZIP)" : "Originele GPX downloaden"}</a></p>`
+              : "";
+            const routePageLink = typeof route.sourcePage === "string"
+              ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina op kanoroutes.nl</a></p>`
               : "";
             const distanceKm = calculateDistanceKm(validSegments);
             routeDistances.set(index, distanceKm);
             const popupContent =
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}`;
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}`;
             popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);
@@ -1220,6 +1227,33 @@
           return northHollandLoadPromise;
         }
 
+        function loadKanoroutesRoutes() {
+          if (Array.isArray(window.GPX_ROUTES_KANOROUTES)) {
+            return Promise.resolve(window.GPX_ROUTES_KANOROUTES);
+          }
+
+          if (!kanoroutesLoadPromise) {
+            kanoroutesLoadPromise = new Promise((resolve, reject) => {
+              const script = document.createElement("script");
+              script.src = "routes-kanoroutes-data.js";
+              script.onload = () => {
+                if (Array.isArray(window.GPX_ROUTES_KANOROUTES)) {
+                  resolve(window.GPX_ROUTES_KANOROUTES);
+                } else {
+                  reject(new Error("Het kanoroutes.nl-bestand bevat geen routegegevens."));
+                }
+              };
+              script.onerror = () => reject(new Error("routes-kanoroutes-data.js kon niet worden geladen."));
+              document.body.append(script);
+            }).catch(error => {
+              kanoroutesLoadPromise = null;
+              throw error;
+            });
+          }
+
+          return kanoroutesLoadPromise;
+        }
+
         async function changeRegion(region, { syncUrl = true, routeId = null } = {}) {
           if (region === activeRegion && activeRoutes.length > 0) return;
           const loadId = ++regionLoadId;
@@ -1246,6 +1280,11 @@
             sourceNote.hidden = false;
             sourceNote.innerHTML =
               'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.';
+          } else if (region === "kanoroutes") {
+            mapLabel.textContent = "Nederland · kanoroutes.nl";
+            sourceNote.hidden = false;
+            sourceNote.innerHTML =
+              'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.';
           } else {
             mapLabel.textContent = "Groningen · Friesland · Drenthe";
             sourceNote.hidden = true;
@@ -1255,7 +1294,9 @@
           try {
             const routes = region === "noord-holland"
               ? await loadNorthHollandRoutes()
-              : window.GPX_ROUTES;
+              : region === "kanoroutes"
+                ? await loadKanoroutesRoutes()
+                : window.GPX_ROUTES;
             if (activeRegion !== region || regionLoadId !== loadId) return;
             renderRoutes(routes);
             if (routeId && !restoreRoute(routeId)) {
@@ -1265,7 +1306,7 @@
             if (activeRegion !== region || regionLoadId !== loadId) return;
             console.error("Routegebied laden mislukt:", error);
             routeCount.textContent = "Routes laden mislukt";
-            showError("De Noord-Holland-routes konden niet worden geladen. Probeer het opnieuw.");
+            showError("De routes konden niet worden geladen. Probeer het opnieuw.");
           }
         }
 
@@ -1274,7 +1315,9 @@
         });
         const sharedUrl = new URL(location.href);
         const requestedRegion = sharedUrl.searchParams.get("region");
-        const initialRegion = requestedRegion === "noord" || requestedRegion === "noord-holland"
+        const initialRegion = requestedRegion === "noord" ||
+          requestedRegion === "noord-holland" ||
+          requestedRegion === "kanoroutes"
           ? requestedRegion
           : "noord-holland";
         const initialRouteId = sharedUrl.searchParams.get("route");
@@ -1283,7 +1326,9 @@
         window.addEventListener("popstate", () => {
           const url = new URL(location.href);
           const requestedRegion = url.searchParams.get("region");
-          const region = requestedRegion === "noord" || requestedRegion === "noord-holland"
+          const region = requestedRegion === "noord" ||
+            requestedRegion === "noord-holland" ||
+            requestedRegion === "kanoroutes"
             ? requestedRegion
             : "noord-holland";
           const routeId = url.searchParams.get("route");
