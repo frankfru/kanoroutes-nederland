@@ -1168,15 +1168,19 @@
                 });
               });
               hitArea.on("mouseout", () => {
-                if (selectedRoute === index) return;
+                const selected = selectedRoute === index;
                 const dimmed = selectedRoute !== null;
                 layer.eachLayer(child => {
                   if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                    child.setStyle({ weight: 6, opacity: 0.95 });
+                    child.setStyle({
+                      weight: selected ? 7 : 6,
+                      opacity: selected ? 0.98 : 0.95
+                    });
                   } else if (child instanceof L.Polyline && child.options.interactive === false) {
                     child.setStyle({
-                      weight: dimmed ? 2.5 : 3,
-                      opacity: dimmed ? 0.4 : 0.78
+                      color: selected ? "#f15b35" : routeColor(index),
+                      weight: selected ? 4 : dimmed ? 2.5 : 3,
+                      opacity: selected ? 0.95 : dimmed ? 0.4 : 0.78
                     });
                   }
                 });
