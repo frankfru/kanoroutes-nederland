@@ -515,14 +515,35 @@
         const mapLabel = document.getElementById("map-label");
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const layers = new Map();
+        const popupContents = new Map();
         const rows = new Map();
         const routeButtons = new Map();
+        let routeIds = new Map();
+        let routeIndexesById = new Map();
         let map;
         let allRoutesBounds;
         let selectedRoute = null;
         let activeRoutes = [];
         let activeRegion = null;
         let northHollandLoadPromise;
+        let regionLoadId = 0;
+
+        function routeSlug(name) {
+          return name
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase("nl")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "") || "route";
+        }
+
+        function updateShareUrl(routeId = null, replace = false) {
+          const url = new URL(location.href);
+          url.searchParams.set("region", activeRegion);
+          if (routeId) url.searchParams.set("route", routeId);
+          else url.searchParams.delete("route");
+          history[replace ? "replaceState" : "pushState"]({ routeId }, "", url);
+        }
 
         function showError(message) {
           const error = document.createElement("div");
@@ -545,6 +566,7 @@
         }
 
         map = L.map("map", { zoomControl: false, preferCanvas: true }).setView([52.15, 5.3], 7);
+        const routePopup = L.popup();
         L.control.zoom({ position: "bottomright" }).addTo(map);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 19,
@@ -555,7 +577,7 @@
           return colors[index % colors.length];
         }
 
-        function clearSelection() {
+        function clearSelection({ syncUrl = true, replaceUrl = true } = {}) {
           selectedRoute = null;
           layers.forEach((layer, index) => {
             layer.eachLayer(line => line.setStyle({
@@ -568,9 +590,11 @@
             button.closest(".route-row").classList.remove("selected");
             button.setAttribute("aria-pressed", "false");
           });
+          map.closePopup();
+          if (syncUrl && activeRegion) updateShareUrl(null, replaceUrl);
         }
 
-        function selectRoute(index) {
+        function selectRoute(index, { syncUrl = true } = {}) {
           selectedRoute = index;
           layers.forEach((layer, routeIndex) => {
             const selected = routeIndex === selectedRoute;
@@ -588,11 +612,40 @@
             button.closest(".route-row").classList.toggle("selected", selected);
             button.setAttribute("aria-pressed", String(selected));
           });
+          if (syncUrl) updateShareUrl(routeIds.get(index));
         }
 
-        function toggleRouteSelection(index) {
-          if (selectedRoute === index) clearSelection();
-          else selectRoute(index);
+        function toggleRouteSelection(index, options) {
+          if (selectedRoute === index) clearSelection(options);
+          else selectRoute(index, options);
+        }
+
+        function openRoutePopup(index) {
+          const layer = layers.get(index);
+          const content = popupContents.get(index);
+          if (layer && content) {
+            routePopup
+              .setLatLng(layer.getBounds().getCenter())
+              .setContent(content);
+            map.openPopup(routePopup);
+          }
+        }
+
+        function restoreRoute(routeId) {
+          const index = routeIndexesById.get(routeId);
+          const layer = layers.get(index);
+          if (index === undefined || !layer || !layer.getBounds().isValid()) return false;
+
+          if (!map.hasLayer(layer)) {
+            layer.addTo(map);
+            const checkbox = rows.get(index);
+            if (checkbox) checkbox.checked = true;
+          }
+          selectRoute(index, { syncUrl: false });
+          map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 14 });
+          map.closePopup();
+          openRoutePopup(index);
+          return true;
         }
 
         function renderList(filter = "") {
@@ -658,13 +711,18 @@
               name.addEventListener("click", () => {
                 const layer = layers.get(index);
                 if (layer && layer.getBounds().isValid()) {
+                  if (selectedRoute === index) {
+                    clearSelection();
+                    return;
+                  }
                   if (!map.hasLayer(layer)) {
                     layer.addTo(map);
                     checkbox.checked = true;
                   }
-                  toggleRouteSelection(index);
+                  selectRoute(index);
                   map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 14 });
-                  layer.openPopup();
+                  map.closePopup();
+                  openRoutePopup(index);
                 }
               });
 
@@ -689,6 +747,18 @@
         function renderRoutes(routes) {
           activeRoutes = routes;
           selectedRoute = null;
+          routeIds = new Map();
+          routeIndexesById = new Map();
+          popupContents.clear();
+          const slugCounts = new Map();
+          activeRoutes.forEach((route, index) => {
+            const slug = routeSlug(route.name);
+            const count = (slugCounts.get(slug) || 0) + 1;
+            slugCounts.set(slug, count);
+            const routeId = count === 1 ? slug : `${slug}-${count}`;
+            routeIds.set(index, routeId);
+            routeIndexesById.set(routeId, index);
+          });
           layers.forEach(layer => map.removeLayer(layer));
           layers.clear();
           rows.clear();
@@ -714,7 +784,10 @@
                 lineCap: "round",
                 lineJoin: "round"
               }).addTo(layer);
-              line.on("click", () => toggleRouteSelection(index));
+              line.on("click", () => {
+                toggleRouteSelection(index);
+                if (selectedRoute === index) openRoutePopup(index);
+              });
             });
 
             const pdfLink = typeof route.pdf === "string"
@@ -723,9 +796,9 @@
             const sourceLink = typeof route.source === "string"
               ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">Originele GPX downloaden</a></p>`
               : "";
-            layer.bindPopup(
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${sourcePointCount.toLocaleString("nl-NL")} meetpunten</p>${pdfLink}${sourceLink}`
-            );
+            const popupContent =
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${sourcePointCount.toLocaleString("nl-NL")} meetpunten</p>${pdfLink}${sourceLink}`;
+            popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);
             routeBounds.push(layer.getBounds());
@@ -774,19 +847,23 @@
           return northHollandLoadPromise;
         }
 
-        async function changeRegion(region) {
-          if (region === activeRegion) return;
+        async function changeRegion(region, { syncUrl = true, routeId = null } = {}) {
+          if (region === activeRegion && activeRoutes.length > 0) return;
+          const loadId = ++regionLoadId;
           activeRegion = region;
           regionButtons.forEach(button => {
             button.setAttribute("aria-pressed", String(button.dataset.region === region));
           });
+          if (syncUrl) updateShareUrl(null);
           document.querySelector(".map-error")?.remove();
 
+          map.closePopup();
           layers.forEach(layer => map.removeLayer(layer));
           layers.clear();
           rows.clear();
           routeButtons.clear();
           selectedRoute = null;
+          activeRoutes = [];
           routeList.replaceChildren();
           allRoutesBounds = null;
           routeCount.textContent = "Routes laden…";
@@ -806,9 +883,13 @@
             const routes = region === "noord-holland"
               ? await loadNorthHollandRoutes()
               : window.GPX_ROUTES;
-            if (activeRegion === region) renderRoutes(routes);
+            if (activeRegion !== region || regionLoadId !== loadId) return;
+            renderRoutes(routes);
+            if (routeId && !restoreRoute(routeId)) {
+              showError("De gedeelde route kon niet worden gevonden in dit routegebied.");
+            }
           } catch (error) {
-            if (activeRegion !== region) return;
+            if (activeRegion !== region || regionLoadId !== loadId) return;
             console.error("Routegebied laden mislukt:", error);
             routeCount.textContent = "Routes laden mislukt";
             showError("De Noord-Holland-routes konden niet worden geladen. Probeer het opnieuw.");
@@ -818,7 +899,35 @@
         regionButtons.forEach(button => {
           button.addEventListener("click", () => changeRegion(button.dataset.region));
         });
-        changeRegion("noord-holland");
+        const sharedUrl = new URL(location.href);
+        const requestedRegion = sharedUrl.searchParams.get("region");
+        const initialRegion = requestedRegion === "noord" || requestedRegion === "noord-holland"
+          ? requestedRegion
+          : "noord-holland";
+        const initialRouteId = sharedUrl.searchParams.get("route");
+        changeRegion(initialRegion, { syncUrl: false, routeId: initialRouteId });
+
+        window.addEventListener("popstate", () => {
+          const url = new URL(location.href);
+          const requestedRegion = url.searchParams.get("region");
+          const region = requestedRegion === "noord" || requestedRegion === "noord-holland"
+            ? requestedRegion
+            : "noord-holland";
+          const routeId = url.searchParams.get("route");
+          if (region !== activeRegion || activeRoutes.length === 0) {
+            changeRegion(region, { syncUrl: false, routeId });
+          } else if (routeId) {
+            if (!restoreRoute(routeId)) {
+              clearSelection({ syncUrl: false });
+              showError("De gedeelde route kon niet worden gevonden in dit routegebied.");
+            } else {
+              document.querySelector(".map-error")?.remove();
+            }
+          } else {
+            document.querySelector(".map-error")?.remove();
+            clearSelection({ syncUrl: false });
+          }
+        });
 
         searchInput.addEventListener("input", () => renderList(searchInput.value));
         document.getElementById("show-all").addEventListener("click", () => {
