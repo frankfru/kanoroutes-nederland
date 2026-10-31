@@ -720,6 +720,7 @@
         const mapWrap = document.querySelector(".map-wrap");
         const startpointLegendSymbol = document.getElementById("startpoint-legend-symbol");
         const mobileLayout = window.matchMedia("(max-width: 720px)");
+        const routePopupDurationMs = 5000;
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const layers = new Map();
         const routeDistances = new Map();
@@ -736,6 +737,7 @@
         let northHollandLoadPromise;
         let kanoroutesLoadPromise;
         let regionLoadId = 0;
+        let routePopupTimeout;
 
         function routeSlug(name) {
           return name
@@ -967,10 +969,14 @@
           const layer = layers.get(index);
           const content = popupContents.get(index);
           if (layer && content) {
+            window.clearTimeout(routePopupTimeout);
             routePopup
               .setLatLng(layer.getBounds().getCenter())
               .setContent(content);
             map.openPopup(routePopup);
+            routePopupTimeout = window.setTimeout(() => {
+              if (map.hasLayer(routePopup)) map.closePopup(routePopup);
+            }, routePopupDurationMs);
           }
         }
 
