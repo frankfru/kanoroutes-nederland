@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f7f4">
-    <title>Kanoroutes Nederland</title>
+    <title>Kajakroutes Dinsdaggers</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -85,6 +85,23 @@
         margin: 4px 0 0;
         color: var(--muted);
         font-size: 12px;
+      }
+
+      .subtitle a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .subtitle a:hover {
+        color: var(--green);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .subtitle a:focus-visible {
+        border-radius: 2px;
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
       }
 
       .topbar-note {
@@ -630,8 +647,8 @@
             height="48"
           >
           <div>
-            <h1>Kanoroutes Nederland</h1>
-            <p class="subtitle">Van een rondje om de hoek tot een tocht door weidse polders</p>
+            <h1>Kajakroutes Dinsdaggers</h1>
+            <p class="subtitle"><a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/">Van een rondje om de hoek tot een tocht door weidse polders</a></p>
           </div>
         </div>
         <div class="topbar-note"><span class="status-dot"></span>Interactieve routekaart</div>
@@ -686,8 +703,8 @@
     <script>
       (() => {
         const colors = [
-          "#167d65", "#dc7435", "#4d74c8", "#ad5b9b", "#bb8b22",
-          "#288e9d", "#d34f55", "#6675a8", "#6a963c", "#935fc0"
+          "#0072b2", "#e69f00", "#009e73", "#cc79a7", "#d55e00",
+          "#56b4e9", "#a65e00", "#7a68a6", "#b3a000", "#008a80"
         ];
         const routeList = document.getElementById("route-list");
         const searchInput = document.getElementById("search");
@@ -878,12 +895,14 @@
           selectedRoute = null;
           layers.forEach((layer, index) => {
             layer.eachLayer(child => {
-              if (child instanceof L.Polyline && child.options.interactive === false) {
+              if (child instanceof L.Polyline && child.options.routeCasing !== true && child.options.interactive === false) {
                 child.setStyle({
                   color: routeColor(index),
                   weight: 4,
                   opacity: 0.78
                 });
+              } else if (child instanceof L.Polyline && child.options.routeCasing === true) {
+                child.setStyle({ color: "#fff", weight: 8, opacity: 0.95 });
               } else if (child instanceof L.CircleMarker) {
                 child.setStyle({ opacity: 0, fillOpacity: 0 });
               }
@@ -903,7 +922,9 @@
           layers.forEach((layer, routeIndex) => {
             const selected = routeIndex === selectedRoute;
             layer.eachLayer(child => {
-              if (child instanceof L.Polyline && child.options.interactive === false) {
+              if (child instanceof L.Polyline && child.options.routeCasing === true) {
+                child.setStyle({ color: "#fff", weight: 9, opacity: 0.98 });
+              } else if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
                   color: selected ? "#f15b35" : routeColor(routeIndex),
                   weight: selected ? 5 : 3,
@@ -1100,6 +1121,15 @@
 
             const layer = L.featureGroup();
             validSegments.forEach(segment => {
+              L.polyline(segment, {
+                color: "#fff",
+                weight: 8,
+                opacity: 0.95,
+                lineCap: "round",
+                lineJoin: "round",
+                interactive: false,
+                routeCasing: true
+              }).addTo(layer);
               L.polyline(segment, {
                 color: routeColor(index),
                 weight: 4,
