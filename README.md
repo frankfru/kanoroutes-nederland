@@ -17,7 +17,7 @@ Open daarna [http://localhost:4173](http://localhost:4173).
 - Genereer de routes uit `D:\GPS Groningen` met `.\build-routes.ps1`.
 - Haal de Noord-Holland-routes en bijbehorende PDF-links opnieuw op met `node build-noord-holland-routes.js`.
 
-De Noord-Holland-kaart gebruikt vereenvoudigde GPS-lijnen voor een vlotte weergave. In de route-pop-up staan links naar de oorspronkelijke GPX-bestanden en de routebeschrijvingen.
+De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPX-bestanden en routebeschrijvingen. Een groene stip op de kaart markeert het startpunt. Noord-Holland gebruikt vereenvoudigde GPS-lijnen voor een vlotte weergave; de afstand is daarop gebaseerd.
 
 ## Een route delen
 

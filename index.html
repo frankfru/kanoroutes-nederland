@@ -358,6 +358,33 @@
         pointer-events: none;
       }
 
+      .map-legend {
+        position: absolute;
+        z-index: 400;
+        bottom: 20px;
+        left: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 11px;
+        color: #30453a;
+        background: #ffffffed;
+        border: 1px solid #e1e7e1;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px #1a332011;
+        font-size: 11px;
+        pointer-events: none;
+      }
+
+      .startpoint-symbol {
+        width: 12px;
+        height: 12px;
+        background: #168a63;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px #168a63;
+      }
+
       .map-error {
         position: absolute;
         z-index: 1000;
@@ -446,6 +473,11 @@
           right: 10px;
           bottom: 12px;
         }
+
+        .map-legend {
+          bottom: 12px;
+          left: 10px;
+        }
       }
     </style>
   </head>
@@ -495,6 +527,7 @@
 
         <section class="map-wrap" aria-label="Kaart met GPX-routes">
           <div id="map"></div>
+          <div class="map-legend"><span class="startpoint-symbol" aria-hidden="true"></span>Startpunt</div>
           <div class="map-label" id="map-label">Noord-Holland en omgeving</div>
         </section>
       </div>
@@ -577,14 +610,38 @@
           return colors[index % colors.length];
         }
 
+        function calculateDistanceKm(segments) {
+          const earthRadiusKm = 6371.0088;
+          let distanceKm = 0;
+          for (const segment of segments) {
+            for (let index = 1; index < segment.length; index += 1) {
+              const [latitude1, longitude1] = segment[index - 1];
+              const [latitude2, longitude2] = segment[index];
+              const latitudeDelta = (latitude2 - latitude1) * Math.PI / 180;
+              const longitudeDelta = (longitude2 - longitude1) * Math.PI / 180;
+              const haversine =
+                Math.sin(latitudeDelta / 2) ** 2 +
+                Math.cos(latitude1 * Math.PI / 180) *
+                  Math.cos(latitude2 * Math.PI / 180) *
+                  Math.sin(longitudeDelta / 2) ** 2;
+              distanceKm += 2 * earthRadiusKm * Math.asin(Math.sqrt(haversine));
+            }
+          }
+          return distanceKm;
+        }
+
         function clearSelection({ syncUrl = true, replaceUrl = true } = {}) {
           selectedRoute = null;
           layers.forEach((layer, index) => {
-            layer.eachLayer(line => line.setStyle({
-              color: routeColor(index),
-              weight: 4,
-              opacity: 0.78
-            }));
+            layer.eachLayer(child => {
+              if (child instanceof L.Polyline) {
+                child.setStyle({
+                  color: routeColor(index),
+                  weight: 4,
+                  opacity: 0.78
+                });
+              }
+            });
           });
           routeButtons.forEach(button => {
             button.closest(".route-row").classList.remove("selected");
@@ -598,14 +655,21 @@
           selectedRoute = index;
           layers.forEach((layer, routeIndex) => {
             const selected = routeIndex === selectedRoute;
-            layer.eachLayer(line => {
-              line.setStyle({
-                color: selected ? "#f15b35" : routeColor(routeIndex),
-                weight: selected ? 5 : 3,
-                opacity: selected ? 0.95 : 0.4
-              });
-              if (selected) line.bringToFront();
+            layer.eachLayer(child => {
+              if (child instanceof L.Polyline) {
+                child.setStyle({
+                  color: selected ? "#f15b35" : routeColor(routeIndex),
+                  weight: selected ? 5 : 3,
+                  opacity: selected ? 0.95 : 0.4
+                });
+                if (selected) child.bringToFront();
+              }
             });
+            if (selected) {
+              layer.eachLayer(child => {
+                if (child instanceof L.CircleMarker) child.bringToFront();
+              });
+            }
           });
           routeButtons.forEach((button, routeIndex) => {
             const selected = routeIndex === selectedRoute;
@@ -764,7 +828,6 @@
           rows.clear();
           routeButtons.clear();
 
-          let totalPoints = 0;
           let routesWithPoints = 0;
           const routeBounds = [];
 
@@ -773,8 +836,6 @@
             const validSegments = segments.filter(segment => Array.isArray(segment) && segment.length > 1);
             if (validSegments.length === 0) return;
 
-            const pointCount = validSegments.reduce((sum, segment) => sum + segment.length, 0);
-            const sourcePointCount = route.sourcePointCount ?? pointCount;
             const layer = L.featureGroup();
             validSegments.forEach(segment => {
               const line = L.polyline(segment, {
@@ -789,6 +850,15 @@
                 if (selectedRoute === index) openRoutePopup(index);
               });
             });
+            const startPoint = validSegments[0][0];
+            L.circleMarker(startPoint, {
+              radius: 6,
+              color: "#fff",
+              weight: 2,
+              fillColor: "#168a63",
+              fillOpacity: 1,
+              interactive: false
+            }).addTo(layer);
 
             const pdfLink = typeof route.pdf === "string"
               ? `<p class="popup-detail"><a href="${escapeHtml(route.pdf)}" target="_blank" rel="noopener noreferrer">Routebeschrijving openen (PDF)</a></p>`
@@ -796,13 +866,13 @@
             const sourceLink = typeof route.source === "string"
               ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">Originele GPX downloaden</a></p>`
               : "";
+            const distanceKm = calculateDistanceKm(validSegments);
             const popupContent =
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${sourcePointCount.toLocaleString("nl-NL")} meetpunten</p>${pdfLink}${sourceLink}`;
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}`;
             popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);
             routeBounds.push(layer.getBounds());
-            totalPoints += sourcePointCount;
             routesWithPoints += 1;
           });
 
@@ -816,7 +886,7 @@
             showError("De routegegevens bevatten geen bruikbare GPS-punten.");
           }
 
-          routeCount.textContent = `${routesWithPoints} routes · ${totalPoints.toLocaleString("nl-NL")} meetpunten`;
+          routeCount.textContent = `${routesWithPoints} routes`;
           renderList(searchInput.value);
         }
 
