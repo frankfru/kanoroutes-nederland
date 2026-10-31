@@ -803,7 +803,10 @@
         }
 
         setSheetExpanded(false);
-        mobileLayout.addEventListener("change", () => setSheetExpanded(false));
+        mobileLayout.addEventListener("change", () => {
+          setSheetExpanded(false);
+          updateRouteHitWidths();
+        });
         sheetToggle.addEventListener("click", () => {
           if (sheetToggle.dataset.swiped === "true") {
             delete sheetToggle.dataset.swiped;
@@ -838,6 +841,20 @@
           return colors[index % colors.length];
         }
 
+        function routeHitWidth() {
+          return mobileLayout.matches ? 32 : 20;
+        }
+
+        function updateRouteHitWidths() {
+          layers.forEach(layer => {
+            layer.eachLayer(child => {
+              if (child instanceof L.Polyline && child.options.interactive !== false) {
+                child.setStyle({ weight: routeHitWidth() });
+              }
+            });
+          });
+        }
+
         function calculateDistanceKm(segments) {
           const earthRadiusKm = 6371.0088;
           let distanceKm = 0;
@@ -862,7 +879,7 @@
           selectedRoute = null;
           layers.forEach((layer, index) => {
             layer.eachLayer(child => {
-              if (child instanceof L.Polyline) {
+              if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
                   color: routeColor(index),
                   weight: 4,
@@ -884,13 +901,15 @@
           layers.forEach((layer, routeIndex) => {
             const selected = routeIndex === selectedRoute;
             layer.eachLayer(child => {
-              if (child instanceof L.Polyline) {
+              if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
                   color: selected ? "#f15b35" : routeColor(routeIndex),
                   weight: selected ? 5 : 3,
                   opacity: selected ? 0.95 : 0.4
                 });
                 if (selected) child.bringToFront();
+              } else if (selected && child instanceof L.Polyline) {
+                child.bringToFront();
               }
             });
             if (selected) {
@@ -1067,14 +1086,23 @@
 
             const layer = L.featureGroup();
             validSegments.forEach(segment => {
-              const line = L.polyline(segment, {
+              L.polyline(segment, {
                 color: routeColor(index),
                 weight: 4,
                 opacity: 0.78,
                 lineCap: "round",
-                lineJoin: "round"
+                lineJoin: "round",
+                interactive: false
               }).addTo(layer);
-              line.on("click", () => {
+              const hitArea = L.polyline(segment, {
+                color: routeColor(index),
+                weight: routeHitWidth(),
+                opacity: 0,
+                lineCap: "round",
+                lineJoin: "round",
+                interactive: true
+              }).addTo(layer);
+              hitArea.on("click", () => {
                 toggleRouteSelection(index);
                 if (selectedRoute === index) openRoutePopup(index);
               });
