@@ -16,7 +16,7 @@ Open daarna [http://localhost:4173](http://localhost:4173).
 
 - Genereer de routes uit `D:\GPS Groningen` met `.\build-routes.ps1`.
 - Haal de Noord-Holland-routes en bijbehorende PDF-links opnieuw op met `node build-noord-holland-routes.js`.
-- Haal de Nederlandse routes van kanoroutes.nl opnieuw op met `node build-kanoroutes-data.js`. Deze controleert de GPS-tracks tegen de Nederlandse landsgrens en slaat routes buiten Nederland over.
+- Haal de Nederlandse routes van kanoroutes.nl opnieuw op met `node build-kanoroutes-data.js`. Deze controleert de GPS-tracks tegen de Nederlandse landsgrens, slaat routes buiten Nederland over en groepeert de routes per provincie. Gebruik `node build-kanoroutes-data.js --regroup-existing` om alleen de provincie-indeling opnieuw te berekenen.
 
 De route-lijst toont de afstand in hele kilometers achter de routenaam. De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPS-bestanden en routepagina's. Een groene stip markeert het startpunt van de geselecteerde route. De routes worden vereenvoudigd voor een vlotte weergave; de afstand is daarop gebaseerd.
 

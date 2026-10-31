@@ -1,10 +1,12 @@
-const { writeFile } = require("node:fs/promises");
+const { readFile, writeFile } = require("node:fs/promises");
 const path = require("node:path");
 const { inflateRawSync } = require("node:zlib");
 
 const homepageUrl = "https://kanoroutes.nl/";
 const boundaryUrl =
   "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
+const provincesUrl =
+  "https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0?service=WFS&version=2.0.0&request=GetFeature&typeNames=bestuurlijkegebieden:Provinciegebied&outputFormat=application/json&srsName=EPSG:4326";
 const outputPath = path.join(__dirname, "routes-kanoroutes-data.js");
 const maxConcurrentRequests = 5;
 const simplificationToleranceMeters = 5;
@@ -223,6 +225,84 @@ function isInCountry([latitude, longitude], rings) {
   return rings.some(ring => pointInRing(longitude, latitude, ring));
 }
 
+function prepareProvinces(featureCollection) {
+  const provinces = featureCollection.features
+    .map(feature => ({
+      name: feature.properties.naam,
+      rings: feature.geometry.coordinates.map(polygon => polygon[0])
+    }))
+    .filter(province => province.name && province.rings.length > 0);
+  if (provinces.length !== 12) {
+    throw new Error(`Er werden ${provinces.length} provincies gevonden; verwacht werden er 12.`);
+  }
+  return provinces;
+}
+
+function distanceToRing(latitude, longitude, ring) {
+  const latitudeScale = 111320;
+  const longitudeScale = latitudeScale * Math.cos((latitude * Math.PI) / 180);
+  const pointX = longitude * longitudeScale;
+  const pointY = latitude * latitudeScale;
+  let minimumDistanceSquared = Infinity;
+
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index, index += 1) {
+    const [longitude1, latitude1] = ring[index];
+    const [longitude2, latitude2] = ring[previous];
+    const startX = longitude1 * longitudeScale;
+    const startY = latitude1 * latitudeScale;
+    const deltaX = (longitude2 - longitude1) * longitudeScale;
+    const deltaY = (latitude2 - latitude1) * latitudeScale;
+    const lengthSquared = deltaX * deltaX + deltaY * deltaY;
+    const projection =
+      lengthSquared === 0
+        ? 0
+        : Math.max(
+            0,
+            Math.min(
+              1,
+              ((pointX - startX) * deltaX + (pointY - startY) * deltaY) / lengthSquared
+            )
+          );
+    const distanceX = pointX - (startX + projection * deltaX);
+    const distanceY = pointY - (startY + projection * deltaY);
+    minimumDistanceSquared = Math.min(
+      minimumDistanceSquared,
+      distanceX * distanceX + distanceY * distanceY
+    );
+  }
+  return minimumDistanceSquared;
+}
+
+function provinceForTrack(segments, provinces) {
+  const pointCounts = new Map(provinces.map(province => [province.name, 0]));
+  const points = segments.flat();
+
+  for (const point of points) {
+    for (const province of provinces) {
+      if (province.rings.some(ring => pointInRing(point[1], point[0], ring))) {
+        pointCounts.set(province.name, pointCounts.get(province.name) + 1);
+        break;
+      }
+    }
+  }
+
+  const largestCount = Math.max(...pointCounts.values());
+  if (largestCount > 0) {
+    return [...pointCounts].find(([, count]) => count === largestCount)[0];
+  }
+
+  const latitude = points.reduce((sum, point) => sum + point[0], 0) / points.length;
+  const longitude = points.reduce((sum, point) => sum + point[1], 0) / points.length;
+  return provinces
+    .map(province => ({
+      name: province.name,
+      distanceSquared: Math.min(
+        ...province.rings.map(ring => distanceToRing(latitude, longitude, ring))
+      )
+    }))
+    .sort((first, second) => first.distanceSquared - second.distanceSquared)[0].name;
+}
+
 function trackIsInNetherlands(segments, sourcePage, countryRings) {
   const points = segments.flat();
   const insideCount = points.filter(point => isInCountry(point, countryRings)).length;
@@ -309,13 +389,44 @@ async function mapConcurrent(items, concurrency, callback) {
 }
 
 async function main() {
-  const [homepage, boundaryJson] = await Promise.all([
+  if (process.argv.includes("--regroup-existing")) {
+    const source = await readFile(outputPath, "utf8");
+    const prefix = "window.GPX_ROUTES_KANOROUTES = ";
+    if (!source.startsWith(prefix)) {
+      throw new Error(`Ongeldig routebestand: ${outputPath}`);
+    }
+
+    const routes = JSON.parse(source.slice(prefix.length).trim().replace(/;\s*$/, ""));
+    if (!Array.isArray(routes) || routes.length === 0) {
+      throw new Error(`Geen routes gevonden in ${outputPath}`);
+    }
+    const provinceJson = await fetchText(provincesUrl);
+    const provinces = prepareProvinces(JSON.parse(provinceJson));
+    for (const route of routes) {
+      route.province = provinceForTrack(route.segments, provinces);
+      route.folder = route.province;
+    }
+    routes.sort((first, second) =>
+      first.province.localeCompare(second.province, "nl") ||
+      first.location.localeCompare(second.location, "nl") ||
+      first.name.localeCompare(second.name, "nl")
+    );
+    await writeFile(outputPath, `window.GPX_ROUTES_KANOROUTES = ${JSON.stringify(routes)};\n`, "utf8");
+    console.log(`Nederlandse routes: ${routes.length}`);
+    console.log(`Provincies: ${new Set(routes.map(route => route.province)).size}`);
+    console.log(`Databestand: ${outputPath}`);
+    return;
+  }
+
+  const [homepage, boundaryJson, provinceJson] = await Promise.all([
     fetchText(homepageUrl),
-    fetchText(boundaryUrl)
+    fetchText(boundaryUrl),
+    fetchText(provincesUrl)
   ]);
   const boundary = JSON.parse(boundaryJson);
   const netherlands = boundary.features.find(feature => feature.properties.ADMIN === "Netherlands");
   if (!netherlands) throw new Error("Nederlandse landsgrens niet gevonden in de Natural Earth-data.");
+  const provinces = prepareProvinces(JSON.parse(provinceJson));
 
   const countryRings = netherlands.geometry.coordinates
     .map(polygon => polygon[0])
@@ -371,9 +482,11 @@ async function main() {
         continue;
       }
 
+      const province = provinceForTrack(originalSegments, provinces);
       routes.push({
         name: displayRouteName(routeLocation(page.title, page.url), entry.name),
-        folder: "Nederland",
+        folder: province,
+        province,
         location: routeLocation(page.title, page.url),
         source: asset,
         sourcePage: page.url,
@@ -394,6 +507,7 @@ async function main() {
   await writeFile(outputPath, `window.GPX_ROUTES_KANOROUTES = ${JSON.stringify(routes)};\n`, "utf8");
 
   console.log(`Nederlandse routes: ${routes.length}`);
+  console.log(`Provincies: ${new Set(routes.map(route => route.province)).size}`);
   console.log(`Routepagina's gecontroleerd: ${pages.length}`);
   console.log(`Unieke GPX/ZIP-bestanden: ${assets.length}`);
   console.log(`Routes buiten Nederland uitgesloten: ${excludedForeignRoutes}`);
