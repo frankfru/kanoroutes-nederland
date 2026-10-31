@@ -1235,7 +1235,7 @@
           if (!kanoroutesLoadPromise) {
             kanoroutesLoadPromise = new Promise((resolve, reject) => {
               const script = document.createElement("script");
-              script.src = "routes-kanoroutes-data.js";
+              script.src = "routes-kanoroutes-data.js?v=province-groups-1";
               script.onload = () => {
                 if (Array.isArray(window.GPX_ROUTES_KANOROUTES)) {
                   resolve(window.GPX_ROUTES_KANOROUTES);
