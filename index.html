@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f4">
+    <title>Kanoroutes Nederland</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    >
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, "Segoe UI", sans-serif;
+        color: #17251f;
+        background: #f5f7f4;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        --muted: #6d7b73;
+        --line: #e4e9e4;
+        --green: #187653;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .app {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        height: 100vh;
+        min-height: 520px;
+      }
+
+      .topbar {
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        min-height: 76px;
+        padding: 14px 24px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        place-items: center;
+        color: #fff;
+        background: var(--green);
+        border-radius: 13px;
+      }
+
+      .brand-mark svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .subtitle {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .topbar-note {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #4a6558;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #42a675;
+        border-radius: 50%;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 350px minmax(0, 1fr);
+        min-height: 0;
+      }
+
+      .sidebar {
+        z-index: 400;
+        display: flex;
+        min-height: 0;
+        flex-direction: column;
+        background: #fff;
+        border-right: 1px solid var(--line);
+      }
+
+      .sidebar-heading {
+        padding: 22px 20px 17px;
+      }
+
+      .eyebrow {
+        margin: 0 0 7px;
+        color: var(--green);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 19px;
+        letter-spacing: -0.03em;
+      }
+
+      .route-count {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .region-switch {
+        display: flex;
+        gap: 4px;
+        margin-top: 15px;
+        padding: 4px;
+        background: #f2f5f2;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+
+      .region-button {
+        min-width: 0;
+        flex: 1;
+        padding: 8px 7px;
+        color: #64736a;
+        background: transparent;
+        border: 0;
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+      .region-button:hover {
+        color: var(--green);
+      }
+
+      .region-button[aria-pressed="true"] {
+        color: #15583f;
+        background: #fff;
+        box-shadow: 0 1px 3px #1a332014;
+      }
+
+      .source-note {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.5;
+      }
+
+      .source-note a {
+        color: var(--green);
+      }
+
+      .search-wrap {
+        position: relative;
+        margin: 0 16px 12px;
+      }
+
+      .search-wrap svg {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        width: 16px;
+        height: 16px;
+        color: #809087;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      #search {
+        width: 100%;
+        height: 40px;
+        padding: 0 12px 0 38px;
+        color: #24352c;
+        background: #f7f9f7;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        outline: none;
+      }
+
+      #search:focus {
+        border-color: #7ab59b;
+        box-shadow: 0 0 0 3px #18765314;
+      }
+
+      .list-actions {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 18px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .text-button {
+        padding: 4px 0;
+        color: var(--green);
+        background: none;
+        border: 0;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .text-button:hover {
+        color: #0e573b;
+      }
+
+      #route-list {
+        min-height: 0;
+        flex: 1;
+        overflow: auto;
+        padding: 8px 10px 18px;
+        scrollbar-color: #cbd6ce transparent;
+        scrollbar-width: thin;
+      }
+
+      .group-title {
+        margin: 12px 8px 5px;
+        color: #849087;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .route-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 39px;
+        padding: 5px 8px;
+        border-radius: 8px;
+      }
+
+      .route-row:hover {
+        background: #f6f8f6;
+      }
+
+      .route-row.selected {
+        background: #edf6f1;
+        box-shadow: inset 3px 0 var(--green);
+      }
+
+      .route-toggle {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+        margin: 0;
+        accent-color: var(--green);
+        cursor: pointer;
+      }
+
+      .route-color {
+        width: 17px;
+        height: 4px;
+        flex: 0 0 auto;
+        border-radius: 99px;
+      }
+
+      .route-name {
+        min-width: 0;
+        flex: 1;
+        overflow: hidden;
+        padding: 5px 0;
+        color: #2e4036;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        font-size: 12px;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .route-name:hover {
+        color: var(--green);
+      }
+
+      .route-row.selected .route-name {
+        color: #15583f;
+        font-weight: 700;
+      }
+
+      .empty-state {
+        padding: 20px 10px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .map-wrap {
+        position: relative;
+        min-width: 0;
+        min-height: 0;
+        background: #e8eee8;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      .map-label {
+        position: absolute;
+        z-index: 400;
+        right: 16px;
+        bottom: 20px;
+        padding: 8px 11px;
+        color: #30453a;
+        background: #ffffffed;
+        border: 1px solid #e1e7e1;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px #1a332011;
+        font-size: 11px;
+        pointer-events: none;
+      }
+
+      .map-error {
+        position: absolute;
+        z-index: 1000;
+        top: 16px;
+        left: 50%;
+        max-width: calc(100% - 32px);
+        padding: 10px 14px;
+        color: #7b2d26;
+        background: #fff4f1;
+        border: 1px solid #f1c8c0;
+        border-radius: 9px;
+        box-shadow: 0 3px 12px #23140f1a;
+        font-size: 13px;
+        transform: translateX(-50%);
+      }
+
+      .leaflet-popup-content-wrapper {
+        border-radius: 10px;
+      }
+
+      .popup-title {
+        margin: 0 0 4px;
+        color: #20352a;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .popup-detail {
+        margin: 0;
+        color: #728078;
+        font-size: 11px;
+      }
+
+      @media (max-width: 720px) {
+        .app {
+          grid-template-rows: auto minmax(0, 1fr);
+          min-height: 0;
+        }
+
+        .topbar {
+          min-height: 66px;
+          padding: 10px 14px;
+        }
+
+        .brand-mark {
+          width: 38px;
+          height: 38px;
+        }
+
+        h1 {
+          font-size: 15px;
+        }
+
+        .topbar-note {
+          font-size: 0;
+        }
+
+        .content {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: minmax(230px, 42vh) minmax(0, 1fr);
+        }
+
+        .map-wrap {
+          grid-row: 1;
+        }
+
+        .sidebar {
+          grid-row: 2;
+          border-top: 1px solid var(--line);
+          border-right: 0;
+        }
+
+        .sidebar-heading {
+          padding: 14px 16px 10px;
+        }
+
+        .sidebar-heading h2 {
+          font-size: 16px;
+        }
+
+        .search-wrap {
+          margin: 0 14px 10px;
+        }
+
+        .map-label {
+          right: 10px;
+          bottom: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 16.5c2.4-2 4.7-2 7.1 0s4.7 2 7.1 0 4.7-2 7.1 0M3 11.5c2.4-2 4.7-2 7.1 0s4.7 2 7.1 0 4.7-2 7.1 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 3.2v5.1m-2.1-3L12 3.2l2.1 2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Kanoroutes Nederland</h1>
+            <p class="subtitle">Verken routes op en rond het water</p>
+          </div>
+        </div>
+        <div class="topbar-note"><span class="status-dot"></span>Interactieve routekaart</div>
+      </header>
+
+      <div class="content">
+        <aside class="sidebar" aria-label="Routes">
+          <div class="sidebar-heading">
+            <p class="eyebrow">Jouw routeoverzicht</p>
+            <h2>GPX-routes</h2>
+            <p class="route-count" id="route-count">Routes laden…</p>
+            <div class="region-switch" role="group" aria-label="Kies een routegebied">
+              <button class="region-button" type="button" data-region="noord" aria-pressed="false">Noord-Nederland</button>
+              <button class="region-button" type="button" data-region="noord-holland" aria-pressed="true">Noord-Holland e.o.</button>
+            </div>
+            <p class="source-note" id="source-note"></p>
+          </div>
+          <label class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input id="search" type="search" placeholder="Zoek een route…" autocomplete="off" aria-label="Zoek een route">
+          </label>
+          <div class="list-actions">
+            <button class="text-button" id="show-all" type="button">Alles tonen</button>
+            <button class="text-button" id="hide-all" type="button">Alles verbergen</button>
+          </div>
+          <div id="route-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="map-wrap" aria-label="Kaart met GPX-routes">
+          <div id="map"></div>
+          <div class="map-label" id="map-label">Noord-Holland en omgeving</div>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="routes-data.js"></script>
+    <script>
+      (() => {
+        const colors = [
+          "#167d65", "#dc7435", "#4d74c8", "#ad5b9b", "#bb8b22",
+          "#288e9d", "#d34f55", "#6675a8", "#6a963c", "#935fc0"
+        ];
+        const routeList = document.getElementById("route-list");
+        const searchInput = document.getElementById("search");
+        const routeCount = document.getElementById("route-count");
+        const sourceNote = document.getElementById("source-note");
+        const mapLabel = document.getElementById("map-label");
+        const regionButtons = [...document.querySelectorAll(".region-button")];
+        const layers = new Map();
+        const rows = new Map();
+        const routeButtons = new Map();
+        let map;
+        let allRoutesBounds;
+        let selectedRoute = null;
+        let activeRoutes = [];
+        let activeRegion = null;
+        let northHollandLoadPromise;
+
+        function showError(message) {
+          const error = document.createElement("div");
+          error.className = "map-error";
+          error.setAttribute("role", "alert");
+          error.textContent = message;
+          document.querySelector(".map-wrap").append(error);
+        }
+
+        if (typeof L === "undefined") {
+          showError("De kaartbibliotheek kon niet worden geladen. Controleer je internetverbinding en laad de pagina opnieuw.");
+          routeCount.textContent = "Kaart niet beschikbaar";
+          return;
+        }
+
+        if (!Array.isArray(window.GPX_ROUTES) || window.GPX_ROUTES.length === 0) {
+          showError("Er zijn geen routegegevens gevonden. Controleer of routes-data.js naast index.html staat.");
+          routeCount.textContent = "Geen routes gevonden";
+          return;
+        }
+
+        map = L.map("map", { zoomControl: false, preferCanvas: true }).setView([52.15, 5.3], 7);
+        L.control.zoom({ position: "bottomright" }).addTo(map);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
+        }).addTo(map);
+
+        function routeColor(index) {
+          return colors[index % colors.length];
+        }
+
+        function clearSelection() {
+          selectedRoute = null;
+          layers.forEach((layer, index) => {
+            layer.eachLayer(line => line.setStyle({
+              color: routeColor(index),
+              weight: 4,
+              opacity: 0.78
+            }));
+          });
+          routeButtons.forEach(button => {
+            button.closest(".route-row").classList.remove("selected");
+            button.setAttribute("aria-pressed", "false");
+          });
+        }
+
+        function selectRoute(index) {
+          selectedRoute = index;
+          layers.forEach((layer, routeIndex) => {
+            const selected = routeIndex === selectedRoute;
+            layer.eachLayer(line => {
+              line.setStyle({
+                color: selected ? "#f15b35" : routeColor(routeIndex),
+                weight: selected ? 5 : 3,
+                opacity: selected ? 0.95 : 0.4
+              });
+              if (selected) line.bringToFront();
+            });
+          });
+          routeButtons.forEach((button, routeIndex) => {
+            const selected = routeIndex === selectedRoute;
+            button.closest(".route-row").classList.toggle("selected", selected);
+            button.setAttribute("aria-pressed", String(selected));
+          });
+        }
+
+        function toggleRouteSelection(index) {
+          if (selectedRoute === index) clearSelection();
+          else selectRoute(index);
+        }
+
+        function renderList(filter = "") {
+          const normalizedFilter = filter.trim().toLocaleLowerCase("nl");
+          routeList.replaceChildren();
+          rows.clear();
+          routeButtons.clear();
+
+          const groups = new Map();
+          activeRoutes.forEach((route, index) => {
+            if (!route.name.toLocaleLowerCase("nl").includes(normalizedFilter)) return;
+            const group = route.folder || route.group || "GPS Groningen";
+            if (!groups.has(group)) groups.set(group, []);
+            groups.get(group).push({ route, index });
+          });
+
+          if (groups.size === 0) {
+            const empty = document.createElement("div");
+            empty.className = "empty-state";
+            empty.textContent = "Geen routes gevonden.";
+            routeList.append(empty);
+            return;
+          }
+
+          groups.forEach((items, group) => {
+            const heading = document.createElement("h3");
+            heading.className = "group-title";
+            heading.textContent = group;
+            routeList.append(heading);
+
+            items.forEach(({ route, index }) => {
+              const row = document.createElement("div");
+              row.className = "route-row";
+              if (index === selectedRoute) row.classList.add("selected");
+
+              const checkbox = document.createElement("input");
+              checkbox.className = "route-toggle";
+              checkbox.type = "checkbox";
+              checkbox.checked = map.hasLayer(layers.get(index));
+              checkbox.setAttribute("aria-label", `Toon ${route.name} op de kaart`);
+
+              const color = document.createElement("span");
+              color.className = "route-color";
+              color.style.backgroundColor = routeColor(index);
+
+              const name = document.createElement("button");
+              name.className = "route-name";
+              name.type = "button";
+              name.textContent = route.name;
+              name.title = "Zoom naar en licht deze route uit";
+              name.setAttribute("aria-pressed", String(index === selectedRoute));
+
+              checkbox.addEventListener("change", () => {
+                const layer = layers.get(index);
+                if (!layer) return;
+                if (checkbox.checked) layer.addTo(map);
+                else {
+                  map.removeLayer(layer);
+                  if (selectedRoute === index) clearSelection();
+                }
+              });
+
+              name.addEventListener("click", () => {
+                const layer = layers.get(index);
+                if (layer && layer.getBounds().isValid()) {
+                  if (!map.hasLayer(layer)) {
+                    layer.addTo(map);
+                    checkbox.checked = true;
+                  }
+                  toggleRouteSelection(index);
+                  map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 14 });
+                  layer.openPopup();
+                }
+              });
+
+              row.append(checkbox, color, name);
+              routeList.append(row);
+              rows.set(index, checkbox);
+              routeButtons.set(index, name);
+            });
+          });
+        }
+
+        function escapeHtml(value) {
+          return String(value).replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          })[character]);
+        }
+
+        function renderRoutes(routes) {
+          activeRoutes = routes;
+          selectedRoute = null;
+          layers.forEach(layer => map.removeLayer(layer));
+          layers.clear();
+          rows.clear();
+          routeButtons.clear();
+
+          let totalPoints = 0;
+          let routesWithPoints = 0;
+          const routeBounds = [];
+
+          activeRoutes.forEach((route, index) => {
+            const segments = Array.isArray(route.segments) ? route.segments : [];
+            const validSegments = segments.filter(segment => Array.isArray(segment) && segment.length > 1);
+            if (validSegments.length === 0) return;
+
+            const pointCount = validSegments.reduce((sum, segment) => sum + segment.length, 0);
+            const sourcePointCount = route.sourcePointCount ?? pointCount;
+            const layer = L.featureGroup();
+            validSegments.forEach(segment => {
+              const line = L.polyline(segment, {
+                color: routeColor(index),
+                weight: 4,
+                opacity: 0.78,
+                lineCap: "round",
+                lineJoin: "round"
+              }).addTo(layer);
+              line.on("click", () => toggleRouteSelection(index));
+            });
+
+            const pdfLink = typeof route.pdf === "string"
+              ? `<p class="popup-detail"><a href="${escapeHtml(route.pdf)}" target="_blank" rel="noopener noreferrer">Routebeschrijving openen (PDF)</a></p>`
+              : "";
+            const sourceLink = typeof route.source === "string"
+              ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">Originele GPX downloaden</a></p>`
+              : "";
+            layer.bindPopup(
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${sourcePointCount.toLocaleString("nl-NL")} meetpunten</p>${pdfLink}${sourceLink}`
+            );
+            layer.addTo(map);
+            layers.set(index, layer);
+            routeBounds.push(layer.getBounds());
+            totalPoints += sourcePointCount;
+            routesWithPoints += 1;
+          });
+
+          allRoutesBounds = routeBounds.length > 0
+            ? routeBounds.reduce((bounds, routeBound) => bounds.extend(routeBound), L.latLngBounds([]))
+            : null;
+
+          if (allRoutesBounds && allRoutesBounds.isValid()) {
+            map.fitBounds(allRoutesBounds, { padding: [36, 36], maxZoom: 10 });
+          } else {
+            showError("De routegegevens bevatten geen bruikbare GPS-punten.");
+          }
+
+          routeCount.textContent = `${routesWithPoints} routes · ${totalPoints.toLocaleString("nl-NL")} meetpunten`;
+          renderList(searchInput.value);
+        }
+
+        function loadNorthHollandRoutes() {
+          if (Array.isArray(window.GPX_ROUTES_NOORD_HOLLAND)) {
+            return Promise.resolve(window.GPX_ROUTES_NOORD_HOLLAND);
+          }
+
+          if (!northHollandLoadPromise) {
+            northHollandLoadPromise = new Promise((resolve, reject) => {
+              const script = document.createElement("script");
+              script.src = "routes-noord-holland-data.js";
+              script.onload = () => {
+                if (Array.isArray(window.GPX_ROUTES_NOORD_HOLLAND)) {
+                  resolve(window.GPX_ROUTES_NOORD_HOLLAND);
+                } else {
+                  reject(new Error("Het Noord-Holland-bestand bevat geen routegegevens."));
+                }
+              };
+              script.onerror = () => reject(new Error("routes-noord-holland-data.js kon niet worden geladen."));
+              document.body.append(script);
+            }).catch(error => {
+              northHollandLoadPromise = null;
+              throw error;
+            });
+          }
+
+          return northHollandLoadPromise;
+        }
+
+        async function changeRegion(region) {
+          if (region === activeRegion) return;
+          activeRegion = region;
+          regionButtons.forEach(button => {
+            button.setAttribute("aria-pressed", String(button.dataset.region === region));
+          });
+          document.querySelector(".map-error")?.remove();
+
+          layers.forEach(layer => map.removeLayer(layer));
+          layers.clear();
+          rows.clear();
+          routeButtons.clear();
+          selectedRoute = null;
+          routeList.replaceChildren();
+          allRoutesBounds = null;
+          routeCount.textContent = "Routes laden…";
+
+          if (region === "noord-holland") {
+            mapLabel.textContent = "Noord-Holland en omgeving";
+            sourceNote.hidden = false;
+            sourceNote.innerHTML =
+              'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.';
+          } else {
+            mapLabel.textContent = "Groningen · Friesland · Drenthe";
+            sourceNote.hidden = true;
+            sourceNote.replaceChildren();
+          }
+
+          try {
+            const routes = region === "noord-holland"
+              ? await loadNorthHollandRoutes()
+              : window.GPX_ROUTES;
+            if (activeRegion === region) renderRoutes(routes);
+          } catch (error) {
+            if (activeRegion !== region) return;
+            console.error("Routegebied laden mislukt:", error);
+            routeCount.textContent = "Routes laden mislukt";
+            showError("De Noord-Holland-routes konden niet worden geladen. Probeer het opnieuw.");
+          }
+        }
+
+        regionButtons.forEach(button => {
+          button.addEventListener("click", () => changeRegion(button.dataset.region));
+        });
+        changeRegion("noord-holland");
+
+        searchInput.addEventListener("input", () => renderList(searchInput.value));
+        document.getElementById("show-all").addEventListener("click", () => {
+          layers.forEach(layer => layer.addTo(map));
+          rows.forEach(checkbox => { checkbox.checked = true; });
+          if (allRoutesBounds && allRoutesBounds.isValid()) {
+            map.fitBounds(allRoutesBounds, { padding: [36, 36], maxZoom: 10 });
+          }
+        });
+        document.getElementById("hide-all").addEventListener("click", () => {
+          layers.forEach(layer => map.removeLayer(layer));
+          rows.forEach(checkbox => { checkbox.checked = false; });
+          clearSelection();
+        });
+      })();
+    </script>
+  </body>
+</html>
