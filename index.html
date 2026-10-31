@@ -706,6 +706,7 @@
         const mobileLayout = window.matchMedia("(max-width: 720px)");
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const layers = new Map();
+        const routeDistances = new Map();
         const popupContents = new Map();
         const rows = new Map();
         const routeButtons = new Map();
@@ -1005,7 +1006,11 @@
               const name = document.createElement("button");
               name.className = "route-name";
               name.type = "button";
-              name.textContent = route.name;
+              const distanceKm = routeDistances.get(index);
+              const distanceLabel = Number.isFinite(distanceKm)
+                ? ` (${Math.round(distanceKm).toLocaleString("nl-NL")} km)`
+                : "";
+              name.textContent = `${route.name}${distanceLabel}`;
               name.title = "Zoom naar en licht deze route uit";
               name.setAttribute("aria-pressed", String(index === selectedRoute));
 
@@ -1061,6 +1066,7 @@
           selectedRoute = null;
           routeIds = new Map();
           routeIndexesById = new Map();
+          routeDistances.clear();
           popupContents.clear();
           const slugCounts = new Map();
           activeRoutes.forEach((route, index) => {
@@ -1124,6 +1130,7 @@
               ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">Originele GPX downloaden</a></p>`
               : "";
             const distanceKm = calculateDistanceKm(validSegments);
+            routeDistances.set(index, distanceKm);
             const popupContent =
               `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}`;
             popupContents.set(index, popupContent);
