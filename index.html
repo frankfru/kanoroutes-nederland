@@ -305,7 +305,7 @@
 
       .route-color {
         width: 17px;
-        height: 4px;
+        height: 5px;
         flex: 0 0 auto;
         border-radius: 99px;
       }
@@ -703,8 +703,8 @@
     <script>
       (() => {
         const colors = [
-          "#0072b2", "#e69f00", "#009e73", "#cc79a7", "#d55e00",
-          "#56b4e9", "#a65e00", "#7a68a6", "#b3a000", "#008a80"
+          "#0057b8", "#c45b00", "#007a3d", "#a0005a", "#c02b00",
+          "#006b8f", "#704000", "#5941a9", "#756700", "#00635b"
         ];
         const routeList = document.getElementById("route-list");
         const searchInput = document.getElementById("search");
@@ -898,14 +898,14 @@
           selectedRoute = null;
           layers.forEach((layer, index) => {
             layer.eachLayer(child => {
-              if (child instanceof L.Polyline && child.options.routeCasing !== true && child.options.interactive === false) {
+              if (child instanceof L.Polyline && child.options.routeCasing === true) {
+                child.setStyle({ color: "#fff", weight: 7, opacity: 0.98 });
+              } else if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
                   color: routeColor(index),
-                  weight: 3,
-                  opacity: 0.78
+                  weight: 5,
+                  opacity: 1
                 });
-              } else if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                child.setStyle({ color: "#fff", weight: 6, opacity: 0.95 });
               } else if (child instanceof L.CircleMarker) {
                 child.setStyle({ opacity: 0, fillOpacity: 0 });
               }
@@ -926,12 +926,12 @@
             const selected = routeIndex === selectedRoute;
             layer.eachLayer(child => {
               if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                child.setStyle({ color: "#fff", weight: 7, opacity: 0.98 });
+                child.setStyle({ color: "#fff", weight: 8, opacity: 0.98 });
               } else if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
-                  color: selected ? "#f15b35" : routeColor(routeIndex),
-                  weight: selected ? 4 : 2.5,
-                  opacity: selected ? 0.95 : 0.4
+                  color: selected ? "#d93611" : routeColor(routeIndex),
+                  weight: selected ? 6 : 4,
+                  opacity: selected ? 1 : 0.75
                 });
                 if (selected) child.bringToFront();
               } else if (selected && child instanceof L.Polyline) {
@@ -1132,8 +1132,8 @@
             validSegments.forEach(segment => {
               L.polyline(segment, {
                 color: "#fff",
-                weight: 6,
-                opacity: 0.95,
+                weight: 7,
+                opacity: 0.98,
                 lineCap: "round",
                 lineJoin: "round",
                 interactive: false,
@@ -1141,8 +1141,8 @@
               }).addTo(layer);
               L.polyline(segment, {
                 color: routeColor(index),
-                weight: 3,
-                opacity: 0.78,
+                weight: 5,
+                opacity: 1,
                 lineCap: "round",
                 lineJoin: "round",
                 interactive: false
@@ -1157,12 +1157,16 @@
               }).addTo(layer);
               hitArea.on("mouseover", () => {
                 if (selectedRoute === index) return;
+                const dimmed = selectedRoute !== null;
                 layer.eachLayer(child => {
                   if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                    child.setStyle({ weight: 8 });
+                    child.setStyle({ weight: 7.5 });
                     child.bringToFront();
                   } else if (child instanceof L.Polyline && child.options.interactive === false) {
-                    child.setStyle({ weight: 4.5, opacity: 1 });
+                    child.setStyle({
+                      weight: dimmed ? 4.5 : 5.5,
+                      opacity: dimmed ? 0.9 : 1
+                    });
                     child.bringToFront();
                   }
                 });
@@ -1172,15 +1176,12 @@
                 const dimmed = selectedRoute !== null;
                 layer.eachLayer(child => {
                   if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                    child.setStyle({
-                      weight: selected ? 7 : 6,
-                      opacity: selected ? 0.98 : 0.95
-                    });
+                    child.setStyle({ weight: selected ? 8 : 7, opacity: selected ? 0.98 : 0.95 });
                   } else if (child instanceof L.Polyline && child.options.interactive === false) {
                     child.setStyle({
-                      color: selected ? "#f15b35" : routeColor(index),
-                      weight: selected ? 4 : dimmed ? 2.5 : 3,
-                      opacity: selected ? 0.95 : dimmed ? 0.4 : 0.78
+                      color: selected ? "#d93611" : routeColor(index),
+                      weight: selected ? 6 : dimmed ? 4 : 5,
+                      opacity: selected ? 1 : dimmed ? 0.75 : 1
                     });
                   }
                 });

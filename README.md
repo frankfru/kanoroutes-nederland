@@ -1,6 +1,6 @@
 # Kajakroutes Dinsdaggers
 
-Een interactieve Leaflet-kaart met kajakroutes uit Noord-Nederland, Noord-Holland en heel Nederland. De slogan in de kop linkt naar de routebeschrijvingen van AKV Odysseus. Een lichte omlijning houdt de routekleuren goed zichtbaar op de kaart.
+Een interactieve Leaflet-kaart met kajakroutes uit Noord-Nederland, Noord-Holland en heel Nederland. De slogan in de kop linkt naar de routebeschrijvingen van AKV Odysseus. Donkere, verzadigde routekleuren met een lichte omlijning houden de routes goed zichtbaar op de kaart.
 
 ## Lokaal bekijken
 
