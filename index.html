@@ -931,7 +931,7 @@
                 child.setStyle({
                   color: selected ? "#d93611" : routeColor(routeIndex),
                   weight: selected ? 6 : 4,
-                  opacity: selected ? 1 : 0.75
+                  opacity: selected ? 1 : 0.7
                 });
                 if (selected) child.bringToFront();
               } else if (selected && child instanceof L.Polyline) {
@@ -1164,7 +1164,7 @@
                     child.bringToFront();
                   } else if (child instanceof L.Polyline && child.options.interactive === false) {
                     child.setStyle({
-                      weight: dimmed ? 4.5 : 5.5,
+                      weight: dimmed ? 5.5 : 6.5,
                       opacity: dimmed ? 0.9 : 1
                     });
                     child.bringToFront();
@@ -1181,7 +1181,7 @@
                     child.setStyle({
                       color: selected ? "#d93611" : routeColor(index),
                       weight: selected ? 6 : dimmed ? 4 : 5,
-                      opacity: selected ? 1 : dimmed ? 0.75 : 1
+                      opacity: selected ? 1 : dimmed ? 0.7 : 1
                     });
                   }
                 });
