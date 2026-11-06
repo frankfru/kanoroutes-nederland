@@ -38,9 +38,11 @@ Op mobiel kun je het routepaneel vanaf de handgreep omhoog slepen en na het kiez
 
 Selecteer een route in de lijst om de deelbare URL bij te werken. De link opent direct de geselecteerde routegebieden, zoomt in op de route en toont de routebeschrijving. Meerdere regio's staan komma-gescheiden in de `region`-parameter. Bijvoorbeeld:
 
-`https://frankfru.github.io/kanoroutes-nederland/?region=noord-holland&route=1-1-grachten-van-alkmaar`
+`https://frankfru.github.io/kanoroutes-nederland/?region=dinsdaggers&route=1-1-grachten-van-alkmaar`
 
-`https://frankfru.github.io/kanoroutes-nederland/?region=noord-holland,utrecht`
+`https://frankfru.github.io/kanoroutes-nederland/?region=dinsdaggers,utrecht`
+
+Oude deel-URL's met `region=noord-holland` blijven werken.
 
 ## Bronnen
 

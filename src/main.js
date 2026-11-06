@@ -5,7 +5,7 @@ import { createRouteBuilder } from "./route-builder.js";
       (() => {
         const regionColors = new Map([
           ["noord", "#0057b8"],
-          ["noord-holland", "#c45b00"],
+          ["dinsdaggers", "#c45b00"],
           ["utrecht", "#007a3d"],
           ["kanoroutes", "#a0005a"]
         ]);
@@ -113,21 +113,22 @@ import { createRouteBuilder } from "./route-builder.js";
 
         const regionLabels = new Map(regionButtons.map(button => [button.dataset.region, button.textContent.trim()]));
         const regionIds = new Set(regionLabels.keys());
+        const regionAliases = new Map([["noord-holland", "dinsdaggers"]]);
         const regionSources = new Map([
-          ["noord-holland", 'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.'],
+          ["dinsdaggers", 'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.'],
           ["utrecht", 'GPX-bron: <a href="https://kanokaartutrecht.nl/" target="_blank" rel="noopener noreferrer">Kanokaart Utrecht &amp; ’t Gooi</a>. Open de routepagina voor meer informatie.'],
           ["kanoroutes", 'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.']
         ]);
 
         function parseRegions(value) {
-          if (value === null) return new Set(["noord-holland"]);
+          if (value === null) return new Set(["dinsdaggers"]);
           const regions = new Set(
             (value || "")
               .split(",")
-              .map(region => region.trim())
+              .map(region => regionAliases.get(region.trim()) || region.trim())
               .filter(region => regionIds.has(region))
           );
-          return value.trim() && regions.size === 0 ? new Set(["noord-holland"]) : regions;
+          return value.trim() && regions.size === 0 ? new Set(["dinsdaggers"]) : regions;
         }
 
         function sameRegions(first, second) {
@@ -863,7 +864,7 @@ import { createRouteBuilder } from "./route-builder.js";
           allRoutesBounds = null;
           const mapLabels = new Map([
             ["noord", "Groningen · Friesland · Drenthe"],
-            ["noord-holland", "Noord-Holland en omgeving"],
+            ["dinsdaggers", "Dinsdaggers"],
             ["utrecht", "Utrecht en ’t Gooi"],
             ["kanoroutes", "Nederland · kanoroutes.nl"]
           ]);
@@ -893,7 +894,7 @@ import { createRouteBuilder } from "./route-builder.js";
           routeCount.textContent = "Routes laden…";
           try {
             const routesByRegion = await Promise.all([...activeRegions].map(async region => {
-              const routes = region === "noord-holland"
+              const routes = region === "dinsdaggers"
                 ? await loadNorthHollandRoutes()
                 : region === "utrecht"
                   ? await loadUtrechtRoutes()
