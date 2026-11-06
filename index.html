@@ -161,7 +161,7 @@
       }
 
       .region-switch {
-        display: none;
+        display: flex;
         gap: 4px;
         margin-top: 15px;
         padding: 4px;
@@ -192,6 +192,87 @@
         color: #15583f;
         background: #fff;
         box-shadow: 0 1px 3px #1a332014;
+      }
+
+      .map-mode-switch {
+        display: flex;
+        margin-top: 10px;
+      }
+
+      .map-mode-button {
+        width: 100%;
+        padding: 8px 10px;
+        color: #64736a;
+        background: #f2f5f2;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .map-mode-button:hover,
+      .map-mode-button[aria-pressed="true"] {
+        color: #15583f;
+        border-color: #b7d2c2;
+        background: #f3f8f4;
+      }
+
+      .map-mode-button:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .heatmap-controls {
+        display: grid;
+        gap: 12px;
+        margin-top: 10px;
+        padding: 12px;
+        background: #f8faf8;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+
+      .heatmap-controls[hidden] {
+        display: none;
+      }
+
+      .heatmap-control {
+        display: grid;
+        gap: 5px;
+        color: #43564b;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .heatmap-control-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .heatmap-control output {
+        color: var(--green);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .heatmap-control input {
+        width: 100%;
+        margin: 0;
+        accent-color: var(--green);
+      }
+
+      .heatmap-control small,
+      .heatmap-summary {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 400;
+      }
+
+      .heatmap-summary {
+        margin: 0;
+        line-height: 1.5;
       }
 
       .source-note {
@@ -666,7 +747,29 @@
               <div class="region-switch" role="group" aria-label="Kies een routegebied">
                 <button class="region-button" type="button" data-region="noord" aria-pressed="false">Noord-Nederland</button>
                 <button class="region-button" type="button" data-region="noord-holland" aria-pressed="true">Noord-Holland e.o.</button>
+                <button class="region-button" type="button" data-region="utrecht" aria-pressed="false">Utrecht &amp; 't Gooi</button>
                 <button class="region-button" type="button" data-region="kanoroutes" aria-pressed="false">Nederland</button>
+              </div>
+              <div class="map-mode-switch">
+                <button class="map-mode-button" id="kayak-heatmap-mode" type="button" aria-pressed="false">Kajakroute-heatmap</button>
+              </div>
+              <div class="heatmap-controls" id="heatmap-controls" aria-label="Heatmapinstellingen" hidden>
+                <label class="heatmap-control">
+                  <span class="heatmap-control-heading">Intensiteit <output id="heatmap-intensity-value" for="heatmap-intensity">1.0×</output></span>
+                  <input id="heatmap-intensity" type="range" min="0.5" max="2" step="0.1" value="1" aria-label="Heatmapintensiteit">
+                  <small>Hoger maakt de heatmap sterker.</small>
+                </label>
+                <label class="heatmap-control">
+                  <span class="heatmap-control-heading">Vlekbreedte <output id="heatmap-width-value" for="heatmap-width">1.0×</output></span>
+                  <input id="heatmap-width" type="range" min="0.5" max="2" step="0.1" value="1" aria-label="Heatmapvlekbreedte">
+                  <small>Schaalt mee met het zoomniveau.</small>
+                </label>
+                <label class="heatmap-control">
+                  <span class="heatmap-control-heading">Kleurcontrast <output id="heatmap-color-value" for="heatmap-color">1.0×</output></span>
+                  <input id="heatmap-color" type="range" min="0.5" max="1.5" step="0.1" value="1" aria-label="Heatmapkleurcontrast">
+                  <small>Hoger houdt warme kleuren bij de drukste vakken.</small>
+                </label>
+                <p class="heatmap-summary" id="heatmap-summary"></p>
               </div>
               <p class="source-note" id="source-note"></p>
             </div>
@@ -699,6 +802,7 @@
     </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script src="routes-data.js"></script>
     <script>
       (() => {
@@ -721,6 +825,15 @@
         const mobileLayout = window.matchMedia("(max-width: 720px)");
         const routePopupDurationMs = 2000;
         const regionButtons = [...document.querySelectorAll(".region-button")];
+        const kayakHeatmapModeButton = document.getElementById("kayak-heatmap-mode");
+        const heatmapControls = document.getElementById("heatmap-controls");
+        const heatmapIntensityInput = document.getElementById("heatmap-intensity");
+        const heatmapWidthInput = document.getElementById("heatmap-width");
+        const heatmapColorInput = document.getElementById("heatmap-color");
+        const heatmapIntensityValue = document.getElementById("heatmap-intensity-value");
+        const heatmapWidthValue = document.getElementById("heatmap-width-value");
+        const heatmapColorValue = document.getElementById("heatmap-color-value");
+        const heatmapSummary = document.getElementById("heatmap-summary");
         const layers = new Map();
         const routeDistances = new Map();
         const popupContents = new Map();
@@ -732,11 +845,20 @@
         let allRoutesBounds;
         let selectedRoute = null;
         let activeRoutes = [];
-        let activeRegion = null;
+        let activeRegions = new Set();
         let northHollandLoadPromise;
         let kanoroutesLoadPromise;
+        let utrechtLoadPromise;
         let regionLoadId = 0;
         let routePopupTimeout;
+        let kayakHeatmapLayer;
+        let kayakHeatmapBounds;
+        let kayakHeatmapMaxWeight = 1;
+        let heatmapVisible = false;
+        const HEATMAP_DEFAULTS = Object.freeze({ intensity: 1, width: 1, colorContrast: 1 });
+        heatmapIntensityInput.value = String(HEATMAP_DEFAULTS.intensity);
+        heatmapWidthInput.value = String(HEATMAP_DEFAULTS.width);
+        heatmapColorInput.value = String(HEATMAP_DEFAULTS.colorContrast);
 
         function routeSlug(name) {
           return name
@@ -749,10 +871,33 @@
 
         function updateShareUrl(routeId = null, replace = false) {
           const url = new URL(location.href);
-          url.searchParams.set("region", activeRegion);
+          url.searchParams.set("region", [...activeRegions].join(","));
           if (routeId) url.searchParams.set("route", routeId);
           else url.searchParams.delete("route");
           history[replace ? "replaceState" : "pushState"]({ routeId }, "", url);
+        }
+
+        const regionLabels = new Map(regionButtons.map(button => [button.dataset.region, button.textContent.trim()]));
+        const regionIds = new Set(regionLabels.keys());
+        const regionSources = new Map([
+          ["noord-holland", 'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.'],
+          ["utrecht", 'GPX-bron: <a href="https://kanokaartutrecht.nl/" target="_blank" rel="noopener noreferrer">Kanokaart Utrecht &amp; ’t Gooi</a>. Open de routepagina voor meer informatie.'],
+          ["kanoroutes", 'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.']
+        ]);
+
+        function parseRegions(value) {
+          if (value === null) return new Set(["noord-holland"]);
+          const regions = new Set(
+            (value || "")
+              .split(",")
+              .map(region => region.trim())
+              .filter(region => regionIds.has(region))
+          );
+          return value.trim() && regions.size === 0 ? new Set(["noord-holland"]) : regions;
+        }
+
+        function sameRegions(first, second) {
+          return first.size === second.size && [...first].every(region => second.has(region));
         }
 
         function showError(message) {
@@ -776,12 +921,159 @@
         }
 
         map = L.map("map", { zoomControl: false, preferCanvas: true }).setView([52.15, 5.3], 7);
+        map.createPane("heatmapPane");
+        map.getPane("heatmapPane").style.zIndex = "350";
         const routePopup = L.popup();
         L.control.zoom({ position: "bottomright" }).addTo(map);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
-        }).addTo(map);
+        });
+        const openTopoMap = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+          maxZoom: 17,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers, SRTM | Kaartstijl: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        });
+        openStreetMap.addTo(map);
+        L.control.layers({
+          "OpenStreetMap": openStreetMap,
+          "Topografisch (OpenTopoMap)": openTopoMap
+        }, {}, { position: "topleft" }).addTo(map);
+
+        function heatmapStyleForZoom(zoom = map.getZoom()) {
+          const baseRadius = Math.max(3, Math.min(12, Math.round(3 * 2 ** ((zoom - 7) / 3))));
+          const radius = Math.max(2, Math.min(18, Math.round(baseRadius * Number(heatmapWidthInput.value))));
+          return { radius, blur: Math.max(2, Math.round(radius * 0.5)) };
+        }
+
+        function heatmapGradient(contrast = Number(heatmapColorInput.value)) {
+          const stops = [
+            [0.2, "#2b83ba"],
+            [0.45, "#abdda4"],
+            [0.65, "#ffffbf"],
+            [0.82, "#fdae61"],
+            [1, "#d7191c"]
+          ];
+          return Object.fromEntries(stops.map(([stop, color]) => [
+            Math.max(0, Math.min(1, 0.5 + (stop - 0.5) * contrast)),
+            color
+          ]));
+        }
+
+        function updateHeatmapStyleForZoom() {
+          if (!kayakHeatmapLayer || !map.hasLayer(kayakHeatmapLayer)) return;
+          const style = heatmapStyleForZoom();
+          if (style.radius !== kayakHeatmapLayer.options.radius ||
+              style.blur !== kayakHeatmapLayer.options.blur) {
+            kayakHeatmapLayer.setOptions(style);
+          }
+        }
+
+        function updateHeatmapControls() {
+          const intensity = Number(heatmapIntensityInput.value);
+          const width = Number(heatmapWidthInput.value);
+          const contrast = Number(heatmapColorInput.value);
+          heatmapIntensityValue.value = `${intensity.toFixed(1)}×`;
+          heatmapWidthValue.value = `${width.toFixed(1)}×`;
+          heatmapColorValue.value = `${contrast.toFixed(1)}×`;
+
+          if (kayakHeatmapLayer && map.hasLayer(kayakHeatmapLayer)) {
+            kayakHeatmapLayer.setOptions({
+              ...heatmapStyleForZoom(),
+              max: kayakHeatmapMaxWeight / intensity,
+              gradient: heatmapGradient(contrast)
+            });
+          }
+        }
+
+        async function createKayakHeatmap() {
+          if (typeof L.heatLayer !== "function") {
+            throw new Error("De heatmap-bibliotheek kon niet worden geladen.");
+          }
+
+          const response = await fetch("kayak-heatmap-data.json", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error("De voorbewerkte kajak-heatmap kon niet worden geladen.");
+          }
+          const data = await response.json();
+          if (data.version !== 1 || data.cellSizeMeters !== 25 ||
+              !Number.isInteger(data.routeCount) || data.routeCount < 1 ||
+              !Number.isInteger(data.recordingCount) || data.recordingCount < 1 ||
+              !Array.isArray(data.points) || data.points.length === 0 ||
+              !data.points.every(point => Array.isArray(point) && point.length === 3 &&
+                point.every(Number.isFinite) && point[0] >= -90 && point[0] <= 90 &&
+                point[1] >= -180 && point[1] <= 180 && point[2] > 0)) {
+            throw new Error("De voorbewerkte kajak-heatmap bevat geen bruikbare routegegevens.");
+          }
+
+          const bounds = L.latLngBounds([]);
+          data.points.forEach(([latitude, longitude]) => bounds.extend([latitude, longitude]));
+          kayakHeatmapMaxWeight = data.points.reduce((maximum, point) => Math.max(maximum, point[2]), 1);
+          heatmapSummary.textContent =
+            `Dekking Noord-Holland e.o.: ${data.routeCount} kaart-routes + ${data.recordingCount} GPS-opnames · ` +
+            `${data.points.length.toLocaleString("nl-NL")} routevakken van circa 25 meter`;
+
+          return {
+            layer: L.heatLayer(data.points, {
+              ...heatmapStyleForZoom(),
+              maxZoom: 11,
+              max: kayakHeatmapMaxWeight / Number(heatmapIntensityInput.value),
+              minOpacity: 0.16,
+              pane: "heatmapPane",
+              gradient: heatmapGradient()
+            }),
+            bounds
+          };
+        }
+
+        async function toggleKayakHeatmap() {
+          const showHeatmap = !heatmapVisible;
+          kayakHeatmapModeButton.disabled = true;
+          if (showHeatmap) kayakHeatmapModeButton.textContent = "Heatmap laden…";
+          document.querySelector(".map-error")?.remove();
+
+          try {
+            if (showHeatmap) {
+              if (!kayakHeatmapLayer) {
+                const heatmap = await createKayakHeatmap();
+                kayakHeatmapLayer = heatmap.layer;
+                kayakHeatmapBounds = heatmap.bounds;
+              }
+              kayakHeatmapLayer.addTo(map);
+              const heatmapCanvas = kayakHeatmapLayer._canvas;
+              if (!heatmapCanvas) {
+                throw new Error("De heatmap kon niet op de kaart worden geplaatst.");
+              }
+              map.getPane("heatmapPane").appendChild(heatmapCanvas);
+              heatmapVisible = true;
+
+              const bounds = L.latLngBounds(kayakHeatmapBounds);
+              if (allRoutesBounds?.isValid()) bounds.extend(allRoutesBounds);
+              map.fitBounds(bounds, { padding: [36, 36], maxZoom: 10 });
+            } else {
+              const heatmapCanvas = kayakHeatmapLayer._canvas;
+              if (heatmapCanvas?.parentNode === map.getPane("heatmapPane")) {
+                map.getPane("overlayPane").appendChild(heatmapCanvas);
+              }
+              map.removeLayer(kayakHeatmapLayer);
+              heatmapVisible = false;
+            }
+
+            heatmapControls.hidden = !heatmapVisible;
+            kayakHeatmapModeButton.setAttribute("aria-pressed", String(heatmapVisible));
+          } catch (error) {
+            console.error("Kajakroute-heatmap laden mislukt:", error);
+            showError(error.message || "De heatmap kon niet worden getoond.");
+          } finally {
+            kayakHeatmapModeButton.disabled = false;
+            kayakHeatmapModeButton.textContent = "Kajakroute-heatmap";
+          }
+        }
+
+        [heatmapIntensityInput, heatmapWidthInput, heatmapColorInput]
+          .forEach(input => input.addEventListener("input", updateHeatmapControls));
+        kayakHeatmapModeButton.addEventListener("click", toggleKayakHeatmap);
+        map.on("zoomend", updateHeatmapStyleForZoom);
+        updateHeatmapControls();
 
         function setSheetExpanded(expanded) {
           const shouldExpand = mobileLayout.matches && expanded;
@@ -917,7 +1209,7 @@
             button.setAttribute("aria-pressed", "false");
           });
           map.closePopup();
-          if (syncUrl && activeRegion) updateShareUrl(null, replaceUrl);
+          if (syncUrl && activeRegions.size) updateShareUrl(null, replaceUrl);
         }
 
         function selectRoute(index, { syncUrl = true } = {}) {
@@ -1007,7 +1299,10 @@
             const searchableText =
               `${route.name} ${route.location || ""} ${route.folder || route.group || ""}`.toLocaleLowerCase("nl");
             if (!searchableText.includes(normalizedFilter)) return;
-            const group = route.folder || route.group || "GPS Groningen";
+            const routeGroup = route.folder || route.group || "GPS Groningen";
+            const group = activeRegions.size > 1
+              ? `${regionLabels.get(route.sourceRegion)} · ${routeGroup}`
+              : routeGroup;
             if (!groups.has(group)) groups.set(group, []);
             groups.get(group).push({ route, index });
           });
@@ -1099,7 +1394,7 @@
           })[character]);
         }
 
-        function renderRoutes(routes) {
+        function renderRoutes(routes, { fitMap = true } = {}) {
           activeRoutes = routes;
           selectedRoute = null;
           routeIds = new Map();
@@ -1109,9 +1404,10 @@
           const slugCounts = new Map();
           activeRoutes.forEach((route, index) => {
             const slug = routeSlug(route.name);
-            const count = (slugCounts.get(slug) || 0) + 1;
-            slugCounts.set(slug, count);
-            const routeId = count === 1 ? slug : `${slug}-${count}`;
+            const routeKey = activeRegions.size > 1 ? `${route.sourceRegion}-${slug}` : slug;
+            const count = (slugCounts.get(routeKey) || 0) + 1;
+            slugCounts.set(routeKey, count);
+            const routeId = count === 1 ? routeKey : `${routeKey}-${count}`;
             routeIds.set(index, routeId);
             routeIndexesById.set(routeId, index);
           });
@@ -1209,7 +1505,7 @@
               ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">${/\.zip(?:$|[?#])/i.test(route.source) ? "Originele GPS-route downloaden (ZIP)" : "Originele GPX downloaden"}</a></p>`
               : "";
             const routePageLink = typeof route.sourcePage === "string"
-              ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina op kanoroutes.nl</a></p>`
+              ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina openen</a></p>`
               : "";
             const distanceKm = calculateDistanceKm(validSegments);
             routeDistances.set(index, distanceKm);
@@ -1227,7 +1523,7 @@
             : null;
 
           if (allRoutesBounds && allRoutesBounds.isValid()) {
-            map.fitBounds(allRoutesBounds, { padding: [36, 36], maxZoom: 10 });
+            if (fitMap) map.fitBounds(allRoutesBounds, { padding: [36, 36], maxZoom: 10 });
           } else {
             showError("De routegegevens bevatten geen bruikbare GPS-punten.");
           }
@@ -1290,12 +1586,40 @@
           return kanoroutesLoadPromise;
         }
 
-        async function changeRegion(region, { syncUrl = true, routeId = null } = {}) {
-          if (region === activeRegion && activeRoutes.length > 0) return;
+        function loadUtrechtRoutes() {
+          if (Array.isArray(window.GPX_ROUTES_UTRECHT)) {
+            return Promise.resolve(window.GPX_ROUTES_UTRECHT);
+          }
+
+          if (!utrechtLoadPromise) {
+            utrechtLoadPromise = new Promise((resolve, reject) => {
+              const script = document.createElement("script");
+              script.src = "routes-utrecht-data.js";
+              script.onload = () => {
+                if (Array.isArray(window.GPX_ROUTES_UTRECHT)) {
+                  resolve(window.GPX_ROUTES_UTRECHT);
+                } else {
+                  reject(new Error("Het Utrecht-bestand bevat geen routegegevens."));
+                }
+              };
+              script.onerror = () => reject(new Error("routes-utrecht-data.js kon niet worden geladen."));
+              document.body.append(script);
+            }).catch(error => {
+              utrechtLoadPromise = null;
+              throw error;
+            });
+          }
+
+          return utrechtLoadPromise;
+        }
+
+        async function changeRegions(regions, { syncUrl = true, routeId = null } = {}) {
+          if (sameRegions(regions, activeRegions) && (regions.size === 0 || activeRoutes.length > 0)) return;
           const loadId = ++regionLoadId;
-          activeRegion = region;
+          const fitMap = activeRegions.size === 0;
+          activeRegions = new Set(regions);
           regionButtons.forEach(button => {
-            button.setAttribute("aria-pressed", String(button.dataset.region === region));
+            button.setAttribute("aria-pressed", String(activeRegions.has(button.dataset.region)));
           });
           if (syncUrl) updateShareUrl(null);
           document.querySelector(".map-error")?.remove();
@@ -1309,37 +1633,55 @@
           activeRoutes = [];
           routeList.replaceChildren();
           allRoutesBounds = null;
-          routeCount.textContent = "Routes laden…";
-
-          if (region === "noord-holland") {
-            mapLabel.textContent = "Noord-Holland en omgeving";
+          const mapLabels = new Map([
+            ["noord", "Groningen · Friesland · Drenthe"],
+            ["noord-holland", "Noord-Holland en omgeving"],
+            ["utrecht", "Utrecht en ’t Gooi"],
+            ["kanoroutes", "Nederland · kanoroutes.nl"]
+          ]);
+          mapLabel.textContent = activeRegions.size
+            ? [...activeRegions].map(region => mapLabels.get(region)).join(" · ")
+            : "Selecteer een routegebied";
+          const sources = [...activeRegions]
+            .map(region => regionSources.get(region))
+            .filter(Boolean);
+          if (sources.length) {
             sourceNote.hidden = false;
-            sourceNote.innerHTML =
-              'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.';
-          } else if (region === "kanoroutes") {
-            mapLabel.textContent = "Nederland · kanoroutes.nl";
-            sourceNote.hidden = false;
-            sourceNote.innerHTML =
-              'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.';
+            sourceNote.innerHTML = sources.join("<br>");
           } else {
-            mapLabel.textContent = "Groningen · Friesland · Drenthe";
             sourceNote.hidden = true;
             sourceNote.replaceChildren();
           }
 
+          if (activeRegions.size === 0) {
+            routeCount.textContent = "0 routes";
+            const empty = document.createElement("div");
+            empty.className = "empty-state";
+            empty.textContent = "Selecteer een routegebied om routes te tonen.";
+            routeList.append(empty);
+            return;
+          }
+
+          routeCount.textContent = "Routes laden…";
           try {
-            const routes = region === "noord-holland"
-              ? await loadNorthHollandRoutes()
-              : region === "kanoroutes"
-                ? await loadKanoroutesRoutes()
-                : window.GPX_ROUTES;
-            if (activeRegion !== region || regionLoadId !== loadId) return;
-            renderRoutes(routes);
+            const routesByRegion = await Promise.all([...activeRegions].map(async region => {
+              const routes = region === "noord-holland"
+                ? await loadNorthHollandRoutes()
+                : region === "utrecht"
+                  ? await loadUtrechtRoutes()
+                  : region === "kanoroutes"
+                    ? await loadKanoroutesRoutes()
+                    : window.GPX_ROUTES;
+              return routes.map(route => ({ ...route, sourceRegion: region }));
+            }));
+            if (regionLoadId !== loadId) return;
+            const routes = routesByRegion.flat();
+            renderRoutes(routes, { fitMap });
             if (routeId && !restoreRoute(routeId)) {
               showError("De gedeelde route kon niet worden gevonden in dit routegebied.");
             }
           } catch (error) {
-            if (activeRegion !== region || regionLoadId !== loadId) return;
+            if (regionLoadId !== loadId) return;
             console.error("Routegebied laden mislukt:", error);
             routeCount.textContent = "Routes laden mislukt";
             showError("De routes konden niet worden geladen. Probeer het opnieuw.");
@@ -1347,29 +1689,24 @@
         }
 
         regionButtons.forEach(button => {
-          button.addEventListener("click", () => changeRegion(button.dataset.region));
+          button.addEventListener("click", () => {
+            const regions = new Set(activeRegions);
+            if (regions.has(button.dataset.region)) regions.delete(button.dataset.region);
+            else regions.add(button.dataset.region);
+            changeRegions(regions);
+          });
         });
         const sharedUrl = new URL(location.href);
-        const requestedRegion = sharedUrl.searchParams.get("region");
-        const initialRegion = requestedRegion === "noord" ||
-          requestedRegion === "noord-holland" ||
-          requestedRegion === "kanoroutes"
-          ? requestedRegion
-          : "noord-holland";
+        const initialRegions = parseRegions(sharedUrl.searchParams.get("region"));
         const initialRouteId = sharedUrl.searchParams.get("route");
-        changeRegion(initialRegion, { syncUrl: false, routeId: initialRouteId });
+        changeRegions(initialRegions, { syncUrl: false, routeId: initialRouteId });
 
         window.addEventListener("popstate", () => {
           const url = new URL(location.href);
-          const requestedRegion = url.searchParams.get("region");
-          const region = requestedRegion === "noord" ||
-            requestedRegion === "noord-holland" ||
-            requestedRegion === "kanoroutes"
-            ? requestedRegion
-            : "noord-holland";
+          const regions = parseRegions(url.searchParams.get("region"));
           const routeId = url.searchParams.get("route");
-          if (region !== activeRegion || activeRoutes.length === 0) {
-            changeRegion(region, { syncUrl: false, routeId });
+          if (!sameRegions(regions, activeRegions) || (regions.size > 0 && activeRoutes.length === 0)) {
+            changeRegions(regions, { syncUrl: false, routeId });
           } else if (routeId) {
             if (!restoreRoute(routeId)) {
               clearSelection({ syncUrl: false });
