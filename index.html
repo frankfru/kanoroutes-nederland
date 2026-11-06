@@ -913,10 +913,12 @@
     <script src="routes-data.js"></script>
     <script>
       (() => {
-        const colors = [
-          "#0057b8", "#c45b00", "#007a3d", "#a0005a", "#c02b00",
-          "#006b8f", "#704000", "#5941a9", "#756700", "#00635b"
-        ];
+        const regionColors = new Map([
+          ["noord", "#0057b8"],
+          ["noord-holland", "#c45b00"],
+          ["utrecht", "#007a3d"],
+          ["kanoroutes", "#a0005a"]
+        ]);
         const routeList = document.getElementById("route-list");
         const searchInput = document.getElementById("search");
         const routeCount = document.getElementById("route-count");
@@ -1048,6 +1050,7 @@
         map.getPane("heatmapPane").style.zIndex = "350";
         map.createPane("draftRoutePane");
         map.getPane("draftRoutePane").style.zIndex = "650";
+        map.getPane("draftRoutePane").style.pointerEvents = "none";
         draftRouteLayer = L.featureGroup().addTo(map);
         draftRouteLine = L.polyline([], {
           color: "#126f9a",
@@ -1336,7 +1339,7 @@
         });
 
         function routeColor(index) {
-          return colors[index % colors.length];
+          return regionColors.get(activeRoutes[index]?.sourceRegion) || "#0057b8";
         }
 
         function routeHitWidth() {
