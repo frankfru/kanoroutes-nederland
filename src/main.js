@@ -63,6 +63,7 @@ import { createRouteBuilder } from "./route-builder.js";
         let kanoroutesLoadPromise;
         let utrechtLoadPromise;
         let regionLoadId = 0;
+        let regionStateInitialized = false;
 
 
 
@@ -113,7 +114,6 @@ import { createRouteBuilder } from "./route-builder.js";
 
         const regionLabels = new Map(regionButtons.map(button => [button.dataset.region, button.textContent.trim()]));
         const regionIds = new Set(regionLabels.keys());
-        const regionAliases = new Map([["noord-holland", "dinsdaggers"]]);
         const regionSources = new Map([
           ["dinsdaggers", 'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.'],
           ["utrecht", 'GPX-bron: <a href="https://kanokaartutrecht.nl/" target="_blank" rel="noopener noreferrer">Kanokaart Utrecht &amp; ’t Gooi</a>. Open de routepagina voor meer informatie.'],
@@ -125,10 +125,10 @@ import { createRouteBuilder } from "./route-builder.js";
           const regions = new Set(
             (value || "")
               .split(",")
-              .map(region => regionAliases.get(region.trim()) || region.trim())
+              .map(region => region.trim())
               .filter(region => regionIds.has(region))
           );
-          return value.trim() && regions.size === 0 ? new Set(["dinsdaggers"]) : regions;
+          return regions;
         }
 
         function sameRegions(first, second) {
@@ -843,7 +843,9 @@ import { createRouteBuilder } from "./route-builder.js";
         }
 
         async function changeRegions(regions, { syncUrl = true, routeId = null } = {}) {
-          if (sameRegions(regions, activeRegions) && (regions.size === 0 || activeRoutes.length > 0)) return;
+          if (regionStateInitialized && sameRegions(regions, activeRegions) &&
+              (regions.size === 0 || activeRoutes.length > 0)) return;
+          regionStateInitialized = true;
           const loadId = ++regionLoadId;
           const fitMap = activeRegions.size === 0;
           activeRegions = new Set(regions);

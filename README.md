@@ -42,8 +42,6 @@ Selecteer een route in de lijst om de deelbare URL bij te werken. De link opent 
 
 `https://frankfru.github.io/kanoroutes-nederland/?region=dinsdaggers,utrecht`
 
-Oude deel-URL's met `region=noord-holland` blijven werken.
-
 ## Bronnen
 
 - Noord-Holland-routes en clublogo: [AKV Odysseus](https://www.akvodysseus.nl/). Het routeoverzicht is samengesteld door Peter Groen; de routes staan op de pagina [Routes kanotochten](https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/).
