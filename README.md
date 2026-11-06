@@ -23,6 +23,8 @@ De route-lijst toont de afstand in hele kilometers achter de routenaam. De route
 
 De knop **Kajakroute-heatmap** toont een extra kaartlaag met de Noord-Hollandse kajakroutes en GPS-opnames. Je kunt de intensiteit, vlekbreedte en het kleurcontrast aanpassen. De heatmap gebruikt geaggregeerde routevakken van ongeveer 25 meter; de bron-GPX-opnames zijn niet nodig om de kaart te bekijken en worden niet gepubliceerd. Genereer de heatmapdata opnieuw met `node build-kayak-heatmap.js`; stel eventueel `KAYAK_GPX_DIRECTORY` in op de map met GPS-opnames.
 
+Via de kaartlaagkeuze kun je wisselen tussen OpenStreetMap, OpenTopoMap, de BRT-achtergrondkaart, een PDOK-luchtfoto en TOP25raster. Natura 2000 en de vaarwegvakken uit het Nationaal Wegenbestand (NWB) zijn als transparante overlays beschikbaar. TOP25raster past de kaart automatisch aan tot zoomniveau 14–16; de kadastrale kaart van PDOK is beschikbaar op zoomniveau 17–19. Kadastrale grenzen geven alleen een indicatie en zijn niet geschikt om maten aan te ontlenen.
+
 Op mobiel kun je het routepaneel vanaf de handgreep omhoog slepen en na het kiezen van een route weer omlaag schuiven. Met de knop rechtsboven open je de kaart schermvullend. De routes hebben een bredere, onzichtbare klikzone zodat selecteren op touchscreens makkelijker is.
 
 ## Een route delen
@@ -38,6 +40,6 @@ Selecteer een route in de lijst om de deelbare URL bij te werken. De link opent 
 - Noord-Holland-routes en clublogo: [AKV Odysseus](https://www.akvodysseus.nl/). Het routeoverzicht is samengesteld door Peter Groen; de routes staan op de pagina [Routes kanotochten](https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/).
 - Utrechtse en Gooi-routes en GPS-tracks: [Kanokaart Utrecht & 't Gooi](https://kanokaartutrecht.nl/).
 - Overige Nederlandse routepagina's en GPS-tracks: [kanoroutes.nl](https://kanoroutes.nl/). De landsgrenscontrole gebruikt [Natural Earth](https://www.naturalearthdata.com/).
-- Achtergrondkaarten: [OpenStreetMap](https://www.openstreetmap.org/copyright) en [OpenTopoMap](https://opentopomap.org/).
+- Achtergrondkaarten en overlays: [OpenStreetMap](https://www.openstreetmap.org/copyright), [OpenTopoMap](https://opentopomap.org/), de BRT-achtergrondkaart, luchtfoto en TOP25raster via [PDOK](https://www.pdok.nl/), de [Kadastrale kaart](https://www.pdok.nl/introductie/-/article/kadastrale-kaart), Natura 2000 via RVO/PDOK en de landelijke vaarwegvakken uit het [Nationaal Wegenbestand Vaarwegen](https://www.pdok.nl/introductie/-/article/nationaal-wegen-bestand-nwb-vaarwegen) van Rijkswaterstaat.
 
 De routegegevens van kanoroutes.nl en kanokaartutrecht.nl zijn toegevoegd voor persoonlijk gebruik. Regel zelf toestemming voordat je die gegevens breder gebruikt.

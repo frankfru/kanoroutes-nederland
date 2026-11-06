@@ -929,15 +929,70 @@
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
         });
+        const brtBackgroundMap = L.tileLayer("https://service.pdok.nl/kadaster/brt-achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.kadaster.nl/">Kadaster</a> | <a href="https://www.pdok.nl/">PDOK</a> - BRT-Achtergrondkaart'
+        });
+        const aerialPhoto = L.tileLayer("https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.kadaster.nl/">Kadaster</a> | <a href="https://www.pdok.nl/">PDOK</a> - Luchtfoto Actueel Ortho 8cm RGB'
+        });
+        const top25Raster = L.tileLayer.wms("https://service.pdok.nl/kadaster/brt-topraster/wms/v1_0", {
+          layers: "top25raster",
+          format: "image/png",
+          transparent: false,
+          attribution: '&copy; <a href="https://www.kadaster.nl/">Kadaster</a> | <a href="https://www.pdok.nl/">PDOK</a> - TOP25raster'
+        });
+        const natura2000 = L.tileLayer.wms("https://service.pdok.nl/rvo/natura2000/wms/v1_0", {
+          layers: "natura2000",
+          format: "image/png",
+          transparent: true,
+          attribution: '&copy; <a href="https://www.rvo.nl/">RVO</a> | <a href="https://www.pdok.nl/">PDOK</a> - Natura 2000'
+        });
+        const dutchWaterways = L.tileLayer.wms("https://service.pdok.nl/rws/nationaal-wegenbestand-vaarwegen/wms/v1_0", {
+          layers: "vaarwegvakken",
+          format: "image/png",
+          transparent: true,
+          attribution: '<a href="https://www.rijkswaterstaat.nl/">Rijkswaterstaat</a> | <a href="https://www.pdok.nl/">PDOK</a> - Nationaal Wegenbestand Vaarwegen'
+        });
+        const cadastralMap = L.tileLayer.wms("https://service.pdok.nl/kadaster/brk-kadastrale-kaart/wms/v5_0", {
+          layers: "Kadastralekaart",
+          styles: "",
+          format: "image/png",
+          transparent: false,
+          minZoom: 17,
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.kadaster.nl/">Kadaster</a> | <a href="https://www.pdok.nl/">PDOK</a> - Kadastrale kaart'
+        });
         const openTopoMap = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-          maxZoom: 17,
+          maxZoom: 19,
+          maxNativeZoom: 17,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers, SRTM | Kaartstijl: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
         });
         openStreetMap.addTo(map);
         L.control.layers({
           "OpenStreetMap": openStreetMap,
-          "Topografisch (OpenTopoMap)": openTopoMap
-        }, {}, { position: "topleft" }).addTo(map);
+          "Topografisch (OpenTopoMap)": openTopoMap,
+          "Topografisch (BRT - Kadaster/PDOK)": brtBackgroundMap,
+          "Luchtfoto (PDOK)": aerialPhoto,
+          "Topografisch (TOP25 - Kadaster/PDOK)": top25Raster,
+          "Kadastrale kaart (PDOK)": cadastralMap
+        }, {
+          "Natura 2000 (PDOK)": natura2000,
+          "Vaarwegen Nederland (NWB)": dutchWaterways
+        }, { position: "topleft" }).addTo(map);
+
+        function updateMapZoomLimits() {
+          const top25Selected = map.hasLayer(top25Raster);
+          const cadastralSelected = map.hasLayer(cadastralMap);
+          const minZoom = cadastralSelected ? 17 : top25Selected ? 14 : 0;
+          const maxZoom = cadastralSelected ? 19 : top25Selected ? 16 : 19;
+          map.setMinZoom(minZoom);
+          map.setMaxZoom(maxZoom);
+          map.setZoom(Math.max(minZoom, Math.min(maxZoom, map.getZoom())));
+        }
+
+        map.on("baselayerchange", updateMapZoomLimits);
 
         function heatmapStyleForZoom(zoom = map.getZoom()) {
           const baseRadius = Math.max(3, Math.min(12, Math.round(3 * 2 ** ((zoom - 7) / 3))));
