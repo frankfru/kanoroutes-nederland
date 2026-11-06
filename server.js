@@ -11,7 +11,8 @@ const files = new Map([
   ["/routes-noord-holland-data.js", ["routes-noord-holland-data.js", "text/javascript; charset=utf-8"]],
   ["/routes-kanoroutes-data.js", ["routes-kanoroutes-data.js", "text/javascript; charset=utf-8"]],
   ["/routes-utrecht-data.js", ["routes-utrecht-data.js", "text/javascript; charset=utf-8"]],
-  ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]]
+  ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]],
+  ["/waterway-network.json", ["waterway-network.json", "application/json; charset=utf-8"]]
 ]);
 
 const server = http.createServer(async (request, response) => {
