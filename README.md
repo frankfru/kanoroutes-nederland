@@ -12,21 +12,25 @@ node server.js
 
 Open daarna [http://localhost:4173](http://localhost:4173).
 
+`index.html` bevat de pagina-opbouw en laadt de stijlen uit `styles.css`. De applicatiecode staat in native JavaScript-modules: `src/main.js` verbindt kaart en routes, `src/heatmap.js` beheert de heatmap, `src/route-builder.js` de routebouwer en trajectbewerking, en `src/waterway-router.js` het vaarwegennetwerk. De scripts voor het genereren en vernieuwen van routedata staan in `scripts/`; de gegenereerde bestanden blijven in de hoofdmap staan.
+
 ## Routedata vernieuwen
 
-- Genereer de routes uit `D:\GPS Groningen` met `.\build-routes.ps1`.
-- Haal de Noord-Holland-routes en bijbehorende PDF-links opnieuw op met `node build-noord-holland-routes.js`.
-- Vernieuw het vaarwegennetwerk voor de routebouwer met `node build-waterway-network.js`; dit haalt OSM-vaarwegen per provincie op via Overpass.
-- Haal de Utrechtse en Gooi-routes opnieuw op met `node build-utrecht-routes.js`.
-- Haal de Nederlandse routes van kanoroutes.nl opnieuw op met `node build-kanoroutes-data.js`. Deze controleert de GPS-tracks tegen de Nederlandse landsgrens, slaat routes buiten Nederland over en groepeert de routes per provincie. Gebruik `node build-kanoroutes-data.js --regroup-existing` om alleen de provincie-indeling opnieuw te berekenen.
+- Genereer de routes uit `D:\GPS Groningen` met `.\scripts\build-routes.ps1`.
+- Haal de Noord-Holland-routes en bijbehorende PDF-links opnieuw op met `node scripts/build-noord-holland-routes.js`.
+- Vernieuw het vaarwegennetwerk voor de routebouwer met `node scripts/build-waterway-network.js`; dit haalt OSM-vaarwegen per provincie op via Overpass.
+- Haal de Utrechtse en Gooi-routes opnieuw op met `node scripts/build-utrecht-routes.js`.
+- Haal de Nederlandse routes van kanoroutes.nl opnieuw op met `node scripts/build-kanoroutes-data.js`. Deze controleert de GPS-tracks tegen de Nederlandse landsgrens, slaat routes buiten Nederland over en groepeert de routes per provincie. Gebruik `node scripts/build-kanoroutes-data.js --regroup-existing` om alleen de provincie-indeling opnieuw te berekenen.
 
 De route-lijst toont de afstand in hele kilometers achter de routenaam. De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPS-bestanden en routepagina's. Een groene stip markeert het startpunt van de geselecteerde route. De routes worden vereenvoudigd voor een vlotte weergave; de afstand is daarop gebaseerd. Gebruik de regio-knoppen als schakelaars om routes uit meerdere gebieden tegelijk te tonen.
 
-De knop **Kajakroute-heatmap** toont een extra kaartlaag met de Noord-Hollandse kajakroutes en GPS-opnames. Je kunt de intensiteit, vlekbreedte en het kleurcontrast aanpassen. De heatmap gebruikt geaggregeerde routevakken van ongeveer 25 meter; de bron-GPX-opnames zijn niet nodig om de kaart te bekijken en worden niet gepubliceerd. Genereer de heatmapdata opnieuw met `node build-kayak-heatmap.js`; stel eventueel `KAYAK_GPX_DIRECTORY` in op de map met GPS-opnames.
+De knop **Kajakroute-heatmap** toont een extra kaartlaag met de Noord-Hollandse kajakroutes en GPS-opnames. Je kunt de intensiteit, vlekbreedte en het kleurcontrast aanpassen. De heatmap gebruikt geaggregeerde routevakken van ongeveer 25 meter; de bron-GPX-opnames zijn niet nodig om de kaart te bekijken en worden niet gepubliceerd. Genereer de heatmapdata opnieuw met `node scripts/build-kayak-heatmap.js`; stel eventueel `KAYAK_GPX_DIRECTORY` in op de map met GPS-opnames.
 
 Via de kaartlaagkeuze kun je wisselen tussen OpenStreetMap, OpenTopoMap, de BRT-achtergrondkaart, een PDOK-luchtfoto en TOP25raster. Natura 2000 en de vaarwegvakken uit het Nationaal Wegenbestand (NWB) zijn als transparante overlays beschikbaar. TOP25raster past de kaart automatisch aan tot zoomniveau 14–16; de kadastrale kaart van PDOK is beschikbaar op zoomniveau 17–19. Kadastrale grenzen geven alleen een indicatie en zijn niet geschikt om maten aan te ontlenen.
 
 Met **Zelf een GPX-route maken** kun je punten op de kaart zetten, de laatste stap ongedaan maken en de route als GPX-track downloaden. Standaard worden klikpunten binnen 500 meter vastgeklikt op kanalen en rivieren uit OpenStreetMap en wordt de route daartussen berekend. Je kunt dit uitzetten om punten rechtstreeks te verbinden. Kleine sloten en meren ontbreken mogelijk in de vaarwegdata; controleer de route daarom altijd zelf. Het netwerkbestand wordt pas geladen wanneer je het eerste routepunt toevoegt. Bron: © OpenStreetMap-bijdragers, ODbL.
+
+Je kunt ook een bestaand traject in een geladen route vervangen: kies **Traject aanpassen**, klik op het te vervangen begin- en eindpunt en voeg tussenpunten toe. De omleiding wordt automatisch als stippellijn getoond; de basisroute verandert pas na **Pas wijziging toe**.
 
 Op mobiel kun je het routepaneel vanaf de handgreep omhoog slepen en na het kiezen van een route weer omlaag schuiven. Met de knop rechtsboven open je de kaart schermvullend. De routes hebben een bredere, onzichtbare klikzone zodat selecteren op touchscreens makkelijker is.
 

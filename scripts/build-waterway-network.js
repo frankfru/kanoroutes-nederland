@@ -1,7 +1,8 @@
 const { writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
-const outputPath = path.join(__dirname, "waterway-network.json");
+const projectRoot = path.resolve(__dirname, "..");
+const outputPath = path.join(projectRoot, "waterway-network.json");
 const endpoints = [
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter"

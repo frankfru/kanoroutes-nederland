@@ -7,7 +7,8 @@ const boundaryUrl =
   "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
 const provincesUrl =
   "https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0?service=WFS&version=2.0.0&request=GetFeature&typeNames=bestuurlijkegebieden:Provinciegebied&outputFormat=application/json&srsName=EPSG:4326";
-const outputPath = path.join(__dirname, "routes-kanoroutes-data.js");
+const projectRoot = path.resolve(__dirname, "..");
+const outputPath = path.join(projectRoot, "routes-kanoroutes-data.js");
 const maxConcurrentRequests = 5;
 const simplificationToleranceMeters = 5;
 const denHelderPage = "nl-denhelder.htm";

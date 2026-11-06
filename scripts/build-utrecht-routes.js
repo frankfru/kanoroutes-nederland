@@ -2,7 +2,8 @@ const { writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const homepageUrl = "https://kanokaartutrecht.nl/";
-const outputPath = path.join(__dirname, "routes-utrecht-data.js");
+const projectRoot = path.resolve(__dirname, "..");
+const outputPath = path.join(projectRoot, "routes-utrecht-data.js");
 const maxConcurrentRequests = 5;
 const simplificationToleranceMeters = 5;
 

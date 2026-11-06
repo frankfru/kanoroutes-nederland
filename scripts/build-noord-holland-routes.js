@@ -3,7 +3,8 @@ const path = require("node:path");
 
 const pageUrl = "https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/";
 const apiUrl = "https://www.akvodysseus.nl/wp-json/wp/v2/pages?slug=routes-kanotochten&_fields=content";
-const outputPath = path.join(__dirname, "routes-noord-holland-data.js");
+const projectRoot = path.resolve(__dirname, "..");
+const outputPath = path.join(projectRoot, "routes-noord-holland-data.js");
 const maxConcurrentDownloads = 3;
 const simplificationToleranceMeters = 5;
 

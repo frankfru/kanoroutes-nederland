@@ -1,7 +1,7 @@
 const { readFile, readdir, writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
-const root = __dirname;
+const root = path.resolve(__dirname, "..");
 const gpxDirectory = path.resolve(
   process.env.KAYAK_GPX_DIRECTORY || "D:\\Dinsdaggers\\whatsapp"
 );
