@@ -896,7 +896,11 @@
                     <button class="route-builder-button" id="route-download" type="button" disabled>Download GPX</button>
                     <button class="route-builder-button" id="route-undo" type="button" disabled>Punt terug</button>
                     <button class="route-builder-button" id="route-clear" type="button" disabled>Wis route</button>
+                    <button class="route-builder-button" id="route-edit-toggle" type="button" disabled>Traject aanpassen</button>
+                    <button class="route-builder-button" id="route-edit-preview" type="button" hidden disabled>Bereken omleiding</button>
+                    <button class="route-builder-button" id="route-edit-apply" type="button" hidden disabled>Pas wijziging toe</button>
                   </div>
+                  <p id="route-edit-help" hidden>Klik op het bestaande traject voor begin- en eindpunt; de volgorde maakt niet uit. Plaats daarna één of meer tussenpunten op de gewenste vaarweg; de omleiding verschijnt automatisch. Begin en eind moeten op hetzelfde GPX-segment liggen.</p>
                   <p>Klik op de kaart om punten toe te voegen. Met &ldquo;Volg vaarwegen&rdquo; loopt de lijn over kanalen en rivieren uit OpenStreetMap (binnen 500&nbsp;m van je klik); anders verbindt de lijn de punten rechtstreeks. Kleine sloten en meren ontbreken in die data, controleer de route dus altijd zelf.</p>
                 </div>
               </details>
@@ -972,6 +976,10 @@
         const routeUndoButton = document.getElementById("route-undo");
         const routeClearButton = document.getElementById("route-clear");
         const routeDownloadButton = document.getElementById("route-download");
+        const routeEditToggle = document.getElementById("route-edit-toggle");
+        const routeEditPreviewButton = document.getElementById("route-edit-preview");
+        const routeEditApplyButton = document.getElementById("route-edit-apply");
+        const routeEditHelp = document.getElementById("route-edit-help");
         const layers = new Map();
         const routeDistances = new Map();
         const popupContents = new Map();
@@ -993,15 +1001,27 @@
         let kayakHeatmapMaxWeight = 1;
         let heatmapVisible = false;
         let isDrawingRoute = false;
+        let isEditingRoute = false;
+        let isCalculatingRouteEdit = false;
         let draftRouteNote = "";
         let isAddingRoutePoint = false;
         let draftRouteLayer;
         let draftRouteLine;
         let draftRouteBaseSegments = [];
+        let routeEditLayer;
+        let routeEditStart = null;
+        let routeEditEnd = null;
+        let routeEditSegmentIndex = null;
+        let routeEditViaPoints = [];
+        let routeEditPreviewPath = null;
+        let routeEditMessage = "";
+        let routeEditRequestId = 0;
+        let routeEditPreviewTimeout;
         const draftRoutePoints = [];
         const draftRouteLegs = [];
         const draftRouteSnaps = [];
         const draftRouteMarkers = [];
+        const draftRouteUndoActions = [];
         const HEATMAP_DEFAULTS = Object.freeze({ intensity: 1, width: 1, colorContrast: 1 });
         heatmapIntensityInput.value = String(HEATMAP_DEFAULTS.intensity);
         heatmapWidthInput.value = String(HEATMAP_DEFAULTS.width);
@@ -1080,6 +1100,7 @@
           opacity: 0.95,
           pane: "draftRoutePane"
         }).addTo(draftRouteLayer);
+        routeEditLayer = L.featureGroup().addTo(map);
         const routePopup = L.popup();
         map.on("popupopen", event => {
           if (event.popup !== routePopup) return;
@@ -1606,33 +1627,58 @@
           return drawnPath.length > 0 ? [drawnPath] : [];
         }
 
+        function routeInteractionLocked() {
+          return isDrawingRoute || isEditingRoute;
+        }
+
+        function updateRouteInteractionState() {
+          const locked = routeInteractionLocked();
+          map.getContainer().style.cursor = locked ? "crosshair" : "";
+          routeButtons.forEach(button => {
+            button.disabled = locked;
+            button.title = locked ? "Stop tekenen of aanpassen om een route te selecteren" : "Zoom naar en licht deze route uit";
+          });
+          applyRouteStyles();
+        }
+
         function updateDraftRouteControls() {
           const pointCount = draftRoutePoints.length;
           const segments = draftRouteSegments();
           const distanceKm = calculateDistanceKm(segments);
           const distanceLabel = `${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
           const addedPointCount = Math.max(0, pointCount - (draftRouteBaseSegments.length > 0 ? 1 : 0));
-          const summary = draftRouteBaseSegments.length > 0
-            ? `Basisroute geladen · ${distanceLabel}${addedPointCount > 0 ? ` · ${addedPointCount} extra ${addedPointCount === 1 ? "punt" : "punten"}` : ""}${isDrawingRoute ? " · tekenen actief" : ""}`
-            : pointCount === 0
-              ? isDrawingRoute ? "Klik op de kaart om routepunten toe te voegen." : "Nog geen routepunten."
-              : `${pointCount} ${pointCount === 1 ? "punt" : "punten"} · ${distanceLabel}${isDrawingRoute ? " · tekenen actief" : ""}`;
-          routeBuilderStatus.textContent = draftRouteNote ? `${summary} · ${draftRouteNote}` : summary;
-          routeUndoButton.disabled = pointCount === 0;
-          routeClearButton.disabled = segments.length === 0;
-          routeDownloadButton.disabled = !segments.some(segment => segment.length > 1);
+          const summary = isEditingRoute
+            ? routeEditMessage
+            : draftRouteBaseSegments.length > 0
+              ? `Basisroute geladen · ${distanceLabel}${addedPointCount > 0 ? ` · ${addedPointCount} extra ${addedPointCount === 1 ? "punt" : "punten"}` : ""}${isDrawingRoute ? " · tekenen actief" : ""}`
+              : pointCount === 0
+                ? isDrawingRoute ? "Klik op de kaart om routepunten toe te voegen." : "Nog geen routepunten."
+                : `${pointCount} ${pointCount === 1 ? "punt" : "punten"} · ${distanceLabel}${isDrawingRoute ? " · tekenen actief" : ""}`;
+          routeBuilderStatus.textContent = isEditingRoute || !draftRouteNote
+            ? summary
+            : `${summary} · ${draftRouteNote}`;
+          routeUndoButton.textContent = draftRouteUndoActions.at(-1)?.type === "edit" ? "Wijziging terug" : "Punt terug";
+          routeUndoButton.disabled = isEditingRoute || pointCount === 0;
+          routeClearButton.disabled = isEditingRoute || segments.length === 0;
+          routeDownloadButton.disabled = isEditingRoute || !segments.some(segment => segment.length > 1);
+          routeDrawToggle.disabled = isEditingRoute;
+          routeEditToggle.disabled = isDrawingRoute || (!isEditingRoute && !segments.some(segment => segment.length > 1));
+          routeEditToggle.textContent = isEditingRoute ? "Annuleer bewerking" : "Traject aanpassen";
+          routeEditPreviewButton.hidden = !isEditingRoute || !routeEditStart || !routeEditEnd;
+          routeEditPreviewButton.textContent = routeEditPreviewPath ? "Bereken opnieuw" : "Bereken omleiding";
+          routeEditPreviewButton.disabled = !isEditingRoute || !routeEditStart || !routeEditEnd ||
+            routeEditViaPoints.length === 0 || isCalculatingRouteEdit;
+          routeEditApplyButton.hidden = !isEditingRoute || !routeEditPreviewPath;
+          routeEditApplyButton.disabled = !routeEditPreviewPath || isCalculatingRouteEdit;
+          routeEditHelp.hidden = !isEditingRoute;
         }
 
         function setRouteDrawing(active) {
+          if (active && isEditingRoute) return;
           isDrawingRoute = active;
           routeDrawToggle.setAttribute("aria-pressed", String(active));
           routeDrawToggle.textContent = active ? "Stop tekenen" : "Start tekenen";
-          map.getContainer().style.cursor = active ? "crosshair" : "";
-          routeButtons.forEach(button => {
-            button.disabled = active;
-            button.title = active ? "Stop tekenen om een route te selecteren" : "Zoom naar en licht deze route uit";
-          });
-          applyRouteStyles();
+          updateRouteInteractionState();
           if (active) {
             map.closePopup();
             map.on("click", addDraftRoutePoint);
@@ -1642,7 +1688,7 @@
         }
 
         async function addDraftRoutePoint(event) {
-          if (isAddingRoutePoint) return;
+          if (!isDrawingRoute || isEditingRoute || isAddingRoutePoint) return;
           let point = event.latlng;
           if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng) ||
               point.lat < -90 || point.lat > 90 || point.lng < -180 || point.lng > 180) {
@@ -1687,17 +1733,9 @@
             draftRoutePoints.push(point);
             draftRouteLegs.push(leg);
             draftRouteSnaps.push(snapped);
+            draftRouteUndoActions.push({ type: "point" });
             draftRouteLine.setLatLngs(draftRouteSegments());
-            const firstPoint = draftRoutePoints.length === 1;
-            const marker = L.circleMarker(point, {
-              radius: firstPoint ? 6 : 5,
-              color: "#fff",
-              weight: 2,
-              fillColor: firstPoint ? "#168a63" : "#126f9a",
-              fillOpacity: 1,
-              pane: "draftRoutePane"
-            }).addTo(draftRouteLayer);
-            draftRouteMarkers.push(marker);
+            addDraftRouteMarker(point, draftRoutePoints.length === 1 && draftRouteBaseSegments.length === 0);
           } finally {
             isAddingRoutePoint = false;
             updateDraftRouteControls();
@@ -1705,6 +1743,12 @@
         }
 
         function undoDraftRoutePoint() {
+          const action = draftRouteUndoActions.pop();
+          if (action?.type === "edit") {
+            restoreDraftRouteSnapshot(action.snapshot);
+            return;
+          }
+          if (draftRoutePoints.length === 0) return;
           draftRoutePoints.pop();
           draftRouteLegs.pop();
           draftRouteSnaps.pop();
@@ -1712,10 +1756,36 @@
           if (draftRouteBaseSegments.length > 0 && draftRoutePoints.length === 0) {
             draftRouteBaseSegments = [];
           }
-          const marker = draftRouteMarkers.pop();
-          if (marker) draftRouteLayer.removeLayer(marker);
-          draftRouteLine.setLatLngs(draftRouteSegments());
+          rebuildDraftRouteLayer();
           updateDraftRouteControls();
+        }
+
+        function addDraftRouteMarker(point, firstPoint) {
+          const marker = L.circleMarker(point, {
+            radius: firstPoint ? 6 : 5,
+            color: "#fff",
+            weight: 2,
+            fillColor: firstPoint ? "#168a63" : "#126f9a",
+            fillOpacity: 1,
+            pane: "draftRoutePane",
+            interactive: false
+          }).addTo(draftRouteLayer);
+          draftRouteMarkers.push(marker);
+        }
+
+        function rebuildDraftRouteLayer() {
+          draftRouteLayer.clearLayers();
+          draftRouteLine = L.polyline(draftRouteSegments(), {
+            color: "#126f9a",
+            weight: 5,
+            opacity: 0.95,
+            pane: "draftRoutePane",
+            interactive: false
+          }).addTo(draftRouteLayer);
+          draftRouteMarkers.length = 0;
+          draftRoutePoints.forEach((point, index) => {
+            addDraftRouteMarker(point, draftRouteBaseSegments.length === 0 && index === 0);
+          });
         }
 
         function clearDraftRoute() {
@@ -1724,19 +1794,309 @@
           draftRouteLegs.length = 0;
           draftRouteSnaps.length = 0;
           draftRouteMarkers.length = 0;
+          draftRouteUndoActions.length = 0;
           draftRouteNote = "";
-          draftRouteLayer.clearLayers();
-          draftRouteLine = L.polyline([], {
-            color: "#126f9a",
-            weight: 5,
-            opacity: 0.95,
-            pane: "draftRoutePane"
-          }).addTo(draftRouteLayer);
+          routeEditLayer.clearLayers();
+          rebuildDraftRouteLayer();
+          updateDraftRouteControls();
+        }
+
+        function startRouteEdit() {
+          if (routeInteractionLocked() || !draftRouteSegments().some(segment => segment.length > 1)) return;
+          isEditingRoute = true;
+          window.clearTimeout(routeEditPreviewTimeout);
+          routeEditPreviewTimeout = null;
+          routeEditRequestId += 1;
+          routeEditStart = null;
+          routeEditEnd = null;
+          routeEditSegmentIndex = null;
+          routeEditViaPoints = [];
+          routeEditPreviewPath = null;
+          routeEditMessage = "Klik op het bestaande traject om het beginpunt te kiezen.";
+          routeEditLayer.clearLayers();
+          routeBuilderDetails.open = true;
+          map.closePopup();
+          map.on("click", handleRouteEditMapClick);
+          updateRouteInteractionState();
+          updateDraftRouteControls();
+        }
+
+        function cancelRouteEdit() {
+          if (!isEditingRoute) return;
+          map.off("click", handleRouteEditMapClick);
+          window.clearTimeout(routeEditPreviewTimeout);
+          routeEditPreviewTimeout = null;
+          routeEditRequestId += 1;
+          isCalculatingRouteEdit = false;
+          isEditingRoute = false;
+          routeEditStart = null;
+          routeEditEnd = null;
+          routeEditSegmentIndex = null;
+          routeEditViaPoints = [];
+          routeEditPreviewPath = null;
+          routeEditMessage = "";
+          routeEditLayer.clearLayers();
+          updateRouteInteractionState();
+          updateDraftRouteControls();
+        }
+
+        function findNearestRoutePosition(layerPoint) {
+          const segments = draftRouteSegments();
+          let nearest = null;
+          for (let segmentIndex = 0; segmentIndex < segments.length; segmentIndex += 1) {
+            const segment = segments[segmentIndex];
+            for (let vertexIndex = 0; vertexIndex < segment.length - 1; vertexIndex += 1) {
+              const start = map.latLngToLayerPoint(L.latLng(...segment[vertexIndex]));
+              const end = map.latLngToLayerPoint(L.latLng(...segment[vertexIndex + 1]));
+              const deltaX = end.x - start.x;
+              const deltaY = end.y - start.y;
+              const lengthSquared = deltaX * deltaX + deltaY * deltaY;
+              let fraction = lengthSquared === 0
+                ? 0
+                : ((layerPoint.x - start.x) * deltaX + (layerPoint.y - start.y) * deltaY) / lengthSquared;
+              fraction = Math.max(0, Math.min(1, fraction));
+              const closestPoint = L.point(start.x + deltaX * fraction, start.y + deltaY * fraction);
+              const distance = layerPoint.distanceTo(closestPoint);
+              if (!nearest || distance < nearest.distance) {
+                let point = map.layerPointToLatLng(closestPoint);
+                if (fraction < 1e-6) {
+                  fraction = 0;
+                  point = L.latLng(...segment[vertexIndex]);
+                } else if (fraction > 1 - 1e-6) {
+                  fraction = 1;
+                  point = L.latLng(...segment[vertexIndex + 1]);
+                }
+                nearest = { segmentIndex, vertexIndex, fraction, point, distance };
+              }
+            }
+          }
+          return nearest && nearest.distance <= 18 ? nearest : null;
+        }
+
+        function splitRouteSegmentAt(segment, location) {
+          const point = [location.point.lat, location.point.lng];
+          const prefix = segment.slice(0, location.vertexIndex + 1).map(coordinate => [...coordinate]);
+          if (location.fraction > 1e-6) prefix.push(point);
+          const suffixStart = location.fraction >= 1 - 1e-6
+            ? location.vertexIndex + 2
+            : location.vertexIndex + 1;
+          const suffix = [point, ...segment.slice(suffixStart).map(coordinate => [...coordinate])];
+          return { prefix, suffix };
+        }
+
+        function routeEditSelectedPath() {
+          if (!routeEditStart || !routeEditEnd || routeEditSegmentIndex === null) return [];
+          const segment = draftRouteSegments()[routeEditSegmentIndex];
+          if (!segment) return [];
+          return [
+            [routeEditStart.point.lat, routeEditStart.point.lng],
+            ...segment.slice(routeEditStart.vertexIndex + 1, routeEditEnd.vertexIndex + 1),
+            [routeEditEnd.point.lat, routeEditEnd.point.lng]
+          ];
+        }
+
+        function addRouteEditMarker(point, color, radius = 6) {
+          L.circleMarker(point, {
+            radius,
+            color: "#fff",
+            weight: 2,
+            fillColor: color,
+            fillOpacity: 1,
+            pane: "draftRoutePane",
+            interactive: false
+          }).addTo(routeEditLayer);
+        }
+
+        function renderRouteEditOverlay() {
+          routeEditLayer.clearLayers();
+          const selectedPath = routeEditSelectedPath();
+          if (selectedPath.length > 1) {
+            L.polyline(selectedPath, {
+              color: "#58645e",
+              weight: 8,
+              opacity: 0.75,
+              dashArray: "5 6",
+              pane: "draftRoutePane",
+              interactive: false
+            }).addTo(routeEditLayer);
+          }
+          if (routeEditPreviewPath) {
+            L.polyline(routeEditPreviewPath, {
+              color: "#8a45b5",
+              weight: 6,
+              opacity: 0.95,
+              dashArray: "8 6",
+              pane: "draftRoutePane",
+              interactive: false
+            }).addTo(routeEditLayer);
+          }
+          if (routeEditStart) addRouteEditMarker(routeEditStart.point, "#168a63", 7);
+          if (routeEditEnd) addRouteEditMarker(routeEditEnd.point, "#d98516", 7);
+          routeEditViaPoints.forEach(point => addRouteEditMarker(point, "#8a45b5", 6));
+        }
+
+        function scheduleRouteEditPreview() {
+          if (!isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
+          window.clearTimeout(routeEditPreviewTimeout);
+          routeEditRequestId += 1;
+          const requestId = routeEditRequestId;
+          isCalculatingRouteEdit = true;
+          routeEditPreviewPath = null;
+          routeEditMessage = "Omleiding wordt bijgewerkt…";
+          renderRouteEditOverlay();
+          updateDraftRouteControls();
+          routeEditPreviewTimeout = window.setTimeout(() => {
+            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            routeEditPreviewTimeout = null;
+            isCalculatingRouteEdit = false;
+            previewRouteEdit();
+          }, 350);
+        }
+
+        function handleRouteEditMapClick(event) {
+          if (!isEditingRoute || !event.layerPoint) return;
+          if (routeEditPreviewPath) routeEditPreviewPath = null;
+
+          if (!routeEditStart || !routeEditEnd) {
+            const nearest = findNearestRoutePosition(event.layerPoint);
+            if (!nearest) {
+              routeEditMessage = "Klik dichter op een bestaand routedeel.";
+            } else if (!routeEditStart) {
+              routeEditStart = nearest;
+              routeEditSegmentIndex = nearest.segmentIndex;
+              routeEditMessage = "Kies het eindpunt verderop op hetzelfde routegedeelte.";
+            } else if (nearest.segmentIndex !== routeEditSegmentIndex) {
+              routeEditMessage = "Begin- en eindpunt moeten op hetzelfde GPX-segment liggen.";
+            } else if (map.distance(routeEditStart.point, nearest.point) < 20) {
+              routeEditMessage = "Kies begin- en eindpunten op voldoende afstand van elkaar.";
+            } else {
+              const startPosition = routeEditStart.vertexIndex + routeEditStart.fraction;
+              const endPosition = nearest.vertexIndex + nearest.fraction;
+              if (endPosition < startPosition) {
+                routeEditEnd = routeEditStart;
+                routeEditStart = nearest;
+              } else {
+                routeEditEnd = nearest;
+              }
+              routeEditMessage = "Traject geselecteerd in routevolgorde. Klik één of meer tussenpunten; de omleiding verschijnt automatisch.";
+            }
+          } else {
+            routeEditViaPoints.push(event.latlng);
+            routeEditMessage = `${routeEditViaPoints.length} tussenpunt${routeEditViaPoints.length === 1 ? "" : "en"} gekozen. Omleiding wordt automatisch bijgewerkt.`;
+          }
+
+          renderRouteEditOverlay();
+          updateDraftRouteControls();
+          if (routeEditViaPoints.length > 0) scheduleRouteEditPreview();
+        }
+
+        async function previewRouteEdit() {
+          if (!isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
+          window.clearTimeout(routeEditPreviewTimeout);
+          routeEditPreviewTimeout = null;
+          const requestId = ++routeEditRequestId;
+          isCalculatingRouteEdit = true;
+          routeEditPreviewPath = null;
+          routeEditMessage = "Omleiding berekenen…";
+          updateDraftRouteControls();
+
+          try {
+            const anchors = [routeEditStart.point, ...routeEditViaPoints, routeEditEnd.point];
+            let path;
+            if (!routeFollowWaterInput.checked) {
+              path = anchors.map(point => [point.lat, point.lng]);
+            } else {
+              await waterwayRouter.load();
+              if (requestId !== routeEditRequestId || !isEditingRoute) return;
+              const snappedAnchors = anchors.map(point => waterwayRouter.snap([point.lat, point.lng]));
+              const unsnappedIndex = snappedAnchors.findIndex(point => !point);
+              if (unsnappedIndex !== -1) {
+                routeEditMessage = `Punt ${unsnappedIndex + 1} ligt niet binnen 500 m van een beschikbare vaarweg; de route is niet gewijzigd.`;
+                return;
+              }
+
+              path = [[anchors[0].lat, anchors[0].lng]];
+              for (let index = 1; index < snappedAnchors.length; index += 1) {
+                const leg = waterwayRouter.route(snappedAnchors[index - 1], snappedAnchors[index]);
+                if (!leg) {
+                  routeEditMessage = `Geen vaarwegverbinding gevonden bij tussenpunt ${index}; de route is niet gewijzigd.`;
+                  return;
+                }
+                path.push(...(index === 1 ? leg : leg.slice(1)));
+              }
+              path.push([anchors[anchors.length - 1].lat, anchors[anchors.length - 1].lng]);
+            }
+
+            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            routeEditPreviewPath = path;
+            const distanceKm = calculateDistanceKm([path]);
+            routeEditMessage = `Omleiding klaar · ${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km. Controleer de stippellijn en pas de wijziging toe.`;
+          } catch (error) {
+            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            console.error("Omleiding berekenen mislukt:", error);
+            routeEditMessage = "De omleiding kon niet worden berekend; de route is niet gewijzigd.";
+          } finally {
+            if (requestId === routeEditRequestId) {
+              isCalculatingRouteEdit = false;
+              renderRouteEditOverlay();
+              updateDraftRouteControls();
+            }
+          }
+        }
+
+        function captureDraftRouteSnapshot() {
+          return {
+            baseSegments: draftRouteBaseSegments.map(segment => segment.map(coordinate => [...coordinate])),
+            points: draftRoutePoints.map(point => [point.lat, point.lng]),
+            legs: draftRouteLegs.map(leg => leg.map(coordinate => [...coordinate])),
+            snaps: [...draftRouteSnaps],
+            note: draftRouteNote
+          };
+        }
+
+        function restoreDraftRouteSnapshot(snapshot) {
+          draftRouteBaseSegments = snapshot.baseSegments.map(segment => segment.map(coordinate => [...coordinate]));
+          draftRoutePoints.length = 0;
+          snapshot.points.forEach(point => draftRoutePoints.push(L.latLng(...point)));
+          draftRouteLegs.length = 0;
+          snapshot.legs.forEach(leg => draftRouteLegs.push(leg.map(coordinate => [...coordinate])));
+          draftRouteSnaps.length = 0;
+          draftRouteSnaps.push(...snapshot.snaps);
+          draftRouteNote = snapshot.note;
+          rebuildDraftRouteLayer();
+          updateDraftRouteControls();
+        }
+
+        function applyRouteEdit() {
+          if (!isEditingRoute || !routeEditPreviewPath || routeEditSegmentIndex === null) return;
+          const segments = draftRouteSegments().map(segment => segment.map(coordinate => [...coordinate]));
+          const segment = segments[routeEditSegmentIndex];
+          if (!segment) return;
+          const { prefix } = splitRouteSegmentAt(segment, routeEditStart);
+          const { suffix } = splitRouteSegmentAt(segment, routeEditEnd);
+          segments[routeEditSegmentIndex] = [
+            ...prefix,
+            ...routeEditPreviewPath.slice(1, -1),
+            ...suffix
+          ];
+
+          draftRouteUndoActions.push({ type: "edit", snapshot: captureDraftRouteSnapshot() });
+          draftRouteBaseSegments = segments;
+          draftRoutePoints.length = 0;
+          draftRouteLegs.length = 0;
+          draftRouteSnaps.length = 0;
+          draftRouteMarkers.length = 0;
+          const endpoint = draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1);
+          draftRoutePoints.push(L.latLng(...endpoint));
+          draftRouteSnaps.push(routeFollowWaterInput.checked ? waterwayRouter.snap(endpoint) : null);
+          draftRouteNote = "";
+          rebuildDraftRouteLayer();
+          cancelRouteEdit();
           updateDraftRouteControls();
         }
 
         async function useSelectedRouteAsBase(index) {
-          if (isDrawingRoute) return;
+          if (routeInteractionLocked()) return;
           const route = activeRoutes[index];
           const segments = Array.isArray(route?.segments)
             ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
@@ -1752,16 +2112,7 @@
           const endpoint = L.latLng(...draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1));
           draftRoutePoints.push(endpoint);
           draftRouteSnaps.push(null);
-          draftRouteLine.setLatLngs(draftRouteSegments());
-          const marker = L.circleMarker(endpoint, {
-            radius: 5,
-            color: "#fff",
-            weight: 2,
-            fillColor: "#126f9a",
-            fillOpacity: 1,
-            pane: "draftRoutePane"
-          }).addTo(draftRouteLayer);
-          draftRouteMarkers.push(marker);
+          rebuildDraftRouteLayer();
           const routeName = `Nieuwe route op basis van ${route.name}`;
           routeNameInput.value = routeName.slice(0, routeNameInput.maxLength);
           routeBuilderDetails.open = true;
@@ -1831,25 +2182,35 @@
         routeUndoButton.addEventListener("click", undoDraftRoutePoint);
         routeClearButton.addEventListener("click", clearDraftRoute);
         routeDownloadButton.addEventListener("click", downloadDraftRoute);
+        routeEditToggle.addEventListener("click", () => {
+          if (isEditingRoute) cancelRouteEdit();
+          else startRouteEdit();
+        });
+        routeFollowWaterInput.addEventListener("change", () => {
+          if (routeEditViaPoints.length > 0) scheduleRouteEditPreview();
+        });
+        routeEditPreviewButton.addEventListener("click", previewRouteEdit);
+        routeEditApplyButton.addEventListener("click", applyRouteEdit);
         routeNameInput.addEventListener("input", updateDraftRouteControls);
         updateDraftRouteControls();
 
         function applyRouteStyles() {
           const hasSelection = selectedRoute !== null;
+          const locked = routeInteractionLocked();
           layers.forEach((layer, routeIndex) => {
             const selected = routeIndex === selectedRoute;
-            const dimmed = isDrawingRoute ? !selected || !hasSelection : hasSelection && !selected;
+            const dimmed = locked ? !selected || !hasSelection : hasSelection && !selected;
             layer.eachLayer(child => {
               if (child instanceof L.Polyline && child.options.routeCasing === true) {
                 child.setStyle({
                   color: "#fff",
                   weight: selected ? 8 : 7,
-                  opacity: isDrawingRoute && dimmed ? 0.55 : 0.98
+                  opacity: locked && dimmed ? 0.55 : 0.98
                 });
               } else if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
                   color: selected ? "#d93611" : routeColor(routeIndex),
-                  weight: selected ? 6 : hasSelection && !isDrawingRoute ? 4 : 5,
+                  weight: selected ? 6 : hasSelection && !locked ? 4 : 5,
                   opacity: selected ? 1 : dimmed ? 0.4 : hasSelection ? 0.7 : 1
                 });
                 if (selected) child.bringToFront();
@@ -1881,7 +2242,7 @@
         }
 
         function selectRoute(index, { syncUrl = true } = {}) {
-          if (isDrawingRoute && index !== selectedRoute) return;
+          if (routeInteractionLocked() && index !== selectedRoute) return;
           selectedRoute = index;
           applyRouteStyles();
           routeButtons.forEach((button, routeIndex) => {
@@ -1893,6 +2254,7 @@
         }
 
         function toggleRouteSelection(index, options) {
+          if (routeInteractionLocked()) return;
           if (selectedRoute === index) clearSelection(options);
           else selectRoute(index, options);
         }
@@ -1911,7 +2273,7 @@
         function restoreRoute(routeId) {
           const index = routeIndexesById.get(routeId);
           const layer = layers.get(index);
-          if (isDrawingRoute && index !== selectedRoute) return false;
+          if (routeInteractionLocked() && index !== selectedRoute) return false;
           if (index === undefined || !layer || !layer.getBounds().isValid()) return false;
 
           if (!map.hasLayer(layer)) {
@@ -1982,8 +2344,8 @@
                 ? ` (${Math.round(distanceKm).toLocaleString("nl-NL")} km)`
                 : "";
               name.textContent = `${route.name}${distanceLabel}`;
-              name.disabled = isDrawingRoute;
-              name.title = isDrawingRoute ? "Stop tekenen om een route te selecteren" : "Zoom naar en licht deze route uit";
+              name.disabled = routeInteractionLocked();
+              name.title = routeInteractionLocked() ? "Stop tekenen of aanpassen om een route te selecteren" : "Zoom naar en licht deze route uit";
               name.setAttribute("aria-pressed", String(index === selectedRoute));
 
               checkbox.addEventListener("change", () => {
@@ -1997,7 +2359,7 @@
               });
 
               name.addEventListener("click", () => {
-                if (isDrawingRoute) return;
+                if (routeInteractionLocked()) return;
                 const layer = layers.get(index);
                 if (layer && layer.getBounds().isValid()) {
                   if (selectedRoute === index) {
@@ -2093,7 +2455,7 @@
                 bubblingMouseEvents: true
               }).addTo(layer);
               hitArea.on("mouseover", () => {
-                if (isDrawingRoute || selectedRoute === index) return;
+                if (routeInteractionLocked() || selectedRoute === index) return;
                 const dimmed = selectedRoute !== null;
                 layer.eachLayer(child => {
                   if (child instanceof L.Polyline && child.options.routeCasing === true) {
@@ -2112,7 +2474,7 @@
                 applyRouteStyles();
               });
               hitArea.on("click", () => {
-                if (isDrawingRoute) return;
+                if (routeInteractionLocked()) return;
                 toggleRouteSelection(index);
                 if (selectedRoute === index) openRoutePopup(index);
               });
