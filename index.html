@@ -659,6 +659,28 @@
         font-size: 11px;
       }
 
+      .popup-action {
+        margin-top: 7px;
+        padding: 7px 9px;
+        color: #15583f;
+        background: #edf6f1;
+        border: 1px solid #d5e2d9;
+        border-radius: 7px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 650;
+      }
+
+      .popup-action:hover {
+        background: #dfeee6;
+      }
+
+      .popup-action:focus-visible {
+        outline: 2px solid #187653;
+        outline-offset: 2px;
+      }
+
       @media (max-width: 720px) {
         .app {
           grid-template-rows: auto minmax(0, 1fr);
@@ -932,7 +954,7 @@
         const mapWrap = document.querySelector(".map-wrap");
         const startpointLegendSymbol = document.getElementById("startpoint-legend-symbol");
         const mobileLayout = window.matchMedia("(max-width: 720px)");
-        const routePopupDurationMs = 2000;
+        const routeBuilderDetails = document.getElementById("route-builder");
         const regionButtons = [...document.querySelectorAll(".region-button")];
         const kayakHeatmapModeButton = document.getElementById("kayak-heatmap-mode");
         const heatmapControls = document.getElementById("heatmap-controls");
@@ -966,7 +988,6 @@
         let kanoroutesLoadPromise;
         let utrechtLoadPromise;
         let regionLoadId = 0;
-        let routePopupTimeout;
         let kayakHeatmapLayer;
         let kayakHeatmapBounds;
         let kayakHeatmapMaxWeight = 1;
@@ -976,6 +997,7 @@
         let isAddingRoutePoint = false;
         let draftRouteLayer;
         let draftRouteLine;
+        let draftRouteBaseSegments = [];
         const draftRoutePoints = [];
         const draftRouteLegs = [];
         const draftRouteSnaps = [];
@@ -1059,6 +1081,16 @@
           pane: "draftRoutePane"
         }).addTo(draftRouteLayer);
         const routePopup = L.popup();
+        map.on("popupopen", event => {
+          if (event.popup !== routePopup) return;
+          const button = event.popup.getElement()?.querySelector("[data-route-base]");
+          if (!button) return;
+          L.DomEvent.on(button, "click", L.DomEvent.stop);
+          L.DomEvent.on(button, "click", () => {
+            const routeIndex = Number(button.getAttribute("data-route-base"));
+            if (Number.isInteger(routeIndex)) useSelectedRouteAsBase(routeIndex);
+          });
+        });
         L.control.zoom({ position: "bottomright" }).addTo(map);
         const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 19,
@@ -1561,20 +1593,34 @@
           return { load, snap, route };
         })();
 
-        function draftRoutePath() {
-          return draftRouteLegs.flat();
+        function draftRouteSegments() {
+          const segments = [...draftRouteBaseSegments];
+          const drawnPath = draftRouteLegs.flat();
+          if (segments.length > 0) {
+            if (drawnPath.length > 0) {
+              const lastSegment = segments.length - 1;
+              segments[lastSegment] = [...segments[lastSegment], ...drawnPath];
+            }
+            return segments;
+          }
+          return drawnPath.length > 0 ? [drawnPath] : [];
         }
 
         function updateDraftRouteControls() {
           const pointCount = draftRoutePoints.length;
-          const distanceKm = calculateDistanceKm([draftRoutePath()]);
-          const summary = pointCount === 0
-            ? isDrawingRoute ? "Klik op de kaart om routepunten toe te voegen." : "Nog geen routepunten."
-            : `${pointCount} ${pointCount === 1 ? "punt" : "punten"} · ${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km${isDrawingRoute ? " · tekenen actief" : ""}`;
+          const segments = draftRouteSegments();
+          const distanceKm = calculateDistanceKm(segments);
+          const distanceLabel = `${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
+          const addedPointCount = Math.max(0, pointCount - (draftRouteBaseSegments.length > 0 ? 1 : 0));
+          const summary = draftRouteBaseSegments.length > 0
+            ? `Basisroute geladen · ${distanceLabel}${addedPointCount > 0 ? ` · ${addedPointCount} extra ${addedPointCount === 1 ? "punt" : "punten"}` : ""}${isDrawingRoute ? " · tekenen actief" : ""}`
+            : pointCount === 0
+              ? isDrawingRoute ? "Klik op de kaart om routepunten toe te voegen." : "Nog geen routepunten."
+              : `${pointCount} ${pointCount === 1 ? "punt" : "punten"} · ${distanceLabel}${isDrawingRoute ? " · tekenen actief" : ""}`;
           routeBuilderStatus.textContent = draftRouteNote ? `${summary} · ${draftRouteNote}` : summary;
           routeUndoButton.disabled = pointCount === 0;
-          routeClearButton.disabled = pointCount === 0;
-          routeDownloadButton.disabled = pointCount < 2;
+          routeClearButton.disabled = segments.length === 0;
+          routeDownloadButton.disabled = !segments.some(segment => segment.length > 1);
         }
 
         function setRouteDrawing(active) {
@@ -1582,7 +1628,15 @@
           routeDrawToggle.setAttribute("aria-pressed", String(active));
           routeDrawToggle.textContent = active ? "Stop tekenen" : "Start tekenen";
           map.getContainer().style.cursor = active ? "crosshair" : "";
-          if (active) map.on("click", addDraftRoutePoint);
+          routeButtons.forEach(button => {
+            button.disabled = active;
+            button.title = active ? "Stop tekenen om een route te selecteren" : "Zoom naar en licht deze route uit";
+          });
+          applyRouteStyles();
+          if (active) {
+            map.closePopup();
+            map.on("click", addDraftRoutePoint);
+          }
           else map.off("click", addDraftRoutePoint);
           updateDraftRouteControls();
         }
@@ -1618,7 +1672,11 @@
               leg = [[point.lat, point.lng]];
             } else {
               if (snapped && previousSnap) leg = waterwayRouter.route(previousSnap, snapped);
-              if (leg) leg = leg.slice(1);
+              if (leg) {
+                const extendingBase = draftRouteBaseSegments.length > 0 &&
+                  draftRoutePoints.length === 1 && draftRouteLegs.length === 0;
+                leg = leg.slice(extendingBase ? 0 : 1);
+              }
               else {
                 if (snapped && previousSnap) draftRouteNote = "geen vaarwegverbinding gevonden, rechte lijn gebruikt";
                 else if (routeFollowWaterInput.checked && !draftRouteNote) draftRouteNote = "vorig punt niet op een vaarweg, rechte lijn gebruikt";
@@ -1629,7 +1687,7 @@
             draftRoutePoints.push(point);
             draftRouteLegs.push(leg);
             draftRouteSnaps.push(snapped);
-            draftRouteLine.setLatLngs(draftRoutePath());
+            draftRouteLine.setLatLngs(draftRouteSegments());
             const firstPoint = draftRoutePoints.length === 1;
             const marker = L.circleMarker(point, {
               radius: firstPoint ? 6 : 5,
@@ -1651,13 +1709,17 @@
           draftRouteLegs.pop();
           draftRouteSnaps.pop();
           draftRouteNote = "";
+          if (draftRouteBaseSegments.length > 0 && draftRoutePoints.length === 0) {
+            draftRouteBaseSegments = [];
+          }
           const marker = draftRouteMarkers.pop();
           if (marker) draftRouteLayer.removeLayer(marker);
-          draftRouteLine.setLatLngs(draftRoutePath());
+          draftRouteLine.setLatLngs(draftRouteSegments());
           updateDraftRouteControls();
         }
 
         function clearDraftRoute() {
+          draftRouteBaseSegments = [];
           draftRoutePoints.length = 0;
           draftRouteLegs.length = 0;
           draftRouteSnaps.length = 0;
@@ -1673,6 +1735,58 @@
           updateDraftRouteControls();
         }
 
+        async function useSelectedRouteAsBase(index) {
+          if (isDrawingRoute) return;
+          const route = activeRoutes[index];
+          const segments = Array.isArray(route?.segments)
+            ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
+            : [];
+          if (!route || segments.length === 0) return;
+          if ((draftRoutePoints.length > 0 || draftRouteBaseSegments.length > 0) &&
+              !window.confirm("De huidige route wordt vervangen door de geselecteerde route. Doorgaan?")) {
+            return;
+          }
+
+          clearDraftRoute();
+          draftRouteBaseSegments = segments.map(segment => segment.map(([latitude, longitude]) => [latitude, longitude]));
+          const endpoint = L.latLng(...draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1));
+          draftRoutePoints.push(endpoint);
+          draftRouteSnaps.push(null);
+          draftRouteLine.setLatLngs(draftRouteSegments());
+          const marker = L.circleMarker(endpoint, {
+            radius: 5,
+            color: "#fff",
+            weight: 2,
+            fillColor: "#126f9a",
+            fillOpacity: 1,
+            pane: "draftRoutePane"
+          }).addTo(draftRouteLayer);
+          draftRouteMarkers.push(marker);
+          const routeName = `Nieuwe route op basis van ${route.name}`;
+          routeNameInput.value = routeName.slice(0, routeNameInput.maxLength);
+          routeBuilderDetails.open = true;
+          if (mobileLayout.matches) {
+            setSheetExpanded(true);
+            refreshMapSize();
+          }
+          map.closePopup();
+          updateDraftRouteControls();
+
+          if (routeFollowWaterInput.checked) {
+            routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
+            try {
+              await waterwayRouter.load();
+              const snappedEndpoint = waterwayRouter.snap([endpoint.lat, endpoint.lng]);
+              draftRouteSnaps[0] = snappedEndpoint;
+              if (!snappedEndpoint) draftRouteNote = "eindpunt basisroute ligt niet op een beschikbare vaarweg";
+            } catch (error) {
+              console.error("Vaarwegennetwerk laden mislukt:", error);
+              draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
+            }
+            updateDraftRouteControls();
+          }
+        }
+
         function escapeXml(value) {
           return value.replace(/[&<>"']/g, character => ({
             "&": "&amp;",
@@ -1684,17 +1798,21 @@
         }
 
         function downloadDraftRoute() {
-          if (draftRoutePoints.length < 2) {
+          const segments = draftRouteSegments().filter(segment => segment.length > 1);
+          if (segments.length === 0) {
             updateDraftRouteControls();
             return;
           }
 
           const name = routeNameInput.value.trim() || "Mijn vaarroute";
           const safeName = escapeXml(name);
-          const trackPoints = draftRoutePath().map(([latitude, longitude]) =>
-            `      <trkpt lat="${latitude.toFixed(7)}" lon="${longitude.toFixed(7)}"></trkpt>`
-          ).join("\n");
-          const gpx = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Kajakroutes Nederland" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 https://www.topografix.com/GPX/1/1/gpx.xsd">\n  <trk>\n    <name>${safeName}</name>\n    <trkseg>\n${trackPoints}\n    </trkseg>\n  </trk>\n</gpx>\n`;
+          const trackSegments = segments.map(segment => {
+            const trackPoints = segment.map(([latitude, longitude]) =>
+              `      <trkpt lat="${latitude.toFixed(7)}" lon="${longitude.toFixed(7)}"></trkpt>`
+            ).join("\n");
+            return `    <trkseg>\n${trackPoints}\n    </trkseg>`;
+          }).join("\n");
+          const gpx = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Kajakroutes Nederland" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 https://www.topografix.com/GPX/1/1/gpx.xsd">\n  <trk>\n    <name>${safeName}</name>\n${trackSegments}\n  </trk>\n</gpx>\n`;
           const safeFileName = name
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
@@ -1716,24 +1834,44 @@
         routeNameInput.addEventListener("input", updateDraftRouteControls);
         updateDraftRouteControls();
 
-        function clearSelection({ syncUrl = true, replaceUrl = true } = {}) {
-          selectedRoute = null;
-          layers.forEach((layer, index) => {
+        function applyRouteStyles() {
+          const hasSelection = selectedRoute !== null;
+          layers.forEach((layer, routeIndex) => {
+            const selected = routeIndex === selectedRoute;
+            const dimmed = isDrawingRoute ? !selected || !hasSelection : hasSelection && !selected;
             layer.eachLayer(child => {
               if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                child.setStyle({ color: "#fff", weight: 7, opacity: 0.98 });
+                child.setStyle({
+                  color: "#fff",
+                  weight: selected ? 8 : 7,
+                  opacity: isDrawingRoute && dimmed ? 0.55 : 0.98
+                });
               } else if (child instanceof L.Polyline && child.options.interactive === false) {
                 child.setStyle({
-                  color: routeColor(index),
-                  weight: 5,
-                  opacity: 1
+                  color: selected ? "#d93611" : routeColor(routeIndex),
+                  weight: selected ? 6 : hasSelection && !isDrawingRoute ? 4 : 5,
+                  opacity: selected ? 1 : dimmed ? 0.4 : hasSelection ? 0.7 : 1
                 });
+                if (selected) child.bringToFront();
               } else if (child instanceof L.CircleMarker) {
-                child.setStyle({ opacity: 0, fillOpacity: 0 });
+                child.setStyle({
+                  opacity: selected ? 1 : 0,
+                  fillOpacity: selected ? 1 : 0
+                });
               }
             });
+            if (selected) {
+              layer.eachLayer(child => {
+                if (child instanceof L.CircleMarker) child.bringToFront();
+              });
+            }
           });
-          startpointLegendSymbol.classList.add("is-hidden");
+          startpointLegendSymbol.classList.toggle("is-hidden", !hasSelection);
+        }
+
+        function clearSelection({ syncUrl = true, replaceUrl = true } = {}) {
+          selectedRoute = null;
+          applyRouteStyles();
           routeButtons.forEach(button => {
             button.closest(".route-row").classList.remove("selected");
             button.setAttribute("aria-pressed", "false");
@@ -1743,36 +1881,9 @@
         }
 
         function selectRoute(index, { syncUrl = true } = {}) {
+          if (isDrawingRoute && index !== selectedRoute) return;
           selectedRoute = index;
-          layers.forEach((layer, routeIndex) => {
-            const selected = routeIndex === selectedRoute;
-            layer.eachLayer(child => {
-              if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                child.setStyle({ color: "#fff", weight: 8, opacity: 0.98 });
-              } else if (child instanceof L.Polyline && child.options.interactive === false) {
-                child.setStyle({
-                  color: selected ? "#d93611" : routeColor(routeIndex),
-                  weight: selected ? 6 : 4,
-                  opacity: selected ? 1 : 0.7
-                });
-                if (selected) child.bringToFront();
-              } else if (selected && child instanceof L.Polyline) {
-                child.bringToFront();
-              } else if (child instanceof L.CircleMarker) {
-                child.setStyle({
-                  opacity: selected ? 1 : 0,
-                  fillOpacity: selected ? 1 : 0
-                });
-              }
-            });
-            if (selected) {
-              startpointLegendSymbol.classList.remove("is-hidden");
-              layer.eachLayer(child => {
-                if (child instanceof L.CircleMarker) child.bringToFront();
-              });
-            }
-          });
-          if (selectedRoute === null) startpointLegendSymbol.classList.add("is-hidden");
+          applyRouteStyles();
           routeButtons.forEach((button, routeIndex) => {
             const selected = routeIndex === selectedRoute;
             button.closest(".route-row").classList.toggle("selected", selected);
@@ -1790,20 +1901,17 @@
           const layer = layers.get(index);
           const content = popupContents.get(index);
           if (layer && content) {
-            window.clearTimeout(routePopupTimeout);
             routePopup
               .setLatLng(layer.getBounds().getCenter())
               .setContent(content);
             map.openPopup(routePopup);
-            routePopupTimeout = window.setTimeout(() => {
-              if (map.hasLayer(routePopup)) map.closePopup(routePopup);
-            }, routePopupDurationMs);
           }
         }
 
         function restoreRoute(routeId) {
           const index = routeIndexesById.get(routeId);
           const layer = layers.get(index);
+          if (isDrawingRoute && index !== selectedRoute) return false;
           if (index === undefined || !layer || !layer.getBounds().isValid()) return false;
 
           if (!map.hasLayer(layer)) {
@@ -1874,7 +1982,8 @@
                 ? ` (${Math.round(distanceKm).toLocaleString("nl-NL")} km)`
                 : "";
               name.textContent = `${route.name}${distanceLabel}`;
-              name.title = "Zoom naar en licht deze route uit";
+              name.disabled = isDrawingRoute;
+              name.title = isDrawingRoute ? "Stop tekenen om een route te selecteren" : "Zoom naar en licht deze route uit";
               name.setAttribute("aria-pressed", String(index === selectedRoute));
 
               checkbox.addEventListener("change", () => {
@@ -1888,6 +1997,7 @@
               });
 
               name.addEventListener("click", () => {
+                if (isDrawingRoute) return;
                 const layer = layers.get(index);
                 if (layer && layer.getBounds().isValid()) {
                   if (selectedRoute === index) {
@@ -1979,10 +2089,11 @@
                 opacity: 0,
                 lineCap: "round",
                 lineJoin: "round",
-                interactive: true
+                interactive: true,
+                bubblingMouseEvents: true
               }).addTo(layer);
               hitArea.on("mouseover", () => {
-                if (selectedRoute === index) return;
+                if (isDrawingRoute || selectedRoute === index) return;
                 const dimmed = selectedRoute !== null;
                 layer.eachLayer(child => {
                   if (child instanceof L.Polyline && child.options.routeCasing === true) {
@@ -1998,21 +2109,10 @@
                 });
               });
               hitArea.on("mouseout", () => {
-                const selected = selectedRoute === index;
-                const dimmed = selectedRoute !== null;
-                layer.eachLayer(child => {
-                  if (child instanceof L.Polyline && child.options.routeCasing === true) {
-                    child.setStyle({ weight: selected ? 8 : 7, opacity: selected ? 0.98 : 0.95 });
-                  } else if (child instanceof L.Polyline && child.options.interactive === false) {
-                    child.setStyle({
-                      color: selected ? "#d93611" : routeColor(index),
-                      weight: selected ? 6 : dimmed ? 4 : 5,
-                      opacity: selected ? 1 : dimmed ? 0.7 : 1
-                    });
-                  }
-                });
+                applyRouteStyles();
               });
               hitArea.on("click", () => {
+                if (isDrawingRoute) return;
                 toggleRouteSelection(index);
                 if (selectedRoute === index) openRoutePopup(index);
               });
@@ -2037,10 +2137,12 @@
             const routePageLink = typeof route.sourcePage === "string"
               ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina openen</a></p>`
               : "";
+            const routeBaseAction =
+              `<p class="popup-detail"><button class="popup-action" type="button" data-route-base="${index}">Gebruik als basis voor nieuwe route</button></p>`;
             const distanceKm = calculateDistanceKm(validSegments);
             routeDistances.set(index, distanceKm);
             const popupContent =
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}`;
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}${routeBaseAction}`;
             popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);
@@ -2060,6 +2162,7 @@
 
           routeCount.textContent = `${routesWithPoints} routes`;
           renderList(searchInput.value);
+          applyRouteStyles();
         }
 
         function loadNorthHollandRoutes() {
