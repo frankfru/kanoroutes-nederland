@@ -28,7 +28,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
               typeof navigator.canShare !== "function") return false;
           try {
             return navigator.canShare({
-              files: [new File([""], "route.gpx", { type: "application/gpx+xml" })]
+              files: [new File([""], "route.gpx", { type: "text/xml" })]
             });
           } catch (error) {
             console.warn("GPX-bestandsdelen controleren mislukt:", error);
@@ -548,7 +548,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
 
           const fileName = `${createGpxFileName(route.name)}.gpx`;
           if (typeof File === "function" && typeof navigator.share === "function") {
-            const file = new File([gpx], fileName, { type: "application/gpx+xml" });
+            const file = new File([gpx], fileName, { type: "text/xml" });
             try {
               await navigator.share({ files: [file], title: route.name });
               return;
