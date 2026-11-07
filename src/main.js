@@ -547,26 +547,15 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
           }
 
           const fileName = `${createGpxFileName(route.name)}.gpx`;
-          if (typeof File === "function" && typeof navigator.share === "function" &&
-              typeof navigator.canShare === "function") {
+          if (typeof File === "function" && typeof navigator.share === "function") {
             const file = new File([gpx], fileName, { type: "application/gpx+xml" });
-            let canShareFile = false;
             try {
-              canShareFile = navigator.canShare({ files: [file] });
+              await navigator.share({ files: [file], title: route.name });
+              return;
             } catch (error) {
-              console.error("GPX-deelmogelijkheid controleren mislukt:", error);
-              showError("Delen wordt niet ondersteund; de GPX wordt gedownload.");
-            }
-
-            if (canShareFile) {
-              try {
-                await navigator.share({ files: [file], title: route.name });
-                return;
-              } catch (error) {
-                if (error.name === "AbortError") return;
-                console.error("GPX delen mislukt:", error);
-                showError("Delen is niet gelukt; de GPX wordt gedownload.");
-              }
+              if (error.name === "AbortError") return;
+              console.error("GPX delen mislukt:", error);
+              showError("Delen is niet gelukt; de GPX wordt gedownload.");
             }
           }
 
