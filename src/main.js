@@ -1,6 +1,7 @@
 import { createWaterwayRouter } from "./waterway-router.js";
 import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
+import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
 
       (() => {
         const regionColors = new Map([
@@ -22,6 +23,18 @@ import { createRouteBuilder } from "./route-builder.js";
         const mapWrap = document.querySelector(".map-wrap");
         const startpointLegendSymbol = document.getElementById("startpoint-legend-symbol");
         const mobileLayout = window.matchMedia("(max-width: 720px)");
+        const supportsGpxFileSharing = (() => {
+          if (typeof File !== "function" || typeof navigator.share !== "function" ||
+              typeof navigator.canShare !== "function") return false;
+          try {
+            return navigator.canShare({
+              files: [new File([""], "route.gpx", { type: "application/gpx+xml" })]
+            });
+          } catch (error) {
+            console.warn("GPX-bestandsdelen controleren mislukt:", error);
+            return false;
+          }
+        })();
 
         const routeShowWaterwaysInput = document.getElementById("route-show-waterways");
         const routeWaterwayCoverageInfo = document.getElementById("route-waterway-coverage-info");
@@ -171,13 +184,23 @@ import { createRouteBuilder } from "./route-builder.js";
         const routePopup = L.popup();
         map.on("popupopen", event => {
           if (event.popup !== routePopup) return;
-          const button = event.popup.getElement()?.querySelector("[data-route-base]");
-          if (!button) return;
-          L.DomEvent.on(button, "click", L.DomEvent.stop);
-          L.DomEvent.on(button, "click", () => {
-            const routeIndex = Number(button.getAttribute("data-route-base"));
-            if (Number.isInteger(routeIndex)) routeBuilder.useSelectedRouteAsBase(routeIndex);
-          });
+          const element = event.popup.getElement();
+          const baseButton = element?.querySelector("[data-route-base]");
+          if (baseButton) {
+            L.DomEvent.on(baseButton, "click", L.DomEvent.stop);
+            L.DomEvent.on(baseButton, "click", () => {
+              const routeIndex = Number(baseButton.getAttribute("data-route-base"));
+              if (Number.isInteger(routeIndex)) routeBuilder.useSelectedRouteAsBase(routeIndex);
+            });
+          }
+          const shareButton = element?.querySelector("[data-route-share]");
+          if (shareButton) {
+            L.DomEvent.on(shareButton, "click", L.DomEvent.stop);
+            L.DomEvent.on(shareButton, "click", () => {
+              const routeIndex = Number(shareButton.getAttribute("data-route-share"));
+              if (Number.isInteger(routeIndex)) shareRouteAsGpx(routeIndex);
+            });
+          }
         });
         L.control.zoom({ position: "bottomright" }).addTo(map);
         const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -504,6 +527,52 @@ import { createRouteBuilder } from "./route-builder.js";
           }
         }
 
+        async function shareRouteAsGpx(index) {
+          const route = activeRoutes[index];
+          const segments = Array.isArray(route?.segments)
+            ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
+            : [];
+          if (!route || segments.length === 0) {
+            showError("Deze route bevat geen bruikbare GPX-geometrie.");
+            return;
+          }
+
+          let gpx;
+          try {
+            gpx = createGpxTrack(route.name, segments);
+          } catch (error) {
+            console.error("GPX-bestand maken mislukt:", error);
+            showError(error.message || "De route kon niet als GPX worden gemaakt.");
+            return;
+          }
+
+          const fileName = `${createGpxFileName(route.name)}.gpx`;
+          if (typeof File === "function" && typeof navigator.share === "function" &&
+              typeof navigator.canShare === "function") {
+            const file = new File([gpx], fileName, { type: "application/gpx+xml" });
+            let canShareFile = false;
+            try {
+              canShareFile = navigator.canShare({ files: [file] });
+            } catch (error) {
+              console.error("GPX-deelmogelijkheid controleren mislukt:", error);
+              showError("Delen wordt niet ondersteund; de GPX wordt gedownload.");
+            }
+
+            if (canShareFile) {
+              try {
+                await navigator.share({ files: [file], title: route.name });
+                return;
+              } catch (error) {
+                if (error.name === "AbortError") return;
+                console.error("GPX delen mislukt:", error);
+                showError("Delen is niet gelukt; de GPX wordt gedownload.");
+              }
+            }
+          }
+
+          downloadGpxFile(fileName, gpx);
+        }
+
         function restoreRoute(routeId) {
           const index = routeIndexesById.get(routeId);
           const layer = layers.get(index);
@@ -733,12 +802,15 @@ import { createRouteBuilder } from "./route-builder.js";
             const routePageLink = typeof route.sourcePage === "string"
               ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina openen</a></p>`
               : "";
+            const routeShareAction = supportsGpxFileSharing
+              ? `<p class="popup-detail"><button class="popup-action" type="button" data-route-share="${index}">Deel route (gpx)</button></p>`
+              : "";
             const routeBaseAction =
               `<p class="popup-detail"><button class="popup-action" type="button" data-route-base="${index}">Gebruik als basis voor nieuwe route</button></p>`;
             const distanceKm = calculateDistanceKm(validSegments);
             routeDistances.set(index, distanceKm);
             const popupContent =
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}${routeBaseAction}`;
+              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}${routeShareAction}${routeBaseAction}`;
             popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);

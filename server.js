@@ -14,6 +14,7 @@ const files = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/src/main.js", ["src/main.js", "text/javascript; charset=utf-8"]],
   ["/src/heatmap.js", ["src/heatmap.js", "text/javascript; charset=utf-8"]],
+  ["/src/gpx.js", ["src/gpx.js", "text/javascript; charset=utf-8"]],
   ["/src/route-builder.js", ["src/route-builder.js", "text/javascript; charset=utf-8"]],
   ["/src/waterway-router.js", ["src/waterway-router.js", "text/javascript; charset=utf-8"]],
   ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]],

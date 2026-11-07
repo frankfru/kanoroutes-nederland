@@ -1,3 +1,5 @@
+import { downloadGpxTrack } from "./gpx.js";
+
 export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles, getActiveRoutes, mobileLayout, setSheetExpanded, refreshMapSize }) {
   const routeBuilderDetails = document.getElementById("route-builder");
   const routeNameInput = document.getElementById("route-name");
@@ -566,16 +568,6 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
         }
 
-        function escapeXml(value) {
-          return value.replace(/[&<>"']/g, character => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            "\"": "&quot;",
-            "'": "&apos;"
-          })[character]);
-        }
-
         function downloadDraftRoute() {
           const segments = draftRouteSegments().filter(segment => segment.length > 1);
           if (segments.length === 0) {
@@ -584,26 +576,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
 
           const name = routeNameInput.value.trim() || "Mijn vaarroute";
-          const safeName = escapeXml(name);
-          const trackSegments = segments.map(segment => {
-            const trackPoints = segment.map(([latitude, longitude]) =>
-              `      <trkpt lat="${latitude.toFixed(7)}" lon="${longitude.toFixed(7)}"></trkpt>`
-            ).join("\n");
-            return `    <trkseg>\n${trackPoints}\n    </trkseg>`;
-          }).join("\n");
-          const gpx = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Kajakroutes Nederland" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 https://www.topografix.com/GPX/1/1/gpx.xsd">\n  <trk>\n    <name>${safeName}</name>\n${trackSegments}\n  </trk>\n</gpx>\n`;
-          const safeFileName = name
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase("nl")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "") || "mijn-vaarroute";
-          const fileUrl = URL.createObjectURL(new Blob([gpx], { type: "application/gpx+xml;charset=utf-8" }));
-          const link = document.createElement("a");
-          link.href = fileUrl;
-          link.download = `${safeFileName}.gpx`;
-          link.click();
-          window.setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
+          downloadGpxTrack(name, segments, "mijn-vaarroute");
         }
 
         routeDrawToggle.addEventListener("click", () => setRouteDrawing(!isDrawingRoute));

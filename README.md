@@ -30,6 +30,8 @@ Via de kaartlaagkeuze kun je wisselen tussen OpenStreetMap, OpenTopoMap, de BRT-
 
 Met **Zelf een GPX-route maken** kun je punten op de kaart zetten, de laatste stap ongedaan maken en de route als GPX-track downloaden. Standaard worden klikpunten binnen 500 meter vastgeklikt op kanalen en rivieren uit OpenStreetMap en wordt de route daartussen berekend. Je kunt dit uitzetten om punten rechtstreeks te verbinden. Kleine sloten en meren ontbreken mogelijk in de vaarwegdata; controleer de route daarom altijd zelf. Het netwerkbestand wordt pas geladen wanneer je het eerste routepunt toevoegt. Bron: © OpenStreetMap-bijdragers, ODbL.
 
+Bij een geselecteerde route verschijnt **Deel route (gpx)** alleen als de browser GPX-bestanden native kan delen, zoals op veel mobiele apparaten. Als delen niet lukt, wordt de GPX gedownload. De gedeelde kaartlijn kan vereenvoudigd zijn; gebruik waar mogelijk de link naar de originele GPX voor de nauwkeurigste route.
+
 Je kunt ook een bestaand traject in een geladen route vervangen: kies **Traject aanpassen**, klik op het te vervangen begin- en eindpunt en voeg tussenpunten toe. De omleiding wordt automatisch als stippellijn getoond; de basisroute verandert pas na **Pas wijziging toe**.
 
 Op mobiel kun je het routepaneel vanaf de handgreep omhoog slepen en na het kiezen van een route weer omlaag schuiven. Met de knop rechtsboven open je de kaart schermvullend. De routes hebben een bredere, onzichtbare klikzone zodat selecteren op touchscreens makkelijker is.
