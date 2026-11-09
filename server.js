@@ -14,13 +14,15 @@ const files = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/src/main.js", ["src/main.js", "text/javascript; charset=utf-8"]],
   ["/src/lake-waterway-overlay.js", ["src/lake-waterway-overlay.js", "text/javascript; charset=utf-8"]],
+  ["/src/waterway-candidate-overlay.js", ["src/waterway-candidate-overlay.js", "text/javascript; charset=utf-8"]],
   ["/src/heatmap.js", ["src/heatmap.js", "text/javascript; charset=utf-8"]],
   ["/src/gpx.js", ["src/gpx.js", "text/javascript; charset=utf-8"]],
   ["/src/route-builder.js", ["src/route-builder.js", "text/javascript; charset=utf-8"]],
   ["/src/waterway-router.js", ["src/waterway-router.js", "text/javascript; charset=utf-8"]],
   ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]],
   ["/waterway-network.json", ["waterway-network.json", "application/json; charset=utf-8"]],
-  ["/lake-waterway-lines.json", ["lake-waterway-lines.json", "application/json; charset=utf-8"]]
+  ["/lake-waterway-lines.json", ["lake-waterway-lines.json", "application/json; charset=utf-8"]],
+  ["/waterway-coverage-candidates.json", ["waterway-coverage-candidates.json", "application/json; charset=utf-8"]]
 ]);
 
 const server = http.createServer(async (request, response) => {

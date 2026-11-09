@@ -1,33 +1,46 @@
-const { writeFile } = require("node:fs/promises");
+const { readFile, writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const projectRoot = path.resolve(__dirname, "..");
 const outputPath = path.join(projectRoot, "lake-waterway-lines.json");
+const candidateOutputPath = path.join(projectRoot, "waterway-coverage-candidates.json");
+const wideWaterThresholdMeters = 50;
+const minimumWideWaterLengthMeters = 100;
+const wideWaterSampleSpacingMeters = 25;
 const endpoints = [
   "https://overpass-api.de/api/interpreter",
-  "https://overpass.kumi.systems/api/interpreter"
+  "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter"
 ];
 const provinces = ["NL-DR", "NL-FL", "NL-FR", "NL-GE", "NL-GR", "NL-LI", "NL-NB", "NL-NH", "NL-OV", "NL-UT", "NL-ZE", "NL-ZH"];
+const requestedProvinces = process.argv.slice(2);
+const provincesToBuild = requestedProvinces.length > 0 ? requestedProvinces : provinces;
+const unknownProvinces = provincesToBuild.filter(province => !provinces.includes(province));
+if (unknownProvinces.length > 0) {
+  throw new Error(`Onbekende provinciecode(s): ${unknownProvinces.join(", ")}`);
+}
 
 function buildQuery(province) {
   return `[out:json][timeout:300];
 area["ISO3166-2"="${province}"]->.province;
 (
-  way(area.province)["natural"="water"]["water"~"^(lake|pond|reservoir|lagoon)$"];
-  relation(area.province)["natural"="water"]["water"~"^(lake|pond|reservoir|lagoon)$"];
-  way(area.province)["natural"="water"][!"water"];
-  relation(area.province)["natural"="water"][!"water"];
+  way(area.province)["natural"="water"];
+  relation(area.province)["natural"="water"];
   way(area.province)["landuse"="reservoir"];
   relation(area.province)["landuse"="reservoir"];
-)->.lakes;
+)->.waterAreas;
 (
   way(area.province)["waterway"]["waterway"!~"^(canal|river)$"];
   way(area.province)["waterway"~"^(canal|river)$"]["access"="no"];
   way(area.province)["waterway"~"^(canal|river)$"]["boat"="no"];
   way(area.province)["waterway"~"^(canal|river)$"]["tunnel"="culvert"];
 )->.waterways;
-.lakes out geom;
-.waterways out geom;`;
+(
+  way(area.province)["waterway"~"^(canal|river)$"];
+)->.covered;
+.waterAreas out geom;
+.waterways out body geom;
+.covered out body;`;
 }
 
 function delay(milliseconds) {
@@ -76,14 +89,11 @@ function lakePolygons(elements) {
   const polygons = [];
   for (const element of elements) {
     const tags = element.tags || {};
-    const isLake = (tags.natural === "water" &&
-      (!tags.water || /^(lake|pond|reservoir|lagoon)$/.test(tags.water))) ||
-      tags.landuse === "reservoir";
-    if (!isLake) continue;
+    if (!isWaterArea(tags)) continue;
 
     if (element.type === "way" && Array.isArray(element.geometry)) {
       const [outer] = joinRings([element.geometry]);
-      if (outer) polygons.push({ outer, inner: [] });
+      if (outer) polygons.push({ outer, inner: [], tags });
     } else if (element.type === "relation" && Array.isArray(element.members)) {
       const outer = joinRings(element.members
         .filter(member => member.role === "outer")
@@ -91,10 +101,20 @@ function lakePolygons(elements) {
       const inner = joinRings(element.members
         .filter(member => member.role === "inner")
         .map(member => member.geometry));
-      for (const ring of outer) polygons.push({ outer: ring, inner });
+      for (const ring of outer) polygons.push({ outer: ring, inner, tags });
     }
   }
   return polygons;
+}
+
+function isWaterArea(tags) {
+  return tags.natural === "water" || tags.landuse === "reservoir";
+}
+
+function isLakeArea(tags) {
+  return (tags.natural === "water" &&
+    (!tags.water || /^(lake|pond|reservoir|lagoon)$/.test(tags.water))) ||
+    tags.landuse === "reservoir";
 }
 
 function pointInRing(point, ring) {
@@ -154,6 +174,10 @@ function indexLakePolygons(polygons) {
   return { cells, polygons };
 }
 
+function filterPolygons(polygons, predicate) {
+  return indexLakePolygons(polygons.polygons.filter(polygon => predicate(polygon.tags)));
+}
+
 function nearbyLakePolygons(line, index) {
   const range = cellRange(boundsOf(line));
   const nearby = new Set();
@@ -163,6 +187,111 @@ function nearbyLakePolygons(line, index) {
     }
   }
   return [...nearby].map(polygonIndex => index.polygons[polygonIndex]);
+}
+
+function bothEndpointsShareCoverageNodes(way, coverageNodeIds) {
+  return Array.isArray(way.nodes) && way.nodes.length >= 2 &&
+    coverageNodeIds.has(way.nodes[0]) &&
+    coverageNodeIds.has(way.nodes[way.nodes.length - 1]);
+}
+
+function parseWidthMeters(value) {
+  if (typeof value !== "string") return null;
+  const match = value.trim().match(/^(\d+(?:[.,]\d+)?)\s*(m|meter|meters|km)?$/i);
+  if (!match) return null;
+  const width = Number(match[1].replace(",", "."));
+  return match[2]?.toLowerCase() === "km" ? width * 1000 : width;
+}
+
+function crossProduct(a, b) {
+  return a[0] * b[1] - a[1] * b[0];
+}
+
+function distanceMeters(start, end) {
+  const latitude = (start.lat + end.lat) / 2 * Math.PI / 180;
+  const dx = (end.lon - start.lon) * 111320 * Math.cos(latitude);
+  const dy = (end.lat - start.lat) * 110540;
+  return Math.hypot(dx, dy);
+}
+
+function interpolatePoint(start, end, fraction) {
+  return {
+    lat: start.lat + (end.lat - start.lat) * fraction,
+    lon: start.lon + (end.lon - start.lon) * fraction
+  };
+}
+
+function localMeters(point, origin) {
+  const latitude = origin.lat * Math.PI / 180;
+  return [
+    (point.lon - origin.lon) * 111320 * Math.cos(latitude),
+    (point.lat - origin.lat) * 110540
+  ];
+}
+
+function waterWidthAt(point, direction, polygon) {
+  const dx = (direction.end.lon - direction.start.lon) * 111320 *
+    Math.cos(point.lat * Math.PI / 180);
+  const dy = (direction.end.lat - direction.start.lat) * 110540;
+  const length = Math.hypot(dx, dy);
+  if (length === 0) return 0;
+  const normal = [-dy / length, dx / length];
+  const intersections = [-25000, 25000];
+
+  for (const ring of [polygon.outer, ...polygon.inner]) {
+    for (let index = 1; index < ring.length; index += 1) {
+      const a = localMeters(ring[index - 1], point);
+      const b = localMeters(ring[index], point);
+      const edge = [b[0] - a[0], b[1] - a[1]];
+      const denominator = crossProduct(normal, edge);
+      if (Math.abs(denominator) < 1e-9) continue;
+      const distance = crossProduct(a, edge) / denominator;
+      const edgePosition = crossProduct(a, normal) / denominator;
+      if (edgePosition >= 0 && edgePosition <= 1 && distance > -25000 && distance < 25000) {
+        intersections.push(distance);
+      }
+    }
+  }
+
+  intersections.sort((a, b) => a - b);
+  for (let index = 1; index < intersections.length; index += 1) {
+    const start = intersections[index - 1];
+    const end = intersections[index];
+    if (start > 0 || end < 0) continue;
+    const middle = (start + end) / 2;
+    const sample = {
+      lat: point.lat + normal[1] * middle / 110540,
+      lon: point.lon + normal[0] * middle /
+        (111320 * Math.cos(point.lat * Math.PI / 180))
+    };
+    if (pointInLake(sample, polygon)) return end - start;
+  }
+  return 0;
+}
+
+function lineCrossesWideWater(line, polygons) {
+  let continuousWideLength = 0;
+  for (let index = 1; index < line.length; index += 1) {
+    const start = line[index - 1];
+    const end = line[index];
+    const segmentLength = distanceMeters(start, end);
+    if (segmentLength === 0) continue;
+    const sampleCount = Math.ceil(segmentLength / wideWaterSampleSpacingMeters);
+    const sampleLength = segmentLength / sampleCount;
+    for (let sampleIndex = 0; sampleIndex < sampleCount; sampleIndex += 1) {
+      const midpoint = interpolatePoint(start, end, (sampleIndex + 0.5) / sampleCount);
+      const isWide = nearbyLakePolygons([midpoint], polygons).some(polygon =>
+        pointInLake(midpoint, polygon) &&
+        waterWidthAt(midpoint, { start, end }, polygon) >= wideWaterThresholdMeters);
+      if (!isWide) {
+        continuousWideLength = 0;
+        continue;
+      }
+      continuousWideLength += sampleLength;
+      if (continuousWideLength >= minimumWideWaterLengthMeters) return true;
+    }
+  }
+  return false;
 }
 
 function segmentsIntersect(a, b, c, d) {
@@ -214,6 +343,8 @@ async function fetchOverpass(province) {
         if (!response.ok) throw new Error(`${endpoint}: HTTP ${response.status}`);
         const data = await response.json();
         if (!Array.isArray(data.elements)) throw new Error(`${endpoint}: ongeldige OSM-data`);
+        if (data.elements.length === 0) throw new Error(`${endpoint}: geen OSM-elementen teruggegeven`);
+        if (data.remark) throw new Error(`${endpoint}: Overpass meldt ${data.remark}`);
         return data;
       } catch (error) {
         lastError = error;
@@ -228,26 +359,60 @@ async function fetchOverpass(province) {
 async function main() {
   const round = value => Number(value.toFixed(5));
   const uniqueLines = new Map();
-  for (const [index, province] of provinces.entries()) {
+  const candidateMap = new Map();
+  if (requestedProvinces.length > 0) {
+    const previousLakes = JSON.parse(await readFile(outputPath, "utf8"));
+    const previousCandidates = JSON.parse(await readFile(candidateOutputPath, "utf8"));
+    for (const line of previousLakes.lines) uniqueLines.set(JSON.stringify(line), line);
+    for (const candidate of previousCandidates.lines) candidateMap.set(candidate.id, candidate);
+  }
+  for (const [index, province] of provincesToBuild.entries()) {
     const data = await fetchOverpass(province);
-    const lakes = indexLakePolygons(lakePolygons(data.elements));
-    let candidates = 0;
-    let matches = 0;
+    const waterAreas = indexLakePolygons(lakePolygons(data.elements));
+    const lakes = filterPolygons(waterAreas, isLakeArea);
+    const coverageNodeIds = new Set();
+    for (const element of data.elements) {
+      const tags = element.tags || {};
+      if (element.type === "way" &&
+          (tags.waterway === "canal" || tags.waterway === "river") &&
+          tags.access !== "no" && tags.boat !== "no" && tags.tunnel !== "culvert" &&
+          Array.isArray(element.nodes)) {
+        for (const nodeId of element.nodes) coverageNodeIds.add(nodeId);
+      }
+    }
+    let candidateCount = 0;
+    let lakeMatches = 0;
+    let coverageMatches = 0;
     for (const element of data.elements) {
       if (element.type !== "way" || element.id === undefined || !element.tags?.waterway ||
           !Array.isArray(element.geometry) || element.geometry.length < 2) continue;
-      candidates += 1;
-      const tags = element.tags;
-      const isCovered = (tags.waterway === "canal" || tags.waterway === "river") &&
-        tags.access !== "no" && tags.boat !== "no" && tags.tunnel !== "culvert";
-      if (isCovered) continue;
-      if (!lineTouchesLake(element.geometry, nearbyLakePolygons(element.geometry, lakes))) continue;
-      matches += 1;
-      const line = element.geometry.map(point => [round(point.lat), round(point.lon)]);
-      uniqueLines.set(element.id, line);
+      const wayTags = element.tags;
+      if (wayTags.area === "yes" || wayTags.natural === "water") continue;
+      const isForbidden = wayTags.access === "no" || wayTags.boat === "no" || wayTags.tunnel === "culvert";
+      const isCovered = (wayTags.waterway === "canal" || wayTags.waterway === "river") && !isForbidden;
+      const line = element.geometry;
+      if (!isCovered && lineTouchesLake(line, nearbyLakePolygons(line, lakes))) {
+        const coordinates = line.map(point => [round(point.lat), round(point.lon)]);
+        uniqueLines.set(JSON.stringify(coordinates), coordinates);
+        lakeMatches += 1;
+      }
+      if (isCovered || isForbidden) continue;
+      candidateCount += 1;
+
+      const connects = bothEndpointsShareCoverageNodes(element, coverageNodeIds);
+      const parsedWidth = parseWidthMeters(wayTags.width);
+      const hasWidthTag = parsedWidth !== null && parsedWidth >= wideWaterThresholdMeters;
+      const isDrainageDitch = wayTags.waterway === "ditch" || wayTags.waterway === "drain";
+      const isWide = !isDrainageDitch &&
+        (hasWidthTag || lineCrossesWideWater(line, waterAreas));
+      if (!connects && !isWide) continue;
+      const reason = connects && isWide ? "both" : connects ? "connected" : "wide-water";
+      const coordinates = line.map(point => [round(point.lat), round(point.lon)]);
+      candidateMap.set(element.id, { id: element.id, line: coordinates, reason });
+      coverageMatches += 1;
     }
-    console.log(`${province}: ${lakes.polygons.length} meerpolygonen, ${candidates} kandidaat-waterwegen, ${matches} op meren`);
-    if (index < provinces.length - 1) await delay(1500);
+    console.log(`${province}: ${waterAreas.polygons.length} waterpolygonen, ${candidateCount} niet-uitgesloten kandidaat-waterwegen, ${lakeMatches} op meren, ${coverageMatches} voor dekking`);
+    if (index < provincesToBuild.length - 1) await delay(1500);
   }
 
   if (uniqueLines.size === 0) {
@@ -266,8 +431,29 @@ async function main() {
     generated: new Date().toISOString().slice(0, 10),
     lines
   };
+  if (candidateMap.size === 0) {
+    throw new Error("Er zijn geen kandidaten voor de vaarwegdekking gevonden; het bestaande kandidaatbestand is niet gewijzigd.");
+  }
+  const candidateLines = [...candidateMap.values()];
+  const candidatesOutsideNetherlands = candidateLines.some(candidate =>
+    candidate.line.some(([latitude, longitude]) =>
+      latitude < 49.5 || latitude > 54.5 || longitude < 2 || longitude > 8.5));
+  if (candidatesOutsideNetherlands) {
+    throw new Error("De Overpass-selectie voor de kandidaat-overlay bevat coördinaten buiten Nederland; het bestaande kandidaatbestand is niet gewijzigd.");
+  }
+  const candidateOutput = {
+    version: 1,
+    source: "OpenStreetMap-waterwegen en wateroppervlakken, © OpenStreetMap-bijdragers, ODbL",
+    generated: output.generated,
+    widthThresholdMeters: wideWaterThresholdMeters,
+    minimumWideWaterLengthMeters,
+    connectionMethod: "beide eindknooppunten delen een OSM-node met de bestaande dekking",
+    lines: candidateLines
+  };
   await writeFile(outputPath, JSON.stringify(output));
   console.log(`${lines.length} lijnstukken geschreven naar ${outputPath}`);
+  await writeFile(candidateOutputPath, JSON.stringify(candidateOutput));
+  console.log(`${candidateLines.length} kandidaten geschreven naar ${candidateOutputPath}`);
 }
 
 main().catch(error => {

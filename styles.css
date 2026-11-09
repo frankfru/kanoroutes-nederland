@@ -637,7 +637,8 @@
         visibility: hidden;
       }
 
-      .lake-waterway-status {
+      .lake-waterway-status,
+      .waterway-candidate-status {
         max-width: 260px;
         padding: 6px 9px;
         line-height: 1.4;
