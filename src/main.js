@@ -1,4 +1,5 @@
 import { createWaterwayRouter } from "./waterway-router.js";
+import { createLakeWaterwayOverlay } from "./lake-waterway-overlay.js";
 import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
 import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
@@ -181,6 +182,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
           pane: "waterwayCoveragePane",
           interactive: false
         });
+        const lakeWaterwayLayer = createLakeWaterwayOverlay({ map, L, showError });
         const routePopup = L.popup();
         map.on("popupopen", event => {
           if (event.popup !== routePopup) return;
@@ -258,7 +260,8 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
         }, {
           "Natura 2000 (PDOK)": natura2000,
           "Vaarwegen Nederland (NWB)": dutchWaterways,
-          "Vaarwegdekking (Volg vaarwegen)": waterwayCoverageLayer
+          "Vaarwegdekking (Volg vaarwegen)": waterwayCoverageLayer,
+          "Niet-opgenomen OSM-waterwegen op meren": lakeWaterwayLayer
         }, { position: "topleft" }).addTo(map);
 
         function updateMapZoomLimits() {

@@ -637,6 +637,12 @@
         visibility: hidden;
       }
 
+      .lake-waterway-status {
+        max-width: 260px;
+        padding: 6px 9px;
+        line-height: 1.4;
+      }
+
       .map-error {
         position: absolute;
         z-index: 1000;
