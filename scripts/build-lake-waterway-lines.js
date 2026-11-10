@@ -30,13 +30,13 @@ area["ISO3166-2"="${province}"]->.province;
   relation(area.province)["landuse"="reservoir"];
 )->.waterAreas;
 (
-  way(area.province)["waterway"]["waterway"!~"^(canal|river)$"];
-  way(area.province)["waterway"~"^(canal|river)$"]["access"="no"];
-  way(area.province)["waterway"~"^(canal|river)$"]["boat"="no"];
-  way(area.province)["waterway"~"^(canal|river)$"]["tunnel"="culvert"];
+  way(area.province)["waterway"]["waterway"!~"^(canal|river|fairway)$"];
+  way(area.province)["waterway"~"^(canal|river|fairway)$"]["access"="no"];
+  way(area.province)["waterway"~"^(canal|river|fairway)$"]["boat"="no"];
+  way(area.province)["waterway"~"^(canal|river|fairway)$"]["tunnel"="culvert"];
 )->.waterways;
 (
-  way(area.province)["waterway"~"^(canal|river)$"];
+  way(area.province)["waterway"~"^(canal|river|fairway)$"];
 )->.covered;
 .waterAreas out geom;
 .waterways out body geom;
@@ -374,7 +374,7 @@ async function main() {
     for (const element of data.elements) {
       const tags = element.tags || {};
       if (element.type === "way" &&
-          (tags.waterway === "canal" || tags.waterway === "river") &&
+          ["canal", "river", "fairway"].includes(tags.waterway) &&
           tags.access !== "no" && tags.boat !== "no" && tags.tunnel !== "culvert" &&
           Array.isArray(element.nodes)) {
         for (const nodeId of element.nodes) coverageNodeIds.add(nodeId);
@@ -389,7 +389,7 @@ async function main() {
       const wayTags = element.tags;
       if (wayTags.area === "yes" || wayTags.natural === "water") continue;
       const isForbidden = wayTags.access === "no" || wayTags.boat === "no" || wayTags.tunnel === "culvert";
-      const isCovered = (wayTags.waterway === "canal" || wayTags.waterway === "river") && !isForbidden;
+      const isCovered = ["canal", "river", "fairway"].includes(wayTags.waterway) && !isForbidden;
       const line = element.geometry;
       if (!isCovered && lineTouchesLake(line, nearbyLakePolygons(line, lakes))) {
         const coordinates = line.map(point => [round(point.lat), round(point.lon)]);

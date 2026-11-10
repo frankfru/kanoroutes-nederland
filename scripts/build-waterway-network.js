@@ -13,7 +13,7 @@ const endpoints = [
 const provinces = ["NL-DR", "NL-FL", "NL-FR", "NL-GE", "NL-GR", "NL-LI", "NL-NB", "NL-NH", "NL-OV", "NL-UT", "NL-ZE", "NL-ZH"];
 const buildQuery = (province) => `[out:json][timeout:300];
 area["ISO3166-2"="${province}"]->.a;
-way(area.a)["waterway"~"^(canal|river)$"];
+way(area.a)["waterway"~"^(canal|river|fairway)$"];
 out body;
 >;
 out skel qt;`;
@@ -365,7 +365,7 @@ async function main() {
 
   const output = {
     version: 1,
-    source: "OpenStreetMap (waterway=canal|river), © OpenStreetMap-bijdragers, ODbL",
+    source: "OpenStreetMap (waterway=canal|river|fairway), © OpenStreetMap-bijdragers, ODbL",
     generated: new Date().toISOString().slice(0, 10),
     nodes: nodeList,
     ways: resultWays
