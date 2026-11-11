@@ -2,6 +2,7 @@ import { downloadGpxTrack } from "./gpx.js";
 
 export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles, getActiveRoutes }) {
   const routeBuilderDetails = document.getElementById("route-builder");
+  const routeBuilderSummary = routeBuilderDetails.querySelector("summary");
   const routeBuilderMode = document.getElementById("route-builder-mode");
   const routeNameInput = document.getElementById("route-name");
   const routeFollowWaterInput = document.getElementById("route-follow-water");
@@ -15,6 +16,8 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   const routeEditPreviewButton = document.getElementById("route-edit-preview");
   const routeEditApplyButton = document.getElementById("route-edit-apply");
   const routeEditHelp = document.getElementById("route-edit-help");
+  const routeSettingsToggle = document.getElementById("route-settings-toggle");
+  const routeSettings = document.getElementById("route-settings");
   let isDrawingRoute = false;
   let isEditingRoute = false;
   let isCalculatingRouteEdit = false;
@@ -66,13 +69,23 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
 
         function updateRouteInteractionState() {
           const locked = routeInteractionLocked();
+          routeBuilderDetails.classList.toggle("is-editing", isEditingRoute);
+          routeBuilderDetails.classList.toggle("is-active", locked);
           routeBuilderMode.textContent = isEditingRoute ? " · aanpassen actief" : isDrawingRoute ? " · tekenen actief" : "";
+          const plannerLabel = `Routeplanner${routeBuilderMode.textContent}`;
+          routeBuilderSummary.setAttribute("aria-label", plannerLabel);
+          routeBuilderSummary.title = plannerLabel;
           map.getContainer().style.cursor = locked ? "crosshair" : "";
           routeButtons.forEach(button => {
             button.disabled = locked;
             button.title = locked ? "Stop tekenen of aanpassen om een route te selecteren" : "Zoom naar en licht deze route uit";
           });
           applyRouteStyles();
+        }
+
+        function setRouteButtonLabel(button, label, shortcut = "") {
+          button.setAttribute("aria-label", label);
+          button.title = shortcut ? `${label} (${shortcut})` : label;
         }
 
         function updateDraftRouteControls() {
@@ -91,17 +104,18 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           routeBuilderStatus.textContent = isEditingRoute || !draftRouteNote
             ? summary
             : `${summary} · ${draftRouteNote}`;
-          routeUndoButton.textContent = draftRouteUndoActions.at(-1)?.type === "edit" ? "Wijziging terug" : "Punt terug";
-          routeRedoButton.textContent = draftRouteRedoActions.at(-1)?.type === "edit" ? "Wijziging vooruit" : "Punt vooruit";
+          setRouteButtonLabel(routeUndoButton, draftRouteUndoActions.at(-1)?.type === "edit" ? "Wijziging terug" : "Punt terug", "Ctrl+Z");
+          setRouteButtonLabel(routeRedoButton, draftRouteRedoActions.at(-1)?.type === "edit" ? "Wijziging vooruit" : "Punt vooruit", "Ctrl+Y");
           routeUndoButton.disabled = isEditingRoute || isAddingRoutePoint || pointCount === 0;
           routeRedoButton.disabled = isEditingRoute || isAddingRoutePoint || draftRouteRedoActions.length === 0;
           routeClearButton.disabled = isEditingRoute || isAddingRoutePoint || segments.length === 0;
           routeDownloadButton.disabled = isEditingRoute || isAddingRoutePoint || !segments.some(segment => segment.length > 1);
           routeDrawToggle.disabled = isEditingRoute || isAddingRoutePoint;
           routeEditToggle.disabled = isAddingRoutePoint || isDrawingRoute || (!isEditingRoute && !segments.some(segment => segment.length > 1));
-          routeEditToggle.textContent = isEditingRoute ? "Annuleer bewerking" : "Traject aanpassen";
+          setRouteButtonLabel(routeEditToggle, isEditingRoute ? "Annuleer bewerking" : "Traject aanpassen");
+          routeEditToggle.setAttribute("aria-pressed", String(isEditingRoute));
           routeEditPreviewButton.hidden = !isEditingRoute || !routeEditStart || !routeEditEnd;
-          routeEditPreviewButton.textContent = routeEditPreviewPath ? "Bereken opnieuw" : "Bereken omleiding";
+          setRouteButtonLabel(routeEditPreviewButton, routeEditPreviewPath ? "Bereken opnieuw" : "Bereken omleiding");
           routeEditPreviewButton.disabled = !isEditingRoute || !routeEditStart || !routeEditEnd ||
             routeEditViaPoints.length === 0 || isCalculatingRouteEdit;
           routeEditApplyButton.hidden = !isEditingRoute || !routeEditPreviewPath;
@@ -114,7 +128,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           if (isDrawingRoute === active) return;
           isDrawingRoute = active;
           routeDrawToggle.setAttribute("aria-pressed", String(active));
-          routeDrawToggle.textContent = active ? "Stop tekenen" : "Start tekenen";
+          setRouteButtonLabel(routeDrawToggle, active ? "Stop tekenen" : "Start tekenen");
           updateRouteInteractionState();
           if (active) {
             map.closePopup();
@@ -626,6 +640,10 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         routeUndoButton.addEventListener("click", undoDraftRoutePoint);
         routeRedoButton.addEventListener("click", redoDraftRoutePoint);
         document.addEventListener("keydown", handleRouteHistoryShortcut);
+        routeSettingsToggle.addEventListener("click", () => {
+          routeSettings.hidden = !routeSettings.hidden;
+          routeSettingsToggle.setAttribute("aria-expanded", String(!routeSettings.hidden));
+        });
         routeClearButton.addEventListener("click", clearDraftRoute);
         routeDownloadButton.addEventListener("click", downloadDraftRoute);
         routeEditToggle.addEventListener("click", () => {

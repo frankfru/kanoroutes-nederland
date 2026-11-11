@@ -264,33 +264,79 @@
       .route-builder {
         position: absolute;
         z-index: 1100;
-        top: 16px;
+        top: 68px;
         left: 16px;
-        background: #f8faf8;
+        background: #fff;
         border: 1px solid var(--line);
-        border-radius: 10px;
+        border-radius: 9px;
         box-shadow: 0 1px 5px #1a332033;
       }
 
-      .route-builder[open] {
-        width: min(320px, calc(100% - 88px));
-      }
-
       .route-builder summary {
-        padding: 9px 12px;
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
         color: #30453a;
         cursor: pointer;
-        font-size: 12px;
-        font-weight: 650;
+        list-style: none;
       }
 
-      .route-builder-body {
-        display: grid;
-        gap: 8px;
-        max-height: calc(100dvh - 180px);
+      .route-builder summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .route-builder summary svg,
+      .route-builder-button svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+      }
+
+      .route-builder summary:hover,
+      .route-builder[open] summary,
+      .route-builder.is-active summary {
+        color: var(--green);
+        background: #edf6f1;
+        border-radius: 8px;
+      }
+
+      .route-builder-info {
+        position: absolute;
+        top: 0;
+        left: 52px;
+        width: min(270px, calc(100vw - 130px));
+        padding: 10px 12px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        box-shadow: 0 1px 5px #1a332033;
+        max-height: calc(100dvh - 230px);
         overflow-y: auto;
         overscroll-behavior: contain;
-        padding: 0 12px 12px;
+      }
+
+      .route-builder-settings {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .route-builder-settings[hidden] {
+        display: none;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
       }
 
       .route-builder p {
@@ -357,21 +403,31 @@
       }
 
       .route-builder-actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        max-height: calc(100dvh - 230px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 2px;
       }
 
       .route-builder-button {
-        min-height: 34px;
-        padding: 6px 8px;
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        place-items: center;
+        padding: 0;
         color: #15583f;
         background: #fff;
-        border: 1px solid #d5e2d9;
+        border: 0;
         border-radius: 7px;
         cursor: pointer;
-        font-size: 10px;
-        font-weight: 650;
+      }
+
+      .route-builder-button[hidden] {
+        display: none;
       }
 
       .route-builder-button:hover:not(:disabled) {
@@ -382,6 +438,16 @@
         color: #fff;
         background: var(--green);
         border-color: var(--green);
+      }
+
+      .route-builder-button[aria-expanded="true"] {
+        background: #edf6f1;
+      }
+
+      .route-builder summary:focus-visible,
+      .route-builder-button:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: -2px;
       }
 
       .route-builder-button:disabled {
@@ -541,6 +607,10 @@
         min-width: 0;
         min-height: 0;
         background: #e8eee8;
+      }
+
+      .map-wrap .leaflet-top.leaflet-left {
+        z-index: 1101;
       }
 
       .fullscreen-button {
@@ -844,12 +914,56 @@
         }
 
         .route-builder {
-          top: 12px;
+          top: 64px;
           left: 12px;
+          max-width: calc(100% - 24px);
+        }
+
+        .route-builder[open] {
+          display: flex;
+        }
+
+        .route-builder summary {
+          flex: 0 0 44px;
+          width: 44px;
+          height: 44px;
         }
 
         .route-builder-body {
-          max-height: calc(100dvh - 200px);
+          min-width: 0;
+        }
+
+        .route-builder-actions {
+          max-width: 100%;
+          max-height: none;
+          flex-direction: row;
+          gap: 0;
+          padding: 0;
+          overflow-x: auto;
+          overflow-y: hidden;
+          overscroll-behavior-x: contain;
+          scrollbar-width: thin;
+        }
+
+        .route-builder-button {
+          width: 34px;
+          height: 44px;
+          flex-basis: 34px;
+        }
+
+        .route-builder.is-editing #route-draw-toggle,
+        .route-builder.is-editing #route-undo,
+        .route-builder.is-editing #route-redo,
+        .route-builder.is-editing #route-clear,
+        .route-builder.is-editing #route-download {
+          display: none;
+        }
+
+        .route-builder-info {
+          left: 0;
+          top: 52px;
+          width: min(270px, calc(100vw - 24px));
+          max-height: calc(100dvh - 270px);
         }
 
         .map-label {
