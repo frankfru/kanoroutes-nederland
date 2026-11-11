@@ -638,7 +638,9 @@
       }
 
       .lake-waterway-status,
-      .waterway-candidate-status {
+      .waterway-candidate-status,
+      .waterway-coverage-gap-status,
+      .canoe-landings-status {
         max-width: 260px;
         padding: 6px 9px;
         line-height: 1.4;

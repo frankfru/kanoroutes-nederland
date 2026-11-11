@@ -1,6 +1,8 @@
 import { createWaterwayRouter } from "./waterway-router.js";
 import { createLakeWaterwayOverlay } from "./lake-waterway-overlay.js";
 import { createWaterwayCandidateOverlay } from "./waterway-candidate-overlay.js";
+import { createWaterwayCoverageGapOverlay } from "./waterway-coverage-gap-overlay.js";
+import { createCanoeLandingsOverlay } from "./canoe-landings-overlay.js";
 import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
 import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
@@ -185,6 +187,8 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
         });
         const lakeWaterwayLayer = createLakeWaterwayOverlay({ map, L, showError });
         const waterwayCandidateLayer = createWaterwayCandidateOverlay({ map, L, showError });
+        const waterwayCoverageGapLayer = createWaterwayCoverageGapOverlay({ map, L, showError });
+        const canoeLandingsLayer = createCanoeLandingsOverlay({ map, L, showError });
         const routePopup = L.popup();
         map.on("popupopen", event => {
           if (event.popup !== routePopup) return;
@@ -264,7 +268,9 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
           "Vaarwegen Nederland (NWB)": dutchWaterways,
           "Vaarwegdekking (Volg vaarwegen)": waterwayCoverageLayer,
           "Niet-opgenomen OSM-waterwegen op meren": lakeWaterwayLayer,
-          "Toegevoegde OSM-vaarwegen (knooppunt / breed water)": waterwayCandidateLayer
+          "Toegevoegde OSM-vaarwegen (knooppunt / breed water)": waterwayCandidateLayer,
+          "NWB-vaarwegen buiten de vaarwegdekking": waterwayCoverageGapLayer,
+          "Mogelijke kanosteigers (OSM)": canoeLandingsLayer
         }, { position: "topleft" }).addTo(map);
 
         function updateMapZoomLimits() {
