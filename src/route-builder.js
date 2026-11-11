@@ -21,6 +21,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   let isDrawingRoute = false;
   let isEditingRoute = false;
   let isCalculatingRouteEdit = false;
+  let resumeRouteEditPreview = false;
   let draftRouteNote = "";
   let isAddingRoutePoint = false;
   let draftRouteBaseSegments = [];
@@ -64,14 +65,14 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         function routeInteractionLocked() {
-          return isDrawingRoute || isEditingRoute;
+          return routeBuilderDetails.open && (isDrawingRoute || isEditingRoute);
         }
 
         function updateRouteInteractionState() {
           const locked = routeInteractionLocked();
-          routeBuilderDetails.classList.toggle("is-editing", isEditingRoute);
+          routeBuilderDetails.classList.toggle("is-editing", locked && isEditingRoute);
           routeBuilderDetails.classList.toggle("is-active", locked);
-          routeBuilderMode.textContent = isEditingRoute ? " · aanpassen actief" : isDrawingRoute ? " · tekenen actief" : "";
+          routeBuilderMode.textContent = !locked ? "" : isEditingRoute ? " · aanpassen actief" : " · tekenen actief";
           const plannerLabel = `Routeplanner${routeBuilderMode.textContent}`;
           routeBuilderSummary.setAttribute("aria-label", plannerLabel);
           routeBuilderSummary.title = plannerLabel;
@@ -138,8 +139,20 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           updateDraftRouteControls();
         }
 
+        function waitForPlannerOpen() {
+          if (routeBuilderDetails.open) return Promise.resolve();
+          return new Promise(resolve => {
+            function onToggle() {
+              if (!routeBuilderDetails.open) return;
+              routeBuilderDetails.removeEventListener("toggle", onToggle);
+              resolve();
+            }
+            routeBuilderDetails.addEventListener("toggle", onToggle);
+          });
+        }
+
         async function addDraftRoutePoint(event) {
-          if (!isDrawingRoute || isEditingRoute || isAddingRoutePoint) return;
+          if (!routeBuilderDetails.open || !isDrawingRoute || isEditingRoute || isAddingRoutePoint) return;
           let point = event.latlng;
           if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng) ||
               point.lat < -90 || point.lat > 90 || point.lng < -180 || point.lng > 180) {
@@ -156,12 +169,14 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
               try {
                 routeBuilderStatus.textContent = "Vaarwegen laden…";
                 await waterwayRouter.load();
+                await waitForPlannerOpen();
                 snapped = waterwayRouter.snap([point.lat, point.lng]);
                 if (snapped) point = L.latLng(snapped.point[0], snapped.point[1]);
                 else draftRouteNote = "geen vaarweg binnen 500 m, punt niet gekoppeld";
               } catch (error) {
                 console.error("Vaarwegennetwerk laden mislukt:", error);
                 draftRouteNote = "vaarwegen niet beschikbaar, rechte lijn gebruikt";
+                await waitForPlannerOpen();
               }
             }
 
@@ -311,6 +326,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           routeEditPreviewTimeout = null;
           routeEditRequestId += 1;
           isCalculatingRouteEdit = false;
+          resumeRouteEditPreview = false;
           isEditingRoute = false;
           routeEditStart = null;
           routeEditEnd = null;
@@ -419,7 +435,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         function scheduleRouteEditPreview() {
-          if (!isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
+          if (!routeBuilderDetails.open || !isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
           window.clearTimeout(routeEditPreviewTimeout);
           routeEditRequestId += 1;
           const requestId = routeEditRequestId;
@@ -429,7 +445,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           renderRouteEditOverlay();
           updateDraftRouteControls();
           routeEditPreviewTimeout = window.setTimeout(() => {
-            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
             routeEditPreviewTimeout = null;
             isCalculatingRouteEdit = false;
             previewRouteEdit();
@@ -437,7 +453,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         function handleRouteEditMapClick(event) {
-          if (!isEditingRoute || !event.layerPoint) return;
+          if (!routeBuilderDetails.open || !isEditingRoute || !event.layerPoint) return;
           if (routeEditPreviewPath) routeEditPreviewPath = null;
 
           if (!routeEditStart || !routeEditEnd) {
@@ -474,7 +490,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         async function previewRouteEdit() {
-          if (!isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
+          if (!routeBuilderDetails.open || !isEditingRoute || !routeEditStart || !routeEditEnd || routeEditViaPoints.length === 0) return;
           window.clearTimeout(routeEditPreviewTimeout);
           routeEditPreviewTimeout = null;
           const requestId = ++routeEditRequestId;
@@ -490,7 +506,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
               path = anchors.map(point => [point.lat, point.lng]);
             } else {
               await waterwayRouter.load();
-              if (requestId !== routeEditRequestId || !isEditingRoute) return;
+              if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
               const snappedAnchors = anchors.map(point => waterwayRouter.snap([point.lat, point.lng]));
               const unsnappedIndex = snappedAnchors.findIndex(point => !point);
               if (unsnappedIndex !== -1) {
@@ -510,16 +526,16 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
               path.push([anchors[anchors.length - 1].lat, anchors[anchors.length - 1].lng]);
             }
 
-            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
             routeEditPreviewPath = path;
             const distanceKm = calculateDistanceKm([path]);
             routeEditMessage = `Omleiding klaar · ${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km. Controleer de stippellijn en pas de wijziging toe.`;
           } catch (error) {
-            if (requestId !== routeEditRequestId || !isEditingRoute) return;
+            if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
             console.error("Omleiding berekenen mislukt:", error);
             routeEditMessage = "De omleiding kon niet worden berekend; de route is niet gewijzigd.";
           } finally {
-            if (requestId === routeEditRequestId) {
+            if (requestId === routeEditRequestId && routeBuilderDetails.open) {
               isCalculatingRouteEdit = false;
               renderRouteEditOverlay();
               updateDraftRouteControls();
@@ -580,7 +596,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         async function useSelectedRouteAsBase(index) {
-          if (routeInteractionLocked()) return;
+          if (routeInteractionLocked() || isAddingRoutePoint) return;
           const route = getActiveRoutes()[index];
           const segments = Array.isArray(route?.segments)
             ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
@@ -591,6 +607,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             return;
           }
 
+          cancelRouteEdit();
           clearDraftRoute();
           draftRouteBaseSegments = segments.map(segment => segment.map(([latitude, longitude]) => [latitude, longitude]));
           const endpoint = L.latLng(...draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1));
@@ -609,11 +626,13 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
             try {
               await waterwayRouter.load();
+              await waitForPlannerOpen();
               const snappedEndpoint = waterwayRouter.snap([endpoint.lat, endpoint.lng]);
               draftRouteSnaps[0] = snappedEndpoint;
               if (!snappedEndpoint) draftRouteNote = "eindpunt basisroute ligt niet op een beschikbare vaarweg";
             } catch (error) {
               console.error("Vaarwegennetwerk laden mislukt:", error);
+              await waitForPlannerOpen();
               draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
             } finally {
               isAddingRoutePoint = false;
@@ -634,7 +653,33 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         routeBuilderDetails.addEventListener("toggle", () => {
-          if (routeBuilderDetails.open && !isEditingRoute) setRouteDrawing(true);
+          if (routeBuilderDetails.open) {
+            if (isEditingRoute) {
+              map.on("click", handleRouteEditMapClick);
+              updateRouteInteractionState();
+              if (resumeRouteEditPreview) {
+                resumeRouteEditPreview = false;
+                scheduleRouteEditPreview();
+              }
+            } else {
+              setRouteDrawing(true);
+            }
+          } else {
+            setRouteDrawing(false);
+            if (isEditingRoute) {
+              map.off("click", handleRouteEditMapClick);
+              window.clearTimeout(routeEditPreviewTimeout);
+              routeEditPreviewTimeout = null;
+              routeEditRequestId += 1;
+              if (isCalculatingRouteEdit) {
+                resumeRouteEditPreview = true;
+                isCalculatingRouteEdit = false;
+                routeEditMessage = "Omleiding gepauzeerd; open de routeplanner om verder te gaan.";
+              }
+              updateRouteInteractionState();
+              updateDraftRouteControls();
+            }
+          }
         });
         routeDrawToggle.addEventListener("click", () => setRouteDrawing(!isDrawingRoute));
         routeUndoButton.addEventListener("click", undoDraftRoutePoint);

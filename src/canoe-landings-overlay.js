@@ -1,4 +1,9 @@
 const validOsmTypes = new Set(["node", "way", "relation"]);
+const categories = {
+  "landing-portage": { label: "Mogelijke kanosteiger en overdraagpunt", color: "#624174", fillColor: "#a967c4" },
+  landing: { label: "Mogelijke kanosteiger", color: "#174f45", fillColor: "#42c99a" },
+  portage: { label: "Overdraagpunt", color: "#7a3d00", fillColor: "#f5a623" }
+};
 
 function isValidFeature(feature) {
   const coordinates = feature?.geometry?.coordinates;
@@ -11,6 +16,9 @@ function isValidFeature(feature) {
     coordinates[1] >= -90 && coordinates[1] <= 90 &&
     validOsmTypes.has(properties?.osmType) &&
     Number.isSafeInteger(properties.osmId) &&
+    Object.hasOwn(categories, properties.category) &&
+    Array.isArray(properties.portageSources) &&
+    properties.portageSources.every(id => typeof id === "string" && /^(node|way|relation)\/[0-9]+$/.test(id)) &&
     properties.tags && typeof properties.tags === "object" &&
     !Array.isArray(properties.tags) &&
     Array.isArray(properties.matchedBy) &&
@@ -18,15 +26,32 @@ function isValidFeature(feature) {
 }
 
 function createPopupContent(feature) {
-  const { osmType, osmId, matchedBy, tags } = feature.properties;
+  const { osmType, osmId, category, portageSources, tags } = feature.properties;
   const content = document.createElement("div");
   const heading = document.createElement("strong");
-  heading.textContent = tags.name || "Mogelijke kanosteiger";
+  heading.textContent = tags.name || categories[category].label;
   content.append(heading);
 
-  const methods = document.createElement("p");
-  methods.textContent = `Geselecteerd op basis van: ${matchedBy.join(", ") || "OSM-tags"}`;
-  content.append(methods);
+  const classification = document.createElement("p");
+  classification.textContent = categories[category].label;
+  content.append(classification);
+
+  if (portageSources.length > 0) {
+    const sources = document.createElement("p");
+    sources.append(category === "landing-portage"
+      ? "Overdraagpunt afgeleid van nabijgelegen OSM-elementen: "
+      : "Samengevoegde OSM-elementen: ");
+    portageSources.forEach((id, index) => {
+      if (index > 0) sources.append(", ");
+      const sourceLink = document.createElement("a");
+      sourceLink.href = `https://www.openstreetmap.org/${id}`;
+      sourceLink.target = "_blank";
+      sourceLink.rel = "noopener noreferrer";
+      sourceLink.textContent = id;
+      sources.append(sourceLink);
+    });
+    content.append(sources);
+  }
 
   const details = document.createElement("details");
   const summary = document.createElement("summary");
@@ -88,15 +113,16 @@ export function createCanoeLandingsOverlay({ map, L, showError }) {
       .then(data => {
         if (data.type !== "FeatureCollection" || !Array.isArray(data.features) ||
             data.count !== data.features.length ||
+            typeof data.selectionIncomplete !== "boolean" ||
             data.features.some(feature => !isValidFeature(feature))) {
           throw new Error("De kanosteigerdata heeft een onbekend of ongeldig GeoJSON-formaat.");
         }
         markersLayer = L.geoJSON(data, {
           pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
             radius: 5,
-            color: "#174f45",
+            color: categories[feature.properties.category].color,
             weight: 1.5,
-            fillColor: "#42c99a",
+            fillColor: categories[feature.properties.category].fillColor,
             fillOpacity: 0.9,
             pane: "canoeLandingsPane",
             bubblingMouseEvents: false
@@ -116,12 +142,13 @@ export function createCanoeLandingsOverlay({ map, L, showError }) {
 
   async function activate() {
     if (!map.hasLayer(layer)) return;
-    setStatus("Mogelijke kanosteigers laden…");
+    setStatus("Mogelijke kanosteigers en overdraagpunten laden…");
     try {
       const data = await load();
       if (!map.hasLayer(layer)) return;
       if (!layer.hasLayer(markersLayer)) layer.addLayer(markersLayer);
-      setStatus(`${data.features.length.toLocaleString("nl-NL")} mogelijke kanosteigers uit OpenStreetMap. Klik op een punt voor details.`);
+      const warning = data.selectionIncomplete ? " Let op: de bronselectie is onvolledig; sommige overdraagpunten kunnen ontbreken." : "";
+      setStatus(`${data.features.length.toLocaleString("nl-NL")} OSM-punten. Groen: mogelijke kanosteiger; paars: kanosteiger en overdraagpunt; oranje: overdraagpunt. Een overdraagpunt is niet noodzakelijk een rustplek.${warning}`);
     } catch (error) {
       console.error("Kanosteigerlaag laden mislukt:", error);
       setStatus("De kanosteigerlaag kon niet worden geladen.");

@@ -3,9 +3,11 @@ import { createLakeWaterwayOverlay } from "./lake-waterway-overlay.js";
 import { createWaterwayCandidateOverlay } from "./waterway-candidate-overlay.js";
 import { createWaterwayCoverageGapOverlay } from "./waterway-coverage-gap-overlay.js";
 import { createCanoeLandingsOverlay } from "./canoe-landings-overlay.js";
+import { createPreviousCanoeLandingsOverlay } from "./canoe-landings-previous-overlay.js";
 import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
 import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
+import { enableOsmEditOnHold } from "./osm-edit.js";
 
       (() => {
         const regionColors = new Map([
@@ -173,6 +175,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
         }
 
         map = L.map("map", { zoomControl: false, preferCanvas: true }).setView([52.15, 5.3], 7);
+        enableOsmEditOnHold({ map, L });
         map.createPane("heatmapPane");
         map.getPane("heatmapPane").style.zIndex = "350";
         map.createPane("waterwayCoveragePane");
@@ -189,6 +192,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
         const waterwayCandidateLayer = createWaterwayCandidateOverlay({ map, L, showError });
         const waterwayCoverageGapLayer = createWaterwayCoverageGapOverlay({ map, L, showError });
         const canoeLandingsLayer = createCanoeLandingsOverlay({ map, L, showError });
+        const previousCanoeLandingsLayer = createPreviousCanoeLandingsOverlay({ map, L, showError });
         const routePopup = L.popup();
         map.on("popupopen", event => {
           if (event.popup !== routePopup) return;
@@ -270,7 +274,8 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
           "Niet-opgenomen OSM-waterwegen op meren": lakeWaterwayLayer,
           "Toegevoegde OSM-vaarwegen (knooppunt / breed water)": waterwayCandidateLayer,
           "NWB-vaarwegen buiten de vaarwegdekking": waterwayCoverageGapLayer,
-          "Mogelijke kanosteigers (OSM)": canoeLandingsLayer
+          "Mogelijke kanosteigers en overdraagpunten (OSM)": canoeLandingsLayer,
+          "Alleen in eerdere kanosteigerselectie": previousCanoeLandingsLayer
         }, { position: "topleft" }).addTo(map);
 
         function updateMapZoomLimits() {

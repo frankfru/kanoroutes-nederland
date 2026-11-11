@@ -1,4 +1,4 @@
-// Haalt kano-instap/uitstapplekken (kanosteigers) uit OSM voor heel Nederland, inclusief alle tags.
+// Haalt mogelijke kanosteigers en overdraagpunten uit OSM voor heel Nederland.
 // Gebruik: node scripts/build-canoe-landings.js
 const { writeFile } = require("node:fs/promises");
 const path = require("node:path");
@@ -10,34 +10,111 @@ const endpoints = [
   "https://overpass.private.coffee/api/interpreter"
 ];
 
-// Bewust ruim geselecteerd; fijnslijpen kan later op basis van de tags en "matchedBy".
 const selectors = [
-  // Waterlopen zelf (canoe=yes op kanalen e.d.) zijn geen steigers en worden uitgesloten.
-  { name: "canoe-tag", filter: '["canoe"]["canoe"!="no"]["waterway"!~"^(canal|river|ditch|stream|drain|fairway|link|tidal_channel|flowline)$"]' },
-  { name: "canoe-yes-access", filter: '["canoe:access"]["waterway"!~"^(canal|river|ditch|stream|drain|fairway|link|tidal_channel|flowline)$"]' },
-  { name: "slipway-canoe", filter: '["leisure"="slipway"]["canoe"~"yes|put_in|launch"]' },
-  { name: "access-point", filter: '["waterway"="access_point"]' },
-  { name: "canoe-rental", filter: '["amenity"="boat_rental"]["canoe"="yes"]' },
-  { name: "name-kano", filter: '["name"~"kano|kajak|canoe|kayak",i]["man_made"~"pier|slipway"]' },
-  { name: "pier-canoe", filter: '["man_made"="pier"]["canoe"]' }
+  '["waterway"="access_point"]["canoe"]["canoe"!="no"]',
+  '["man_made"="pier"]["canoe"]["canoe"!="no"]',
+  '["canoe"="portage"]'
 ];
 
 function buildQuery() {
-  const parts = selectors.flatMap(({ filter }) => ["node", "way", "relation"].map(type => `${type}${filter}(area.nl);`));
+  const parts = selectors.flatMap(filter => ["node", "way", "relation"].map(type => `${type}${filter}(area.nl);`));
   return `[out:json][timeout:300];area["ISO3166-1"="NL"][admin_level=2]->.nl;(${parts.join("")});out center tags;`;
 }
 
 function matchedBy(tags) {
-  const checks = {
-    "canoe-tag": tags.canoe !== undefined && tags.canoe !== "no",
-    "canoe-yes-access": "canoe:access" in tags,
-    "slipway-canoe": tags.leisure === "slipway" && /^(yes|put_in|launch)$/.test(tags.canoe || ""),
-    "access-point": tags.waterway === "access_point",
-    "canoe-rental": tags.amenity === "boat_rental" && tags.canoe === "yes",
-    "name-kano": /kano|kajak|canoe|kayak/i.test(tags.name || "") && /^(pier|slipway)$/.test(tags.man_made || ""),
-    "pier-canoe": tags.man_made === "pier" && "canoe" in tags
-  };
-  return Object.keys(checks).filter(key => checks[key]);
+  const canoeAllowed = "canoe" in tags && tags.canoe !== "no";
+  return [
+    canoeAllowed && tags.waterway === "access_point" ? "access-point" : null,
+    canoeAllowed && tags.man_made === "pier" ? "pier-canoe" : null,
+    tags.canoe === "portage" ? "canoe-portage" : null
+  ].filter(Boolean);
+}
+
+function distanceMeters([lon1, lat1], [lon2, lat2]) {
+  const radians = Math.PI / 180;
+  const latitudeDifference = (lat2 - lat1) * radians;
+  const longitudeDifference = (lon2 - lon1) * radians;
+  const a = Math.sin(latitudeDifference / 2) ** 2 +
+    Math.cos(lat1 * radians) * Math.cos(lat2 * radians) * Math.sin(longitudeDifference / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function selectCanoeLandings(features) {
+  const landings = [];
+  const portages = [];
+  for (const feature of [...features].sort((a, b) => a.id.localeCompare(b.id))) {
+    const { tags } = feature.properties;
+    const matches = matchedBy(tags);
+    if (matches.includes("access-point") || matches.includes("pier-canoe")) {
+      landings.push({
+        ...feature,
+        properties: {
+          ...feature.properties,
+          matchedBy: matches,
+          category: tags.canoe === "portage" ? "landing-portage" : "landing",
+          portageSources: []
+        }
+      });
+    } else if (tags.canoe === "portage") {
+      portages.push({ ...feature, properties: { ...feature.properties, matchedBy: matches } });
+    }
+  }
+
+  const remaining = [];
+  for (const portage of portages) {
+    const nearby = landings.filter(landing =>
+      distanceMeters(portage.geometry.coordinates, landing.geometry.coordinates) <= 100
+    );
+    if (nearby.length === 0) {
+      remaining.push(portage);
+    } else {
+      for (const landing of nearby) {
+        landing.properties.category = "landing-portage";
+        landing.properties.portageSources.push(portage.id);
+      }
+    }
+  }
+
+  const visited = new Set();
+  const merged = [];
+  for (let i = 0; i < remaining.length; i += 1) {
+    if (visited.has(i)) continue;
+    const group = [i];
+    visited.add(i);
+    for (let cursor = 0; cursor < group.length; cursor += 1) {
+      for (let j = 0; j < remaining.length; j += 1) {
+        if (!visited.has(j) && distanceMeters(
+          remaining[group[cursor]].geometry.coordinates, remaining[j].geometry.coordinates
+        ) <= 100) {
+          visited.add(j);
+          group.push(j);
+        }
+      }
+    }
+    const central = group.map(index => ({
+      index,
+      distance: group.reduce((sum, other) => sum + distanceMeters(
+        remaining[index].geometry.coordinates, remaining[other].geometry.coordinates
+      ), 0)
+    })).sort((a, b) => a.distance - b.distance || remaining[a.index].id.localeCompare(remaining[b.index].id))[0];
+    const representative = remaining[central.index];
+    merged.push({
+      ...representative,
+      properties: {
+        ...representative.properties,
+        category: "portage",
+        portageSources: group.map(index => remaining[index].id).filter(id => id !== representative.id).sort()
+      }
+    });
+  }
+  return [...landings, ...merged].sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function validateOverpassTimestamp(data, now = Date.now()) {
+  const timestamp = data.osm3s?.timestamp_osm_base;
+  const time = typeof timestamp === "string" ? Date.parse(timestamp) : NaN;
+  if (!Number.isFinite(time)) throw new Error("Overpass geeft geen geldige OSM-datum");
+  if (now - time > 24 * 60 * 60 * 1000) throw new Error(`Overpass-data is meer dan 24 uur oud (${timestamp})`);
 }
 
 async function fetchOverpass(query) {
@@ -55,6 +132,7 @@ async function fetchOverpass(query) {
         const data = await response.json();
         if (!Array.isArray(data.elements) || data.elements.length === 0) throw new Error(`${endpoint}: geen elementen`);
         if (data.remark) throw new Error(`${endpoint}: Overpass meldt ${data.remark}`);
+        validateOverpassTimestamp(data);
         return data;
       } catch (error) {
         lastError = error;
@@ -68,7 +146,7 @@ async function fetchOverpass(query) {
 
 async function main() {
   const data = await fetchOverpass(buildQuery());
-  const features = data.elements.map(element => {
+  const candidates = data.elements.map(element => {
     const lat = element.lat ?? element.center?.lat;
     const lon = element.lon ?? element.center?.lon;
     const tags = element.tags || {};
@@ -78,14 +156,15 @@ async function main() {
       geometry: { type: "Point", coordinates: [lon, lat] },
       properties: { osmType: element.type, osmId: element.id, matchedBy: matchedBy(tags), tags }
     };
-  }).filter(feature => Number.isFinite(feature.geometry.coordinates[0]) && Number.isFinite(feature.geometry.coordinates[1]))
-    .sort((a, b) => a.id.localeCompare(b.id));
+  }).filter(feature => Number.isFinite(feature.geometry.coordinates[0]) && Number.isFinite(feature.geometry.coordinates[1]));
+  const features = selectCanoeLandings(candidates);
 
   const output = {
     type: "FeatureCollection",
     generatedAt: new Date().toISOString(),
     source: "OpenStreetMap via Overpass API",
     osmBaseTimestamp: data.osm3s?.timestamp_osm_base || null,
+    selectionIncomplete: false,
     count: features.length,
     features
   };
@@ -93,7 +172,11 @@ async function main() {
   console.log(`${features.length} elementen opgeslagen in ${outputPath}`);
 }
 
-main().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { buildQuery, selectCanoeLandings, validateOverpassTimestamp };
