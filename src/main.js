@@ -456,7 +456,7 @@ import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
 
         const routeBuilder = createRouteBuilder({
           map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles,
-          getActiveRoutes: () => activeRoutes, mobileLayout, setSheetExpanded, refreshMapSize
+          getActiveRoutes: () => activeRoutes
         });
         function routeInteractionLocked() {
           return routeBuilder.isLocked();

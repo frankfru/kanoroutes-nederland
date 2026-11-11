@@ -1,12 +1,14 @@
 import { downloadGpxTrack } from "./gpx.js";
 
-export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles, getActiveRoutes, mobileLayout, setSheetExpanded, refreshMapSize }) {
+export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles, getActiveRoutes }) {
   const routeBuilderDetails = document.getElementById("route-builder");
+  const routeBuilderMode = document.getElementById("route-builder-mode");
   const routeNameInput = document.getElementById("route-name");
   const routeFollowWaterInput = document.getElementById("route-follow-water");
   const routeBuilderStatus = document.getElementById("route-builder-status");
   const routeDrawToggle = document.getElementById("route-draw-toggle");
   const routeUndoButton = document.getElementById("route-undo");
+  const routeRedoButton = document.getElementById("route-redo");
   const routeClearButton = document.getElementById("route-clear");
   const routeDownloadButton = document.getElementById("route-download");
   const routeEditToggle = document.getElementById("route-edit-toggle");
@@ -32,6 +34,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   const draftRouteSnaps = [];
   const draftRouteMarkers = [];
   const draftRouteUndoActions = [];
+  const draftRouteRedoActions = [];
   map.createPane("draftRoutePane");
   map.getPane("draftRoutePane").style.zIndex = "650";
   map.getPane("draftRoutePane").style.pointerEvents = "none";
@@ -63,6 +66,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
 
         function updateRouteInteractionState() {
           const locked = routeInteractionLocked();
+          routeBuilderMode.textContent = isEditingRoute ? " · aanpassen actief" : isDrawingRoute ? " · tekenen actief" : "";
           map.getContainer().style.cursor = locked ? "crosshair" : "";
           routeButtons.forEach(button => {
             button.disabled = locked;
@@ -88,11 +92,13 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             ? summary
             : `${summary} · ${draftRouteNote}`;
           routeUndoButton.textContent = draftRouteUndoActions.at(-1)?.type === "edit" ? "Wijziging terug" : "Punt terug";
-          routeUndoButton.disabled = isEditingRoute || pointCount === 0;
-          routeClearButton.disabled = isEditingRoute || segments.length === 0;
-          routeDownloadButton.disabled = isEditingRoute || !segments.some(segment => segment.length > 1);
-          routeDrawToggle.disabled = isEditingRoute;
-          routeEditToggle.disabled = isDrawingRoute || (!isEditingRoute && !segments.some(segment => segment.length > 1));
+          routeRedoButton.textContent = draftRouteRedoActions.at(-1)?.type === "edit" ? "Wijziging vooruit" : "Punt vooruit";
+          routeUndoButton.disabled = isEditingRoute || isAddingRoutePoint || pointCount === 0;
+          routeRedoButton.disabled = isEditingRoute || isAddingRoutePoint || draftRouteRedoActions.length === 0;
+          routeClearButton.disabled = isEditingRoute || isAddingRoutePoint || segments.length === 0;
+          routeDownloadButton.disabled = isEditingRoute || isAddingRoutePoint || !segments.some(segment => segment.length > 1);
+          routeDrawToggle.disabled = isEditingRoute || isAddingRoutePoint;
+          routeEditToggle.disabled = isAddingRoutePoint || isDrawingRoute || (!isEditingRoute && !segments.some(segment => segment.length > 1));
           routeEditToggle.textContent = isEditingRoute ? "Annuleer bewerking" : "Traject aanpassen";
           routeEditPreviewButton.hidden = !isEditingRoute || !routeEditStart || !routeEditEnd;
           routeEditPreviewButton.textContent = routeEditPreviewPath ? "Bereken opnieuw" : "Bereken omleiding";
@@ -105,6 +111,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
 
         function setRouteDrawing(active) {
           if (active && isEditingRoute) return;
+          if (isDrawingRoute === active) return;
           isDrawingRoute = active;
           routeDrawToggle.setAttribute("aria-pressed", String(active));
           routeDrawToggle.textContent = active ? "Stop tekenen" : "Start tekenen";
@@ -126,6 +133,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
 
           isAddingRoutePoint = true;
+          updateDraftRouteControls();
           try {
             let snapped = null;
             let leg = null;
@@ -164,6 +172,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             draftRouteLegs.push(leg);
             draftRouteSnaps.push(snapped);
             draftRouteUndoActions.push({ type: "point" });
+            draftRouteRedoActions.length = 0;
             draftRouteLine.setLatLngs(draftRouteSegments());
             addDraftRouteMarker(point, draftRoutePoints.length === 1 && draftRouteBaseSegments.length === 0);
           } finally {
@@ -173,12 +182,16 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         function undoDraftRoutePoint() {
+          if (isEditingRoute || isAddingRoutePoint || draftRoutePoints.length === 0) return;
           const action = draftRouteUndoActions.pop();
+          draftRouteRedoActions.push({
+            type: action?.type || "point",
+            snapshot: captureDraftRouteSnapshot()
+          });
           if (action?.type === "edit") {
             restoreDraftRouteSnapshot(action.snapshot);
             return;
           }
-          if (draftRoutePoints.length === 0) return;
           draftRoutePoints.pop();
           draftRouteLegs.pop();
           draftRouteSnaps.pop();
@@ -188,6 +201,31 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
           rebuildDraftRouteLayer();
           updateDraftRouteControls();
+        }
+
+        function redoDraftRoutePoint() {
+          if (isEditingRoute || isAddingRoutePoint || draftRouteRedoActions.length === 0) return;
+          const action = draftRouteRedoActions.pop();
+          draftRouteUndoActions.push(action.type === "edit"
+            ? { type: "edit", snapshot: captureDraftRouteSnapshot() }
+            : { type: "point" });
+          restoreDraftRouteSnapshot(action.snapshot);
+        }
+
+        function handleRouteHistoryShortcut(event) {
+          if (event.defaultPrevented || !event.ctrlKey || event.altKey || event.metaKey || event.shiftKey ||
+              (!routeBuilderDetails.open && !isDrawingRoute)) return;
+          const target = event.target;
+          if (target instanceof HTMLElement &&
+              (target.isContentEditable || target.closest("input, textarea, select"))) return;
+          const key = event.key.toLowerCase();
+          if (key === "z" && !routeUndoButton.disabled) {
+            event.preventDefault();
+            undoDraftRoutePoint();
+          } else if (key === "y" && !routeRedoButton.disabled) {
+            event.preventDefault();
+            redoDraftRoutePoint();
+          }
         }
 
         function addDraftRouteMarker(point, firstPoint) {
@@ -225,6 +263,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           draftRouteSnaps.length = 0;
           draftRouteMarkers.length = 0;
           draftRouteUndoActions.length = 0;
+          draftRouteRedoActions.length = 0;
           draftRouteNote = "";
           routeEditLayer.clearLayers();
           rebuildDraftRouteLayer();
@@ -511,6 +550,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           ];
 
           draftRouteUndoActions.push({ type: "edit", snapshot: captureDraftRouteSnapshot() });
+          draftRouteRedoActions.length = 0;
           draftRouteBaseSegments = segments;
           draftRoutePoints.length = 0;
           draftRouteLegs.length = 0;
@@ -546,10 +586,8 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           const routeName = `Nieuwe route op basis van ${route.name}`;
           routeNameInput.value = routeName.slice(0, routeNameInput.maxLength);
           routeBuilderDetails.open = true;
-          if (mobileLayout.matches) {
-            setSheetExpanded(true);
-            refreshMapSize();
-          }
+          isAddingRoutePoint = routeFollowWaterInput.checked;
+          setRouteDrawing(true);
           map.closePopup();
           updateDraftRouteControls();
 
@@ -563,6 +601,8 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             } catch (error) {
               console.error("Vaarwegennetwerk laden mislukt:", error);
               draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
+            } finally {
+              isAddingRoutePoint = false;
             }
             updateDraftRouteControls();
           }
@@ -579,8 +619,13 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           downloadGpxTrack(name, segments, "mijn-vaarroute");
         }
 
+        routeBuilderDetails.addEventListener("toggle", () => {
+          if (routeBuilderDetails.open && !isEditingRoute) setRouteDrawing(true);
+        });
         routeDrawToggle.addEventListener("click", () => setRouteDrawing(!isDrawingRoute));
         routeUndoButton.addEventListener("click", undoDraftRoutePoint);
+        routeRedoButton.addEventListener("click", redoDraftRoutePoint);
+        document.addEventListener("keydown", handleRouteHistoryShortcut);
         routeClearButton.addEventListener("click", clearDraftRoute);
         routeDownloadButton.addEventListener("click", downloadDraftRoute);
         routeEditToggle.addEventListener("click", () => {

@@ -262,10 +262,18 @@
       }
 
       .route-builder {
-        margin-top: 12px;
+        position: absolute;
+        z-index: 1100;
+        top: 16px;
+        left: 16px;
         background: #f8faf8;
         border: 1px solid var(--line);
         border-radius: 10px;
+        box-shadow: 0 1px 5px #1a332033;
+      }
+
+      .route-builder[open] {
+        width: min(320px, calc(100% - 88px));
       }
 
       .route-builder summary {
@@ -279,6 +287,9 @@
       .route-builder-body {
         display: grid;
         gap: 8px;
+        max-height: calc(100dvh - 180px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
         padding: 0 12px 12px;
       }
 
@@ -830,6 +841,15 @@
         .fullscreen-button {
           top: 12px;
           right: 12px;
+        }
+
+        .route-builder {
+          top: 12px;
+          left: 12px;
+        }
+
+        .route-builder-body {
+          max-height: calc(100dvh - 200px);
         }
 
         .map-label {

@@ -68,33 +68,6 @@
                 </label>
                 <p class="heatmap-summary" id="heatmap-summary"></p>
               </div>
-              <details class="route-builder" id="route-builder">
-                <summary>Zelf een GPX-route maken</summary>
-                <div class="route-builder-body">
-                  <input id="route-name" type="text" value="Mijn vaarroute" maxlength="80" aria-label="Routenaam">
-                  <label class="route-builder-option"><input id="route-follow-water" type="checkbox" checked> Volg vaarwegen (OpenStreetMap)</label>
-                  <label class="route-builder-option"><input id="route-show-waterways" type="checkbox"> Toon beschikbare vaarwegen</label>
-                  <div class="route-waterway-coverage" id="route-waterway-coverage-info" hidden>
-                    <span class="route-waterway-coverage-swatch" aria-hidden="true"></span>
-                    <div class="route-waterway-coverage-copy">
-                      <p id="route-waterway-coverage-status" role="status" aria-live="polite"></p>
-                      <p>Bron: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap-bijdragers</a>. Niet elke lijn is per se bevaarbaar of toegestaan.</p>
-                    </div>
-                  </div>
-                  <p id="route-builder-status" role="status" aria-live="polite">Nog geen routepunten.</p>
-                  <div class="route-builder-actions">
-                    <button class="route-builder-button" id="route-draw-toggle" type="button" aria-pressed="false">Start tekenen</button>
-                    <button class="route-builder-button" id="route-download" type="button" disabled>Download GPX</button>
-                    <button class="route-builder-button" id="route-undo" type="button" disabled>Punt terug</button>
-                    <button class="route-builder-button" id="route-clear" type="button" disabled>Wis route</button>
-                    <button class="route-builder-button" id="route-edit-toggle" type="button" disabled>Traject aanpassen</button>
-                    <button class="route-builder-button" id="route-edit-preview" type="button" hidden disabled>Bereken omleiding</button>
-                    <button class="route-builder-button" id="route-edit-apply" type="button" hidden disabled>Pas wijziging toe</button>
-                  </div>
-                  <p id="route-edit-help" hidden>Klik op het bestaande traject voor begin- en eindpunt; de volgorde maakt niet uit. Plaats daarna één of meer tussenpunten op de gewenste vaarweg; de omleiding verschijnt automatisch. Begin en eind moeten op hetzelfde GPX-segment liggen.</p>
-                  <p>Klik op de kaart om punten toe te voegen. Met &ldquo;Volg vaarwegen&rdquo; loopt de lijn over kanalen en rivieren uit OpenStreetMap (binnen 500&nbsp;m van je klik); anders verbindt de lijn de punten rechtstreeks. Kleine sloten en meren ontbreken in die data, controleer de route dus altijd zelf.</p>
-                </div>
-              </details>
               <p class="source-note" id="source-note"></p>
             </div>
             <label class="search-wrap">
@@ -114,6 +87,34 @@
 
         <section class="map-wrap" aria-label="Kaart met GPX-routes">
           <div id="map"></div>
+          <details class="route-builder" id="route-builder">
+            <summary>Routeplanner<span id="route-builder-mode"></span></summary>
+            <div class="route-builder-body">
+              <input id="route-name" type="text" value="Mijn vaarroute" maxlength="80" aria-label="Routenaam">
+              <label class="route-builder-option"><input id="route-follow-water" type="checkbox" checked> Volg vaarwegen (OpenStreetMap)</label>
+              <label class="route-builder-option"><input id="route-show-waterways" type="checkbox"> Toon beschikbare vaarwegen</label>
+              <div class="route-waterway-coverage" id="route-waterway-coverage-info" hidden>
+                <span class="route-waterway-coverage-swatch" aria-hidden="true"></span>
+                <div class="route-waterway-coverage-copy">
+                  <p id="route-waterway-coverage-status" role="status" aria-live="polite"></p>
+                  <p>Bron: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap-bijdragers</a>. Niet elke lijn is per se bevaarbaar of toegestaan.</p>
+                </div>
+              </div>
+              <p id="route-builder-status" role="status" aria-live="polite">Nog geen routepunten.</p>
+              <div class="route-builder-actions">
+                <button class="route-builder-button" id="route-draw-toggle" type="button" aria-pressed="false">Start tekenen</button>
+                <button class="route-builder-button" id="route-download" type="button" disabled>Download GPX</button>
+                <button class="route-builder-button" id="route-undo" type="button" title="Ctrl+Z" aria-keyshortcuts="Control+Z" disabled>Punt terug</button>
+                <button class="route-builder-button" id="route-redo" type="button" title="Ctrl+Y" aria-keyshortcuts="Control+Y" disabled>Punt vooruit</button>
+                <button class="route-builder-button" id="route-clear" type="button" disabled>Wis route</button>
+                <button class="route-builder-button" id="route-edit-toggle" type="button" disabled>Traject aanpassen</button>
+                <button class="route-builder-button" id="route-edit-preview" type="button" hidden disabled>Bereken omleiding</button>
+                <button class="route-builder-button" id="route-edit-apply" type="button" hidden disabled>Pas wijziging toe</button>
+              </div>
+              <p id="route-edit-help" hidden>Klik op het bestaande traject voor begin- en eindpunt; de volgorde maakt niet uit. Plaats daarna één of meer tussenpunten op de gewenste vaarweg; de omleiding verschijnt automatisch. Begin en eind moeten op hetzelfde GPX-segment liggen.</p>
+              <p>Klik op de kaart om punten toe te voegen. Met &ldquo;Volg vaarwegen&rdquo; loopt de lijn over kanalen en rivieren uit OpenStreetMap (binnen 500&nbsp;m van je klik); anders verbindt de lijn de punten rechtstreeks. Kleine sloten en meren ontbreken in die data, controleer de route dus altijd zelf.</p>
+            </div>
+          </details>
           <div class="map-legend"><span class="startpoint-symbol is-hidden" id="startpoint-legend-symbol" aria-hidden="true"></span><span id="startpoint-legend-label">Startpunt geselecteerde route</span></div>
           <div class="map-label" id="map-label">Dinsdaggers</div>
           <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="Kaart op volledig scherm" title="Volledig scherm">
