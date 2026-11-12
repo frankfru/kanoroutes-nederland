@@ -1,5 +1,6 @@
 export function createWaterwayRouter() {
           const maxSnapMeters = 500;
+          const maxPortageSnapMeters = 10;
           const cellSize = 0.01;
           let loading;
           let network;
@@ -13,17 +14,25 @@ export function createWaterwayRouter() {
             return Math.hypot((longitude2 - longitude1) * lngScale, (latitude2 - latitude1) * latScale);
           }
 
-          function build(data) {
+          function build(data, portageData) {
             if (data.version !== 1 || !Array.isArray(data.nodes) || data.nodes.length % 2 !== 0 ||
                 !Array.isArray(data.ways) || data.nodes.length === 0) {
               throw new Error("Het vaarwegennetwerk heeft een onbekend formaat.");
             }
-            const nodeCount = data.nodes.length / 2;
+            if (portageData.version !== 1 || !Array.isArray(portageData.connections) ||
+                portageData.waterwayGenerated !== (data.generated || null) ||
+                portageData.connectionCount !== portageData.connections.length) {
+              throw new Error("De overdraagverbindingen horen niet bij dit vaarwegennetwerk.");
+            }
+            const nodes = data.nodes.slice();
+            let nodeCount = nodes.length / 2;
             const adjacency = Array.from({ length: nodeCount }, () => []);
             const segments = [];
             const grid = new Map();
+            const virtualNodesBySegment = new Map();
             const coverageWays = [];
-            const coordinate = index => [data.nodes[index * 2], data.nodes[index * 2 + 1]];
+            const coveragePortages = [];
+            const coordinate = index => [nodes[index * 2], nodes[index * 2 + 1]];
 
             for (const way of data.ways) {
               if (!Array.isArray(way)) continue;
@@ -65,7 +74,49 @@ export function createWaterwayRouter() {
                 }
               }
             }
-            return { nodes: data.nodes, nodeCount, adjacency, segments, grid, coverageWays, coordinate, generated: data.generated };
+
+            const built = {
+              nodes, nodeCount, adjacency, segments, grid, coverageWays, coveragePortages,
+              virtualNodesBySegment, coordinate, generated: data.generated
+            };
+            network = built;
+            for (const connection of portageData.connections) {
+              if (!Array.isArray(connection.line) || connection.line.length < 2 ||
+                  connection.line.some(point =>
+                    !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite))) {
+                throw new Error(`Ongeldige geometrie voor overdracht ${connection.id || "zonder ID"}.`);
+              }
+              const from = snap(connection.line[0]);
+              const to = snap(connection.line[connection.line.length - 1]);
+              if (!from || !to || from.distance > maxPortageSnapMeters || to.distance > maxPortageSnapMeters) {
+                throw new Error(`Overdracht ${connection.id || "zonder ID"} sluit niet aan op dit vaarwegennetwerk.`);
+              }
+
+              const fromNode = addVirtualNode(from);
+              const toNode = addVirtualNode(to);
+              const line = connection.line.map(point => point.slice());
+              line[0] = from.point;
+              line[line.length - 1] = to.point;
+              let weight = 0;
+              for (let index = 1; index < line.length; index += 1) {
+                weight += distanceMeters(line[index - 1], line[index]);
+              }
+              if (!Number.isFinite(weight) || weight <= 0) {
+                throw new Error(`Ongeldige lengte voor overdracht ${connection.id || "zonder ID"}.`);
+              }
+              adjacency[fromNode].push([toNode, weight, line]);
+              adjacency[toNode].push([fromNode, weight, [...line].reverse()]);
+              const latitudes = line.map(point => point[0]);
+              const longitudes = line.map(point => point[1]);
+              coveragePortages.push({
+                line,
+                south: Math.min(...latitudes),
+                north: Math.max(...latitudes),
+                west: Math.min(...longitudes),
+                east: Math.max(...longitudes)
+              });
+            }
+            return built;
           }
 
           function coverage(bounds) {
@@ -77,21 +128,27 @@ export function createWaterwayRouter() {
             const lines = network.coverageWays
               .filter(way => way.north >= south && way.south <= north && way.east >= west && way.west <= east)
               .map(way => way.way.map(network.coordinate));
-            return { lines, generated: network.generated };
+            const portages = network.coveragePortages
+              .filter(portage => portage.north >= south && portage.south <= north &&
+                portage.east >= west && portage.west <= east)
+              .map(portage => portage.line);
+            return { lines, portages, generated: network.generated };
           }
 
           function load() {
             if (network) return Promise.resolve(network);
-            loading ||= fetch("waterway-network.json")
-              .then(response => {
-                if (!response.ok) throw new Error("Het vaarwegennetwerk kon niet worden geladen.");
+            loading ||= Promise.all(["waterway-network.json", "waterway-portages.json"].map(file =>
+              fetch(file).then(response => {
+                if (!response.ok) throw new Error(`Het bestand ${file} kon niet worden geladen.`);
                 return response.json();
               })
-              .then(data => {
-                network = build(data);
+            ))
+              .then(([data, portageData]) => {
+                network = build(data, portageData);
                 return network;
               })
               .catch(error => {
+                network = null;
                 loading = null;
                 throw error;
               });
@@ -137,12 +194,35 @@ export function createWaterwayRouter() {
             return best;
           }
 
+          function addVirtualNode(snapResult) {
+            const node = network.nodeCount;
+            network.nodes.push(...snapResult.point);
+            network.adjacency.push([]);
+            network.nodeCount += 1;
+            const [a, b] = network.segments[snapResult.segmentIndex];
+            const sameSegmentNodes = network.virtualNodesBySegment.get(snapResult.segmentIndex) || [];
+            for (const otherNode of sameSegmentNodes) {
+              const weight = distanceMeters(snapResult.point, network.coordinate(otherNode));
+              network.adjacency[node].push([otherNode, weight]);
+              network.adjacency[otherNode].push([node, weight]);
+            }
+            sameSegmentNodes.push(node);
+            network.virtualNodesBySegment.set(snapResult.segmentIndex, sameSegmentNodes);
+            for (const neighbor of [a, b]) {
+              const weight = distanceMeters(snapResult.point, network.coordinate(neighbor));
+              network.adjacency[node].push([neighbor, weight]);
+              network.adjacency[neighbor].push([node, weight]);
+            }
+            return node;
+          }
+
           function route(from, to) {
             if (from.segmentIndex === to.segmentIndex) return [from.point, to.point];
 
             const { adjacency, nodeCount, coordinate } = network;
             const distances = new Float64Array(nodeCount).fill(Infinity);
             const previous = new Int32Array(nodeCount).fill(-1);
+            const previousGeometry = new Array(nodeCount).fill(null);
             const heap = [];
             const push = (node, distance) => {
               heap.push([distance, node]);
@@ -192,11 +272,12 @@ export function createWaterwayRouter() {
                   bestTarget = target;
                 }
               }
-              for (const [neighbor, weight] of adjacency[node]) {
+              for (const [neighbor, weight, geometry] of adjacency[node]) {
                 const candidate = distance + weight;
                 if (candidate < distances[neighbor]) {
                   distances[neighbor] = candidate;
                   previous[neighbor] = node;
+                  previousGeometry[neighbor] = geometry || null;
                   push(neighbor, candidate);
                 }
               }
@@ -204,8 +285,16 @@ export function createWaterwayRouter() {
 
             if (bestTarget === -1) return null;
             const path = [];
-            for (let node = bestTarget; node !== -1; node = previous[node]) path.push(coordinate(node));
-            return [from.point, ...path.reverse(), to.point];
+            for (let node = bestTarget; node !== -1; node = previous[node]) path.push(node);
+            path.reverse();
+            const route = [from.point, coordinate(path[0])];
+            for (let index = 1; index < path.length; index += 1) {
+              const edgeGeometry = previousGeometry[path[index]];
+              if (edgeGeometry) route.push(...edgeGeometry.slice(1));
+              else route.push(coordinate(path[index]));
+            }
+            route.push(to.point);
+            return route;
           }
 
           return { load, snap, route, coverage };

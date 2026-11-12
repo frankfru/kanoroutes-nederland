@@ -407,6 +407,15 @@
         gap: 4px;
       }
 
+      .route-waterway-portage-legend::before {
+        display: inline-block;
+        width: 17px;
+        margin-right: 6px;
+        border-top: 3px dashed #e87522;
+        vertical-align: middle;
+        content: "";
+      }
+
       .route-builder-actions {
         display: flex;
         flex-direction: column;
@@ -991,7 +1000,7 @@
           max-height: calc(100dvh - 270px);
         }
 
-        .map-label {
+        .map-label:not(.maplibre-map-label) {
           right: 10px;
           bottom: 12px;
         }

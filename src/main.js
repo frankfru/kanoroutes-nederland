@@ -164,6 +164,14 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           pane: "waterwayCoveragePane",
           interactive: false
         });
+        const waterwayPortageLayer = L.polyline([], {
+          color: "#e87522",
+          weight: 3,
+          opacity: 0.9,
+          dashArray: "6 5",
+          pane: "waterwayCoveragePane",
+          interactive: false
+        });
         const lakeWaterwayLayer = createLakeWaterwayOverlay({ map, L, showError });
         const waterwayCandidateLayer = createWaterwayCandidateOverlay({ map, L, showError });
         const waterwayCoverageGapLayer = createWaterwayCoverageGapOverlay({ map, L, showError });
@@ -344,20 +352,25 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           if (!coverage) return;
 
           waterwayCoverageLayer.setLatLngs(coverage.lines);
+          waterwayPortageLayer.setLatLngs(coverage.portages);
           if (!map.hasLayer(waterwayCoverageLayer)) waterwayCoverageLayer.addTo(map);
+          if (!map.hasLayer(waterwayPortageLayer)) waterwayPortageLayer.addTo(map);
           const count = coverage.lines.length;
           const label = count === 0
             ? "Geen routervaarwegen in dit kaartbeeld"
             : `${count.toLocaleString("nl-NL")} vaarwegdelen in dit kaartbeeld`;
           routeWaterwayCoverageStatus.textContent =
-            `${label} · OpenStreetMap-routerdata van ${coverage.generated || "onbekende datum"}.`;
+            `${label} · ${coverage.portages.length.toLocaleString("nl-NL")} routeerbare overdrachten` +
+            ` · OpenStreetMap-routerdata van ${coverage.generated || "onbekende datum"}.`;
         }
 
         async function handleWaterwayCoverageToggle() {
           const requestId = ++waterwayCoverageRequestId;
           if (!routeShowWaterwaysInput.checked) {
             waterwayCoverageLayer.remove();
+            waterwayPortageLayer.remove();
             waterwayCoverageLayer.setLatLngs([]);
+            waterwayPortageLayer.setLatLngs([]);
             routeWaterwayCoverageInfo.hidden = true;
             return;
           }
@@ -372,6 +385,8 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
             if (requestId !== waterwayCoverageRequestId || !routeShowWaterwaysInput.checked) return;
             console.error("Vaarwegdekking laden mislukt:", error);
             waterwayCoverageLayer.setLatLngs([]);
+            waterwayPortageLayer.setLatLngs([]);
+            waterwayPortageLayer.remove();
             if (!map.hasLayer(waterwayCoverageLayer)) waterwayCoverageLayer.addTo(map);
             routeWaterwayCoverageStatus.textContent =
               "Vaarwegdekking kon niet worden geladen. Schakel de optie uit en weer in om opnieuw te proberen.";

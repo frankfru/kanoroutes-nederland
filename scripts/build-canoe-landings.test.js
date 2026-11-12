@@ -1,6 +1,12 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { buildQuery, selectCanoeLandings, validateOverpassTimestamp } = require("./build-canoe-landings.js");
+const {
+  buildQuery,
+  elementGeometry,
+  selectCanoeLandings,
+  selectCanoePortages,
+  validateOverpassTimestamp
+} = require("./build-canoe-landings.js");
 
 function feature(id, metersNorth, tags) {
   return {
@@ -32,6 +38,39 @@ test("selects only canoe-enabled piers and access points, and other portages", (
   ]) {
     for (const type of ["node", "way", "relation"]) assert.ok(query.includes(`${type}${selector}(area.nl);`));
   }
+  assert.ok(query.includes("out center geom tags;"));
+});
+
+test("keeps raw portage node and way geometries separately from landing selection", () => {
+  const elements = [
+    { type: "node", id: 1, lat: 52, lon: 5, tags: { canoe: "portage" } },
+    {
+      type: "way",
+      id: 2,
+      geometry: [{ lat: 52, lon: 5 }, { lat: 52.001, lon: 5.001 }],
+      tags: { canoe: "portage" }
+    },
+    { type: "way", id: 3, center: { lat: 52.1, lon: 5.1 }, tags: { canoe: "yes" } }
+  ];
+
+  assert.deepEqual(selectCanoePortages(elements), [
+    {
+      type: "Feature",
+      id: "node/1",
+      geometry: { type: "Point", coordinates: [5, 52] },
+      properties: { osmType: "node", osmId: 1, tags: { canoe: "portage" } }
+    },
+    {
+      type: "Feature",
+      id: "way/2",
+      geometry: { type: "LineString", coordinates: [[5, 52], [5.001, 52.001]] },
+      properties: { osmType: "way", osmId: 2, tags: { canoe: "portage" } }
+    }
+  ]);
+  assert.deepEqual(elementGeometry({
+    type: "relation",
+    members: [{ geometry: [{ lat: 52, lon: 5 }, { lat: 52.1, lon: 5.1 }] }]
+  }), { type: "MultiLineString", coordinates: [[[5, 52], [5.1, 52.1]]] });
 });
 
 test("selects a point with only canoe=portage as a portage", () => {

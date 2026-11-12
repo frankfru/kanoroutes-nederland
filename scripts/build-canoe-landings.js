@@ -4,6 +4,7 @@ const { writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const outputPath = path.join(__dirname, "..", "canoe-landings.json");
+const portagesOutputPath = path.join(__dirname, "..", "canoe-portages-osm.json");
 const endpoints = [
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
@@ -18,7 +19,7 @@ const selectors = [
 
 function buildQuery() {
   const parts = selectors.flatMap(filter => ["node", "way", "relation"].map(type => `${type}${filter}(area.nl);`));
-  return `[out:json][timeout:300];area["ISO3166-1"="NL"][admin_level=2]->.nl;(${parts.join("")});out center tags;`;
+  return `[out:json][timeout:300];area["ISO3166-1"="NL"][admin_level=2]->.nl;(${parts.join("")});out center geom tags;`;
 }
 
 function matchedBy(tags) {
@@ -110,6 +111,47 @@ function selectCanoeLandings(features) {
   return [...landings, ...merged].sort((a, b) => a.id.localeCompare(b.id));
 }
 
+function elementGeometry(element) {
+  const toCoordinate = point =>
+    Number.isFinite(point?.lon) && Number.isFinite(point?.lat) ? [point.lon, point.lat] : null;
+  if (element.type === "node") {
+    const coordinate = toCoordinate(element);
+    return coordinate ? { type: "Point", coordinates: coordinate } : null;
+  }
+
+  if (element.type === "way" && Array.isArray(element.geometry)) {
+    const coordinates = element.geometry.map(toCoordinate);
+    if (coordinates.length >= 2 && coordinates.every(Boolean)) {
+      return { type: "LineString", coordinates };
+    }
+  }
+
+  if (element.type === "relation" && Array.isArray(element.members)) {
+    const lines = element.members
+      .filter(member => Array.isArray(member.geometry))
+      .map(member => member.geometry.map(toCoordinate))
+      .filter(line => line.length >= 2 && line.every(Boolean));
+    if (lines.length > 0) return { type: "MultiLineString", coordinates: lines };
+  }
+
+  return null;
+}
+
+function selectCanoePortages(elements) {
+  return elements
+    .filter(element => element.tags?.canoe === "portage")
+    .map(element => ({
+      type: "Feature",
+      id: `${element.type}/${element.id}`,
+      geometry: elementGeometry(element),
+      properties: {
+        osmType: element.type,
+        osmId: element.id,
+        tags: element.tags || {}
+      }
+    }));
+}
+
 function validateOverpassTimestamp(data, now = Date.now()) {
   const timestamp = data.osm3s?.timestamp_osm_base;
   const time = typeof timestamp === "string" ? Date.parse(timestamp) : NaN;
@@ -158,18 +200,34 @@ async function main() {
     };
   }).filter(feature => Number.isFinite(feature.geometry.coordinates[0]) && Number.isFinite(feature.geometry.coordinates[1]));
   const features = selectCanoeLandings(candidates);
+  const portages = selectCanoePortages(data.elements);
+  const generatedAt = new Date().toISOString();
+  const source = "OpenStreetMap via Overpass API";
+  const osmBaseTimestamp = data.osm3s?.timestamp_osm_base || null;
 
   const output = {
     type: "FeatureCollection",
-    generatedAt: new Date().toISOString(),
-    source: "OpenStreetMap via Overpass API",
-    osmBaseTimestamp: data.osm3s?.timestamp_osm_base || null,
+    generatedAt,
+    source,
+    osmBaseTimestamp,
     selectionIncomplete: false,
     count: features.length,
     features
   };
-  await writeFile(outputPath, `${JSON.stringify(output, null, 1)}\n`);
-  console.log(`${features.length} elementen opgeslagen in ${outputPath}`);
+  const portagesOutput = {
+    type: "FeatureCollection",
+    generatedAt,
+    source,
+    osmBaseTimestamp,
+    count: portages.length,
+    features: portages
+  };
+  await Promise.all([
+    writeFile(outputPath, `${JSON.stringify(output, null, 1)}\n`),
+    writeFile(portagesOutputPath, `${JSON.stringify(portagesOutput, null, 1)}\n`)
+  ]);
+  console.log(`${features.length} kanosteigerpunten opgeslagen in ${outputPath}`);
+  console.log(`${portages.length} oorspronkelijke overdraagpunten opgeslagen in ${portagesOutputPath}`);
 }
 
 if (require.main === module) {
@@ -179,4 +237,10 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildQuery, selectCanoeLandings, validateOverpassTimestamp };
+module.exports = {
+  buildQuery,
+  elementGeometry,
+  selectCanoeLandings,
+  selectCanoePortages,
+  validateOverpassTimestamp
+};
