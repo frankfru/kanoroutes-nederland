@@ -1,6 +1,6 @@
 param(
   [string]$SourceDirectory = 'D:\GPS Groningen',
-  [string]$OutputPath = (Join-Path (Split-Path -Parent $PSScriptRoot) 'routes-data.js')
+  [string]$OutputPath = (Join-Path (Split-Path -Parent $PSScriptRoot) 'shared\routes-data.js')
 )
 
 $ErrorActionPreference = 'Stop'

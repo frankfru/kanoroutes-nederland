@@ -7,11 +7,19 @@ const port = Number(process.env.PORT || 4173);
 const files = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
-  ["/routes-data.js", ["routes-data.js", "text/javascript; charset=utf-8"]],
-  ["/routes-noord-holland-data.js", ["routes-noord-holland-data.js", "text/javascript; charset=utf-8"]],
-  ["/routes-kanoroutes-data.js", ["routes-kanoroutes-data.js", "text/javascript; charset=utf-8"]],
-  ["/routes-utrecht-data.js", ["routes-utrecht-data.js", "text/javascript; charset=utf-8"]],
-  ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
+  ["/map-libre", ["map-libre/index.html", "text/html; charset=utf-8"]],
+  ["/map-libre/", ["map-libre/index.html", "text/html; charset=utf-8"]],
+  ["/map-libre/index.html", ["map-libre/index.html", "text/html; charset=utf-8"]],
+  ["/map-libre/main.js", ["map-libre/main.js", "text/javascript; charset=utf-8"]],
+  ["/shared/route-categories.js", ["shared/route-categories.js", "text/javascript; charset=utf-8"]],
+  ["/shared/route-geometry.js", ["shared/route-geometry.js", "text/javascript; charset=utf-8"]],
+  ["/shared/route-popup.js", ["shared/route-popup.js", "text/javascript; charset=utf-8"]],
+  ["/shared/mobile-route-sheet.js", ["shared/mobile-route-sheet.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-data.js", ["shared/routes-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-noord-holland-data.js", ["shared/routes-noord-holland-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-kanoroutes-data.js", ["shared/routes-kanoroutes-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-utrecht-data.js", ["shared/routes-utrecht-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/styles.css", ["shared/styles.css", "text/css; charset=utf-8"]],
   ["/src/main.js", ["src/main.js", "text/javascript; charset=utf-8"]],
   ["/src/osm-edit.js", ["src/osm-edit.js", "text/javascript; charset=utf-8"]],
   ["/src/lake-waterway-overlay.js", ["src/lake-waterway-overlay.js", "text/javascript; charset=utf-8"]],
@@ -45,6 +53,12 @@ const server = http.createServer(async (request, response) => {
   } catch {
     response.writeHead(400);
     response.end("Bad request");
+    return;
+  }
+
+  if (pathname === "/map-libre") {
+    response.writeHead(301, { Location: "/map-libre/" });
+    response.end();
     return;
   }
 

@@ -12,7 +12,9 @@ node server.js
 
 Open daarna [http://localhost:4173](http://localhost:4173).
 
-`index.html` bevat de pagina-opbouw en laadt de stijlen uit `styles.css`. De applicatiecode staat in native JavaScript-modules: `src/main.js` verbindt kaart en routes, `src/heatmap.js` beheert de heatmap, `src/route-builder.js` de routebouwer en trajectbewerking, en `src/waterway-router.js` het vaarwegennetwerk. De scripts voor het genereren en vernieuwen van routedata staan in `scripts/`; de gegenereerde bestanden blijven in de hoofdmap staan.
+`index.html` bevat de pagina-opbouw en laadt de gedeelde stijlen en routecategorieën uit `shared/`. De Leaflet-applicatiecode staat in native JavaScript-modules: `src/main.js` verbindt kaart en routes, `src/heatmap.js` beheert de heatmap, `src/route-builder.js` de routebouwer en trajectbewerking, en `src/waterway-router.js` het vaarwegennetwerk. De MapLibre-versie staat in `map-libre/`; beide kaartversies gebruiken dezelfde routegegevens, categoriedefinities, afstandsberekening, mobiele routekiezer en stylesheet. De scripts voor het genereren en vernieuwen van routedata staan in `scripts/`; de gegenereerde routebestanden staan in `shared/`.
+
+De MapLibre-versie is lokaal bereikbaar via [http://localhost:4173/map-libre](http://localhost:4173/map-libre). Deze pagina toont de OpenFreeMap Liberty-basiskaart en kan dezelfde routecategorieën tonen als de Leaflet-versie.
 
 ## Routedata vernieuwen
 
@@ -24,7 +26,7 @@ Open daarna [http://localhost:4173](http://localhost:4173).
 - Haal de Utrechtse en Gooi-routes opnieuw op met `node scripts/build-utrecht-routes.js`.
 - Haal de Nederlandse routes van kanoroutes.nl opnieuw op met `node scripts/build-kanoroutes-data.js`. Deze controleert de GPS-tracks tegen de Nederlandse landsgrens, slaat routes buiten Nederland over en groepeert de routes per provincie. Gebruik `node scripts/build-kanoroutes-data.js --regroup-existing` om alleen de provincie-indeling opnieuw te berekenen.
 
-De route-lijst toont de afstand in hele kilometers achter de routenaam. De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPS-bestanden en routepagina's. Een groene stip markeert het startpunt van de geselecteerde route. De routes worden vereenvoudigd voor een vlotte weergave; de afstand is daarop gebaseerd. Gebruik de regio-knoppen als schakelaars om routes uit meerdere gebieden tegelijk te tonen.
+De route-lijst toont de afstand in hele kilometers achter de routenaam. De route-pop-up toont de berekende afstand in kilometers en links naar de oorspronkelijke GPS-bestanden en routepagina's. Een groene stip markeert het startpunt van de geselecteerde route. De routes worden vereenvoudigd voor een vlotte weergave; de afstand is daarop gebaseerd. Gebruik de categorieknoppen als schakelaars om routes uit meerdere gebieden tegelijk te tonen.
 
 De knop **Kajakroute-heatmap** toont een extra kaartlaag met de Noord-Hollandse kajakroutes en GPS-opnames. Je kunt de intensiteit, vlekbreedte en het kleurcontrast aanpassen. De heatmap gebruikt geaggregeerde routevakken van ongeveer 25 meter; de bron-GPX-opnames zijn niet nodig om de kaart te bekijken en worden niet gepubliceerd. Genereer de heatmapdata opnieuw met `node scripts/build-kayak-heatmap.js`; stel eventueel `KAYAK_GPX_DIRECTORY` in op de map met GPS-opnames.
 

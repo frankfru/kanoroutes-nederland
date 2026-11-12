@@ -8,7 +8,7 @@ const boundaryUrl =
 const provincesUrl =
   "https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0?service=WFS&version=2.0.0&request=GetFeature&typeNames=bestuurlijkegebieden:Provinciegebied&outputFormat=application/json&srsName=EPSG:4326";
 const projectRoot = path.resolve(__dirname, "..");
-const outputPath = path.join(projectRoot, "routes-kanoroutes-data.js");
+const outputPath = path.join(projectRoot, "shared", "routes-kanoroutes-data.js");
 const maxConcurrentRequests = 5;
 const simplificationToleranceMeters = 5;
 const denHelderPage = "nl-denhelder.htm";

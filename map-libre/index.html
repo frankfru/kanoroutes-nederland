@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f4">
+    <title>MapLibre-proef | Kajakroutes</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@6.18.0/dist/maplibre-gl.css"
+    >
+    <link rel="stylesheet" href="../shared/styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="https://www.akvodysseus.nl/wp-content/uploads/2021/05/cropped-WhatsApp-Image-2021-05-12-at-10.14.57.jpeg"
+            alt="Logo AKV Odysseus"
+            width="48"
+            height="48"
+          >
+          <div>
+            <h1>Kajakroutes Dinsdaggers</h1>
+            <p class="subtitle"><a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/">Van een rondje om de hoek tot een tocht door weidse polders</a></p>
+          </div>
+        </div>
+        <div class="topbar-note"><span class="status-dot"></span>MapLibre-proef</div>
+      </header>
+
+      <div class="content">
+        <aside class="sidebar" aria-label="Routes">
+          <button class="sheet-toggle" id="sheet-toggle" type="button" aria-expanded="false" aria-controls="sidebar-content" aria-label="Routes openen">
+            <span class="sheet-toggle-content"><span class="sheet-grip" aria-hidden="true"></span><span id="sheet-toggle-label">Routes bekijken</span></span>
+          </button>
+          <div class="sidebar-content" id="sidebar-content">
+            <div class="sidebar-heading">
+              <h2>GPX-routes</h2>
+              <p class="route-count" id="route-count">Routes laden…</p>
+              <div class="region-switch" id="region-switch" role="group" aria-label="Kies een routegebied"></div>
+              <p class="source-note" id="source-note" hidden></p>
+            </div>
+            <label class="search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+                <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <input id="search" type="search" placeholder="Zoek een route…" autocomplete="off" aria-label="Zoek een route">
+            </label>
+            <div class="list-actions">
+              <button class="text-button" id="show-all" type="button">Alles tonen</button>
+              <button class="text-button" id="hide-all" type="button">Alles verbergen</button>
+            </div>
+            <div id="route-list" aria-live="polite"></div>
+          </div>
+        </aside>
+
+        <section class="map-wrap" aria-label="Kaart met GPX-routes">
+          <div id="map" aria-label="Basiskaart van Nederland"></div>
+          <div class="map-label maplibre-map-label" id="map-label">Dinsdaggers</div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

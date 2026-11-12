@@ -8,14 +8,23 @@ import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
 import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
 import { enableOsmEditOnHold } from "./osm-edit.js";
+import { calculateDistanceKm } from "../shared/route-geometry.js";
+import { createRoutePopupContent } from "../shared/route-popup.js";
+import {
+  bindRouteCategoryButtons,
+  createRouteCategoryButtons,
+  loadRouteCategory,
+  parseRouteCategories,
+  ROUTE_CATEGORIES,
+  sameRouteCategories as sameRegions,
+  updateRouteSourceNote
+} from "../shared/route-categories.js";
+import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
 
       (() => {
-        const regionColors = new Map([
-          ["noord", "#0057b8"],
-          ["dinsdaggers", "#c45b00"],
-          ["utrecht", "#007a3d"],
-          ["kanoroutes", "#a0005a"]
-        ]);
+        const routeCategoryById = new Map(ROUTE_CATEGORIES.map(category => [category.id, category]));
+        const regionColors = new Map(ROUTE_CATEGORIES.map(category => [category.id, category.color]));
+        const regionLabels = new Map(ROUTE_CATEGORIES.map(category => [category.id, category.label]));
         const routeList = document.getElementById("route-list");
         const searchInput = document.getElementById("search");
         const routeCount = document.getElementById("route-count");
@@ -24,7 +33,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         const sidebar = document.querySelector(".sidebar");
         const sidebarContent = document.getElementById("sidebar-content");
         const sheetToggle = document.getElementById("sheet-toggle");
-        const sheetToggleLabel = document.getElementById("sheet-toggle-label");
         const fullscreenButton = document.getElementById("fullscreen-button");
         const mapWrap = document.querySelector(".map-wrap");
         const startpointLegendSymbol = document.getElementById("startpoint-legend-symbol");
@@ -45,7 +53,7 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         const routeShowWaterwaysInput = document.getElementById("route-show-waterways");
         const routeWaterwayCoverageInfo = document.getElementById("route-waterway-coverage-info");
         const routeWaterwayCoverageStatus = document.getElementById("route-waterway-coverage-status");
-        const regionButtons = [...document.querySelectorAll(".region-button")];
+        const regionButtons = createRouteCategoryButtons(document.getElementById("region-switch"));
 
 
 
@@ -78,9 +86,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         let selectedRoute = null;
         let activeRoutes = [];
         let activeRegions = new Set();
-        let northHollandLoadPromise;
-        let kanoroutesLoadPromise;
-        let utrechtLoadPromise;
         let regionLoadId = 0;
         let regionStateInitialized = false;
 
@@ -131,29 +136,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           history[replace ? "replaceState" : "pushState"]({ routeId }, "", url);
         }
 
-        const regionLabels = new Map(regionButtons.map(button => [button.dataset.region, button.textContent.trim()]));
-        const regionIds = new Set(regionLabels.keys());
-        const regionSources = new Map([
-          ["dinsdaggers", 'GPX-bron: <a href="https://www.akvodysseus.nl/disciplines/toerkano/routes-kanotochten/" target="_blank" rel="noopener noreferrer">AKV Odysseus</a>. Routeoverzicht van Peter Groen; kaartlijnen vereenvoudigd voor snel laden.'],
-          ["utrecht", 'GPX-bron: <a href="https://kanokaartutrecht.nl/" target="_blank" rel="noopener noreferrer">Kanokaart Utrecht &amp; ’t Gooi</a>. Open de routepagina voor meer informatie.'],
-          ["kanoroutes", 'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.']
-        ]);
-
-        function parseRegions(value) {
-          if (value === null) return new Set(["dinsdaggers"]);
-          const regions = new Set(
-            (value || "")
-              .split(",")
-              .map(region => region.trim())
-              .filter(region => regionIds.has(region))
-          );
-          return regions;
-        }
-
-        function sameRegions(first, second) {
-          return first.size === second.size && [...first].every(region => second.has(region));
-        }
-
         function showError(message) {
           const error = document.createElement("div");
           error.className = "map-error";
@@ -165,12 +147,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         if (typeof L === "undefined") {
           showError("De kaartbibliotheek kon niet worden geladen. Controleer je internetverbinding en laad de pagina opnieuw.");
           routeCount.textContent = "Kaart niet beschikbaar";
-          return;
-        }
-
-        if (!Array.isArray(window.GPX_ROUTES) || window.GPX_ROUTES.length === 0) {
-          showError("Er zijn geen routegegevens gevonden. Controleer of routes-data.js naast index.html staat.");
-          routeCount.textContent = "Geen routes gevonden";
           return;
         }
 
@@ -212,6 +188,11 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
               const routeIndex = Number(shareButton.getAttribute("data-route-share"));
               if (Number.isInteger(routeIndex)) shareRouteAsGpx(routeIndex);
             });
+          }
+          const deselectButton = element?.querySelector("[data-route-deselect]");
+          if (deselectButton) {
+            L.DomEvent.on(deselectButton, "click", L.DomEvent.stop);
+            L.DomEvent.on(deselectButton, "click", () => clearSelection());
           }
         });
         L.control.zoom({ position: "bottomright" }).addTo(map);
@@ -292,15 +273,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
 
         createHeatmapFeature({ map, L, getAllRoutesBounds: () => allRoutesBounds, showError });
 
-        function setSheetExpanded(expanded) {
-          const shouldExpand = mobileLayout.matches && expanded;
-          sidebar.classList.toggle("is-expanded", shouldExpand);
-          sheetToggle.setAttribute("aria-expanded", String(shouldExpand));
-          sheetToggle.setAttribute("aria-label", shouldExpand ? "Routes sluiten" : "Routes openen");
-          sheetToggleLabel.textContent = shouldExpand ? "Kaart bekijken" : "Routes bekijken";
-          sidebarContent.inert = mobileLayout.matches && !shouldExpand;
-        }
-
         function syncFullscreenButton() {
           const isFullscreen = document.fullscreenElement === mapWrap || mapWrap.classList.contains("is-fullscreen");
           fullscreenButton.setAttribute("aria-label", isFullscreen ? "Volledig scherm sluiten" : "Kaart op volledig scherm");
@@ -330,35 +302,14 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           }
         }
 
-        setSheetExpanded(false);
-        mobileLayout.addEventListener("change", () => {
-          setSheetExpanded(false);
-          updateRouteHitWidths();
+        const setSheetExpanded = setupMobileRouteSheet({
+          sidebar,
+          sidebarContent,
+          sheetToggle,
+          mobileLayout,
+          onResize: refreshMapSize,
+          onLayoutChange: updateRouteHitWidths
         });
-        sheetToggle.addEventListener("click", () => {
-          if (sheetToggle.dataset.swiped === "true") {
-            delete sheetToggle.dataset.swiped;
-            return;
-          }
-          setSheetExpanded(sheetToggle.getAttribute("aria-expanded") !== "true");
-          refreshMapSize();
-        });
-        let dragStartY = null;
-        sheetToggle.addEventListener("pointerdown", event => {
-          if (!mobileLayout.matches) return;
-          dragStartY = event.clientY;
-          sheetToggle.setPointerCapture(event.pointerId);
-        });
-        sheetToggle.addEventListener("pointerup", event => {
-          if (dragStartY === null) return;
-          const dragDistance = event.clientY - dragStartY;
-          dragStartY = null;
-          if (Math.abs(dragDistance) < 35) return;
-          sheetToggle.dataset.swiped = "true";
-          setSheetExpanded(dragDistance < 0);
-          refreshMapSize();
-        });
-        sheetToggle.addEventListener("pointercancel", () => { dragStartY = null; });
         fullscreenButton.addEventListener("click", toggleFullscreen);
         document.addEventListener("fullscreenchange", () => {
           syncFullscreenButton();
@@ -366,7 +317,7 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         });
 
         function routeColor(index) {
-          return regionColors.get(activeRoutes[index]?.sourceRegion) || "#0057b8";
+          return regionColors.get(activeRoutes[index]?.sourceRegion) || ROUTE_CATEGORIES[0].color;
         }
 
         function routeHitWidth() {
@@ -381,26 +332,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
               }
             });
           });
-        }
-
-        function calculateDistanceKm(segments) {
-          const earthRadiusKm = 6371.0088;
-          let distanceKm = 0;
-          for (const segment of segments) {
-            for (let index = 1; index < segment.length; index += 1) {
-              const [latitude1, longitude1] = segment[index - 1];
-              const [latitude2, longitude2] = segment[index];
-              const latitudeDelta = (latitude2 - latitude1) * Math.PI / 180;
-              const longitudeDelta = (longitude2 - longitude1) * Math.PI / 180;
-              const haversine =
-                Math.sin(latitudeDelta / 2) ** 2 +
-                Math.cos(latitude1 * Math.PI / 180) *
-                  Math.cos(latitude2 * Math.PI / 180) *
-                  Math.sin(longitudeDelta / 2) ** 2;
-              distanceKm += 2 * earthRadiusKm * Math.asin(Math.sqrt(haversine));
-            }
-          }
-          return distanceKm;
         }
 
         const waterwayRouter = createWaterwayRouter();
@@ -466,6 +397,10 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
         function routeInteractionLocked() {
           return routeBuilder.isLocked();
         }
+        map.on("click", event => {
+          if (routeInteractionLocked() || selectedRoute === null || event.sourceTarget !== map) return;
+          clearSelection();
+        });
         routeShowWaterwaysInput.addEventListener("change", handleWaterwayCoverageToggle);
 
         function applyRouteStyles() {
@@ -695,16 +630,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           });
         }
 
-        function escapeHtml(value) {
-          return String(value).replace(/[&<>"']/g, character => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-          })[character]);
-        }
-
         function renderRoutes(routes, { fitMap = true } = {}) {
           activeRoutes = routes;
           selectedRoute = null;
@@ -799,24 +724,15 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
               interactive: false
             }).addTo(layer);
 
-            const pdfLink = typeof route.pdf === "string"
-              ? `<p class="popup-detail"><a href="${escapeHtml(route.pdf)}" target="_blank" rel="noopener noreferrer">Routebeschrijving openen (PDF)</a></p>`
-              : "";
-            const sourceLink = typeof route.source === "string"
-              ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">${/\.zip(?:$|[?#])/i.test(route.source) ? "Originele GPS-route downloaden (ZIP)" : "Originele GPX downloaden"}</a></p>`
-              : "";
-            const routePageLink = typeof route.sourcePage === "string"
-              ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina openen</a></p>`
-              : "";
-            const routeShareAction = supportsGpxFileSharing
-              ? `<p class="popup-detail"><button class="popup-action" type="button" data-route-share="${index}">Deel route (gpx)</button></p>`
-              : "";
-            const routeBaseAction =
-              `<p class="popup-detail"><button class="popup-action" type="button" data-route-base="${index}">Gebruik als basis voor nieuwe route</button></p>`;
             const distanceKm = calculateDistanceKm(validSegments);
             routeDistances.set(index, distanceKm);
-            const popupContent =
-              `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}${routeShareAction}${routeBaseAction}`;
+            const popupContent = createRoutePopupContent(route, {
+              distanceKm,
+              routeIndex: index,
+              supportsGpxFileSharing,
+              includeRouteBuilderAction: true,
+              includeDeselectAction: true
+            });
             popupContents.set(index, popupContent);
             layer.addTo(map);
             layers.set(index, layer);
@@ -837,87 +753,6 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           routeCount.textContent = `${routesWithPoints} routes`;
           renderList(searchInput.value);
           applyRouteStyles();
-        }
-
-        function loadNorthHollandRoutes() {
-          if (Array.isArray(window.GPX_ROUTES_NOORD_HOLLAND)) {
-            return Promise.resolve(window.GPX_ROUTES_NOORD_HOLLAND);
-          }
-
-          if (!northHollandLoadPromise) {
-            northHollandLoadPromise = new Promise((resolve, reject) => {
-              const script = document.createElement("script");
-              script.src = "routes-noord-holland-data.js";
-              script.onload = () => {
-                if (Array.isArray(window.GPX_ROUTES_NOORD_HOLLAND)) {
-                  resolve(window.GPX_ROUTES_NOORD_HOLLAND);
-                } else {
-                  reject(new Error("Het Noord-Holland-bestand bevat geen routegegevens."));
-                }
-              };
-              script.onerror = () => reject(new Error("routes-noord-holland-data.js kon niet worden geladen."));
-              document.body.append(script);
-            }).catch(error => {
-              northHollandLoadPromise = null;
-              throw error;
-            });
-          }
-
-          return northHollandLoadPromise;
-        }
-
-        function loadKanoroutesRoutes() {
-          if (Array.isArray(window.GPX_ROUTES_KANOROUTES)) {
-            return Promise.resolve(window.GPX_ROUTES_KANOROUTES);
-          }
-
-          if (!kanoroutesLoadPromise) {
-            kanoroutesLoadPromise = new Promise((resolve, reject) => {
-              const script = document.createElement("script");
-              script.src = "routes-kanoroutes-data.js?v=province-groups-1";
-              script.onload = () => {
-                if (Array.isArray(window.GPX_ROUTES_KANOROUTES)) {
-                  resolve(window.GPX_ROUTES_KANOROUTES);
-                } else {
-                  reject(new Error("Het kanoroutes.nl-bestand bevat geen routegegevens."));
-                }
-              };
-              script.onerror = () => reject(new Error("routes-kanoroutes-data.js kon niet worden geladen."));
-              document.body.append(script);
-            }).catch(error => {
-              kanoroutesLoadPromise = null;
-              throw error;
-            });
-          }
-
-          return kanoroutesLoadPromise;
-        }
-
-        function loadUtrechtRoutes() {
-          if (Array.isArray(window.GPX_ROUTES_UTRECHT)) {
-            return Promise.resolve(window.GPX_ROUTES_UTRECHT);
-          }
-
-          if (!utrechtLoadPromise) {
-            utrechtLoadPromise = new Promise((resolve, reject) => {
-              const script = document.createElement("script");
-              script.src = "routes-utrecht-data.js";
-              script.onload = () => {
-                if (Array.isArray(window.GPX_ROUTES_UTRECHT)) {
-                  resolve(window.GPX_ROUTES_UTRECHT);
-                } else {
-                  reject(new Error("Het Utrecht-bestand bevat geen routegegevens."));
-                }
-              };
-              script.onerror = () => reject(new Error("routes-utrecht-data.js kon niet worden geladen."));
-              document.body.append(script);
-            }).catch(error => {
-              utrechtLoadPromise = null;
-              throw error;
-            });
-          }
-
-          return utrechtLoadPromise;
         }
 
         async function changeRegions(regions, { syncUrl = true, routeId = null } = {}) {
@@ -942,25 +777,10 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           activeRoutes = [];
           routeList.replaceChildren();
           allRoutesBounds = null;
-          const mapLabels = new Map([
-            ["noord", "Groningen · Friesland · Drenthe"],
-            ["dinsdaggers", "Dinsdaggers"],
-            ["utrecht", "Utrecht en ’t Gooi"],
-            ["kanoroutes", "Nederland · kanoroutes.nl"]
-          ]);
           mapLabel.textContent = activeRegions.size
-            ? [...activeRegions].map(region => mapLabels.get(region)).join(" · ")
+            ? [...activeRegions].map(region => routeCategoryById.get(region).mapLabel).join(" · ")
             : "Selecteer een routegebied";
-          const sources = [...activeRegions]
-            .map(region => regionSources.get(region))
-            .filter(Boolean);
-          if (sources.length) {
-            sourceNote.hidden = false;
-            sourceNote.innerHTML = sources.join("<br>");
-          } else {
-            sourceNote.hidden = true;
-            sourceNote.replaceChildren();
-          }
+          updateRouteSourceNote(sourceNote, activeRegions);
 
           if (activeRegions.size === 0) {
             routeCount.textContent = "0 routes";
@@ -973,16 +793,7 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
 
           routeCount.textContent = "Routes laden…";
           try {
-            const routesByRegion = await Promise.all([...activeRegions].map(async region => {
-              const routes = region === "dinsdaggers"
-                ? await loadNorthHollandRoutes()
-                : region === "utrecht"
-                  ? await loadUtrechtRoutes()
-                  : region === "kanoroutes"
-                    ? await loadKanoroutesRoutes()
-                    : window.GPX_ROUTES;
-              return routes.map(route => ({ ...route, sourceRegion: region }));
-            }));
+            const routesByRegion = await Promise.all([...activeRegions].map(loadRouteCategory));
             if (regionLoadId !== loadId) return;
             const routes = routesByRegion.flat();
             renderRoutes(routes, { fitMap });
@@ -997,22 +808,15 @@ import { enableOsmEditOnHold } from "./osm-edit.js";
           }
         }
 
-        regionButtons.forEach(button => {
-          button.addEventListener("click", () => {
-            const regions = new Set(activeRegions);
-            if (regions.has(button.dataset.region)) regions.delete(button.dataset.region);
-            else regions.add(button.dataset.region);
-            changeRegions(regions);
-          });
-        });
+        bindRouteCategoryButtons(regionButtons, () => activeRegions, changeRegions);
         const sharedUrl = new URL(location.href);
-        const initialRegions = parseRegions(sharedUrl.searchParams.get("region"));
+        const initialRegions = parseRouteCategories(sharedUrl.searchParams.get("region"));
         const initialRouteId = sharedUrl.searchParams.get("route");
         changeRegions(initialRegions, { syncUrl: false, routeId: initialRouteId });
 
         window.addEventListener("popstate", () => {
           const url = new URL(location.href);
-          const regions = parseRegions(url.searchParams.get("region"));
+          const regions = parseRouteCategories(url.searchParams.get("region"));
           const routeId = url.searchParams.get("route");
           if (!sameRegions(regions, activeRegions) || (regions.size > 0 && activeRoutes.length === 0)) {
             changeRegions(regions, { syncUrl: false, routeId });

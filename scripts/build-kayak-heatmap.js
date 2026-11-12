@@ -53,7 +53,7 @@ function getRecordingSegments(xml, fileName) {
 function parseCatalogRoutes(source) {
   const match = /^window\.GPX_ROUTES_NOORD_HOLLAND\s*=\s*(\[[\s\S]*\]);?\s*$/.exec(source);
   if (!match) {
-    throw new Error("Could not parse route catalog from routes-noord-holland-data.js");
+    throw new Error("Could not parse route catalog from shared/routes-noord-holland-data.js");
   }
 
   const routes = JSON.parse(match[1]);
@@ -123,7 +123,7 @@ function buildPoints(density) {
 }
 
 async function main() {
-  const catalogSource = await readFile(path.join(root, "routes-noord-holland-data.js"), "utf8");
+  const catalogSource = await readFile(path.join(root, "shared", "routes-noord-holland-data.js"), "utf8");
   const routes = parseCatalogRoutes(catalogSource);
   const recordingFiles = (await readdir(gpxDirectory, { withFileTypes: true }))
     .filter(entry => entry.isFile() && /\.gpx$/i.test(entry.name))
