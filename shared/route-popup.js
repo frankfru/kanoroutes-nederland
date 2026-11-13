@@ -19,12 +19,12 @@ export function createRoutePopupContent(route, {
     ? `<p class="popup-detail"><a href="${escapeHtml(route.pdf)}" target="_blank" rel="noopener noreferrer">Routebeschrijving openen (PDF)</a></p>`
     : "";
   const sourceLink = typeof route.source === "string"
-    ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">${/\.zip(?:$|[?#])/i.test(route.source) ? "Originele GPS-route downloaden (ZIP)" : "Originele GPX downloaden"}</a></p>`
+    ? `<p class="popup-detail"><a href="${escapeHtml(route.source)}" target="_blank" rel="noopener noreferrer">${route.isDummy ? "Dummy-GPX downloaden" : /\.zip(?:$|[?#])/i.test(route.source) ? "Originele GPS-route downloaden (ZIP)" : "Originele GPX downloaden"}</a></p>`
     : "";
   const routePageLink = typeof route.sourcePage === "string"
     ? `<p class="popup-detail"><a href="${escapeHtml(route.sourcePage)}" target="_blank" rel="noopener noreferrer">Routepagina openen</a></p>`
     : "";
-  const routeShareAction = supportsGpxFileSharing
+  const routeShareAction = supportsGpxFileSharing && !route.isDummy
     ? `<p class="popup-detail"><button class="popup-action" type="button" data-route-share="${routeIndex}">Deel route (gpx)</button></p>`
     : "";
   const routeBaseAction = includeRouteBuilderAction
@@ -34,5 +34,8 @@ export function createRoutePopupContent(route, {
     ? `<p class="popup-detail"><button class="popup-action" type="button" data-route-deselect>Selectie wissen</button></p>`
     : "";
 
-  return `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km</p>${pdfLink}${sourceLink}${routePageLink}${routeShareAction}${routeBaseAction}${deselectAction}`;
+  const distanceOrWarning = route.isDummy
+    ? "Dummyroute: geen echte vaarroute."
+    : `${distanceKm.toLocaleString("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
+  return `<p class="popup-title">${escapeHtml(route.name)}</p><p class="popup-detail">${distanceOrWarning}</p>${pdfLink}${sourceLink}${routePageLink}${routeShareAction}${routeBaseAction}${deselectAction}`;
 }

@@ -1,17 +1,21 @@
-import { downloadGpxTrack } from "./gpx.js";
+import { createGpxFileName, downloadGpxTrack, normalizeGpxDownloadFileName } from "./gpx.js";
 
 export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles, getActiveRoutes }) {
   const routeBuilderDetails = document.getElementById("route-builder");
   const routeBuilderSummary = routeBuilderDetails.querySelector("summary");
   const routeBuilderMode = document.getElementById("route-builder-mode");
   const routeNameInput = document.getElementById("route-name");
-  const routeFollowWaterInput = document.getElementById("route-follow-water");
   const routeBuilderStatus = document.getElementById("route-builder-status");
   const routeDrawToggle = document.getElementById("route-draw-toggle");
   const routeUndoButton = document.getElementById("route-undo");
   const routeRedoButton = document.getElementById("route-redo");
   const routeClearButton = document.getElementById("route-clear");
   const routeDownloadButton = document.getElementById("route-download");
+  const routeDownloadDialog = document.getElementById("route-download-dialog");
+  const routeDownloadForm = document.getElementById("route-download-form");
+  const routeDownloadName = document.getElementById("route-download-name");
+  const routeDownloadError = document.getElementById("route-download-error");
+  const routeDownloadCancel = document.getElementById("route-download-cancel");
   const routeEditToggle = document.getElementById("route-edit-toggle");
   const routeEditPreviewButton = document.getElementById("route-edit-preview");
   const routeEditApplyButton = document.getElementById("route-edit-apply");
@@ -36,6 +40,12 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   const draftRoutePoints = [];
   const draftRouteLegs = [];
   const draftRouteSnaps = [];
+  const LONG_PRESS_MS = 500;
+  const LONG_PRESS_MOVE_PX = 10;
+  let longPressTimer = null;
+  let longPressOrigin = null;
+  let manualPointArmed = false;
+  let skipNextClick = false;
   const draftRouteMarkers = [];
   const draftRouteUndoActions = [];
   const draftRouteRedoActions = [];
@@ -124,6 +134,54 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           routeEditHelp.hidden = !isEditingRoute;
         }
 
+        function resetLongPress() {
+          clearTimeout(longPressTimer);
+          longPressTimer = null;
+          longPressOrigin = null;
+          manualPointArmed = false;
+          skipNextClick = false;
+          const container = map.getContainer();
+          if (container.classList.contains("route-long-press-ready")) {
+            container.classList.remove("route-long-press-ready");
+            updateDraftRouteControls();
+          }
+        }
+
+        function startLongPress(event) {
+          resetLongPress();
+          if (!isDrawingRoute || isEditingRoute) return;
+          const container = map.getContainer();
+          const rect = container.getBoundingClientRect();
+          longPressOrigin = { x: event.clientX, y: event.clientY };
+          longPressTimer = setTimeout(() => {
+            longPressTimer = null;
+            manualPointArmed = true;
+            container.style.setProperty("--long-press-x", `${event.clientX - rect.left}px`);
+            container.style.setProperty("--long-press-y", `${event.clientY - rect.top}px`);
+            container.classList.add("route-long-press-ready");
+            routeBuilderStatus.textContent = "Vrij punt: laat los om te plaatsen";
+          }, LONG_PRESS_MS);
+        }
+
+        function moveLongPress(event) {
+          if (!longPressOrigin) return;
+          const distance = Math.hypot(event.clientX - longPressOrigin.x, event.clientY - longPressOrigin.y);
+          if (distance > LONG_PRESS_MOVE_PX) resetLongPress();
+        }
+
+        function endLongPress(event) {
+          const wasArmed = manualPointArmed && longPressTimer === null;
+          if (!wasArmed || event.type !== "pointerup") {
+            resetLongPress();
+            return;
+          }
+          longPressOrigin = null;
+          map.getContainer().classList.remove("route-long-press-ready");
+          manualPointArmed = true;
+          addDraftRoutePoint({ latlng: map.mouseEventToLatLng(event) });
+          skipNextClick = true;
+        }
+
         function setRouteDrawing(active) {
           if (active && isEditingRoute) return;
           if (isDrawingRoute === active) return;
@@ -152,6 +210,12 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         }
 
         async function addDraftRoutePoint(event) {
+          if (skipNextClick) {
+            skipNextClick = false;
+            return;
+          }
+          const manualPoint = manualPointArmed;
+          manualPointArmed = false;
           if (!routeBuilderDetails.open || !isDrawingRoute || isEditingRoute || isAddingRoutePoint) return;
           let point = event.latlng;
           if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng) ||
@@ -165,7 +229,9 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             let snapped = null;
             let leg = null;
             draftRouteNote = "";
-            if (routeFollowWaterInput.checked) {
+            if (manualPoint) {
+              draftRouteNote = "vrij punt, rechte lijn gebruikt";
+            } else {
               try {
                 routeBuilderStatus.textContent = "Vaarwegen laden…";
                 await waterwayRouter.load();
@@ -192,7 +258,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
               }
               else {
                 if (snapped && previousSnap) draftRouteNote = "geen vaarwegverbinding gevonden, rechte lijn gebruikt";
-                else if (routeFollowWaterInput.checked && !draftRouteNote) draftRouteNote = "vorig punt niet op een vaarweg, rechte lijn gebruikt";
+                else if (!draftRouteNote) draftRouteNote = "vorig punt niet op een vaarweg, rechte lijn gebruikt";
                 leg = [[point.lat, point.lng]];
               }
             }
@@ -502,29 +568,25 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           try {
             const anchors = [routeEditStart.point, ...routeEditViaPoints, routeEditEnd.point];
             let path;
-            if (!routeFollowWaterInput.checked) {
-              path = anchors.map(point => [point.lat, point.lng]);
-            } else {
-              await waterwayRouter.load();
-              if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
-              const snappedAnchors = anchors.map(point => waterwayRouter.snap([point.lat, point.lng]));
-              const unsnappedIndex = snappedAnchors.findIndex(point => !point);
-              if (unsnappedIndex !== -1) {
-                routeEditMessage = `Punt ${unsnappedIndex + 1} ligt niet binnen 500 m van een beschikbare vaarweg; de route is niet gewijzigd.`;
+            await waterwayRouter.load();
+            if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
+            const snappedAnchors = anchors.map(point => waterwayRouter.snap([point.lat, point.lng]));
+            const unsnappedIndex = snappedAnchors.findIndex(point => !point);
+            if (unsnappedIndex !== -1) {
+              routeEditMessage = `Punt ${unsnappedIndex + 1} ligt niet binnen 500 m van een beschikbare vaarweg; de route is niet gewijzigd.`;
+              return;
+            }
+
+            path = [[anchors[0].lat, anchors[0].lng]];
+            for (let index = 1; index < snappedAnchors.length; index += 1) {
+              const leg = waterwayRouter.route(snappedAnchors[index - 1], snappedAnchors[index]);
+              if (!leg) {
+                routeEditMessage = `Geen vaarwegverbinding gevonden bij tussenpunt ${index}; de route is niet gewijzigd.`;
                 return;
               }
-
-              path = [[anchors[0].lat, anchors[0].lng]];
-              for (let index = 1; index < snappedAnchors.length; index += 1) {
-                const leg = waterwayRouter.route(snappedAnchors[index - 1], snappedAnchors[index]);
-                if (!leg) {
-                  routeEditMessage = `Geen vaarwegverbinding gevonden bij tussenpunt ${index}; de route is niet gewijzigd.`;
-                  return;
-                }
-                path.push(...(index === 1 ? leg : leg.slice(1)));
-              }
-              path.push([anchors[anchors.length - 1].lat, anchors[anchors.length - 1].lng]);
+              path.push(...(index === 1 ? leg : leg.slice(1)));
             }
+            path.push([anchors[anchors.length - 1].lat, anchors[anchors.length - 1].lng]);
 
             if (requestId !== routeEditRequestId || !routeBuilderDetails.open || !isEditingRoute) return;
             routeEditPreviewPath = path;
@@ -588,7 +650,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           draftRouteMarkers.length = 0;
           const endpoint = draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1);
           draftRoutePoints.push(L.latLng(...endpoint));
-          draftRouteSnaps.push(routeFollowWaterInput.checked ? waterwayRouter.snap(endpoint) : null);
+          draftRouteSnaps.push(waterwayRouter.snap(endpoint));
           draftRouteNote = "";
           rebuildDraftRouteLayer();
           cancelRouteEdit();
@@ -617,28 +679,26 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           const routeName = `Nieuwe route op basis van ${route.name}`;
           routeNameInput.value = routeName.slice(0, routeNameInput.maxLength);
           routeBuilderDetails.open = true;
-          isAddingRoutePoint = routeFollowWaterInput.checked;
+          isAddingRoutePoint = true;
           setRouteDrawing(true);
           map.closePopup();
           updateDraftRouteControls();
 
-          if (routeFollowWaterInput.checked) {
-            routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
-            try {
-              await waterwayRouter.load();
-              await waitForPlannerOpen();
-              const snappedEndpoint = waterwayRouter.snap([endpoint.lat, endpoint.lng]);
-              draftRouteSnaps[0] = snappedEndpoint;
-              if (!snappedEndpoint) draftRouteNote = "eindpunt basisroute ligt niet op een beschikbare vaarweg";
-            } catch (error) {
-              console.error("Vaarwegennetwerk laden mislukt:", error);
-              await waitForPlannerOpen();
-              draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
-            } finally {
-              isAddingRoutePoint = false;
-            }
-            updateDraftRouteControls();
+          routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
+          try {
+            await waterwayRouter.load();
+            await waitForPlannerOpen();
+            const snappedEndpoint = waterwayRouter.snap([endpoint.lat, endpoint.lng]);
+            draftRouteSnaps[0] = snappedEndpoint;
+            if (!snappedEndpoint) draftRouteNote = "eindpunt basisroute ligt niet op een beschikbare vaarweg";
+          } catch (error) {
+            console.error("Vaarwegennetwerk laden mislukt:", error);
+            await waitForPlannerOpen();
+            draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
+          } finally {
+            isAddingRoutePoint = false;
           }
+          updateDraftRouteControls();
         }
 
         function downloadDraftRoute() {
@@ -649,7 +709,10 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
 
           const name = routeNameInput.value.trim() || "Mijn vaarroute";
-          downloadGpxTrack(name, segments, "mijn-vaarroute");
+          routeDownloadName.value = `${createGpxFileName(name, "mijn-vaarroute")}.gpx`;
+          routeDownloadError.textContent = "";
+          routeDownloadDialog.showModal();
+          routeDownloadName.select();
         }
 
         routeBuilderDetails.addEventListener("toggle", () => {
@@ -691,15 +754,38 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         });
         routeClearButton.addEventListener("click", clearDraftRoute);
         routeDownloadButton.addEventListener("click", downloadDraftRoute);
+        routeDownloadCancel.addEventListener("click", () => routeDownloadDialog.close());
+        routeDownloadDialog.addEventListener("keydown", event => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            routeDownloadDialog.close();
+          }
+        });
+        routeDownloadName.addEventListener("input", () => { routeDownloadError.textContent = ""; });
+        routeDownloadForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const fileName = normalizeGpxDownloadFileName(routeDownloadName.value);
+          if (!fileName) {
+            routeDownloadError.textContent = "Vul een geldige bestandsnaam in, zonder / \\ : * ? \" < > | of een gereserveerde naam.";
+            routeDownloadName.focus();
+            return;
+          }
+          const name = routeNameInput.value.trim() || "Mijn vaarroute";
+          downloadGpxTrack(name, draftRouteSegments().filter(segment => segment.length > 1), fileName);
+          routeDownloadDialog.close();
+        });
         routeEditToggle.addEventListener("click", () => {
           if (isEditingRoute) cancelRouteEdit();
           else startRouteEdit();
         });
-        routeFollowWaterInput.addEventListener("change", () => {
-          if (routeEditViaPoints.length > 0) scheduleRouteEditPreview();
-        });
         routeEditPreviewButton.addEventListener("click", previewRouteEdit);
         routeEditApplyButton.addEventListener("click", applyRouteEdit);
+        const mapContainer = map.getContainer();
+        mapContainer.addEventListener("pointerdown", startLongPress);
+        mapContainer.addEventListener("pointermove", moveLongPress);
+        mapContainer.addEventListener("pointerup", endLongPress);
+        mapContainer.addEventListener("pointercancel", endLongPress);
+        mapContainer.addEventListener("pointerleave", endLongPress);
         routeNameInput.addEventListener("input", updateDraftRouteControls);
         updateDraftRouteControls();
 

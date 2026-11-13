@@ -50,7 +50,9 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           }
         })();
 
-        const routeShowWaterwaysInput = document.getElementById("route-show-waterways");
+        const routeWaterwaysToggle = document.getElementById("route-waterways-toggle");
+        const isWaterwaysShown = () => routeWaterwaysToggle.getAttribute("aria-pressed") === "true";
+        const setWaterwaysShown = shown => routeWaterwaysToggle.setAttribute("aria-pressed", String(shown));
         const routeWaterwayCoverageInfo = document.getElementById("route-waterway-coverage-info");
         const routeWaterwayCoverageStatus = document.getElementById("route-waterway-coverage-status");
         const regionButtons = createRouteCategoryButtons(document.getElementById("region-switch"));
@@ -151,7 +153,7 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
         }
 
         map = L.map("map", { zoomControl: false, preferCanvas: true }).setView([52.15, 5.3], 7);
-        enableOsmEditOnHold({ map, L });
+        enableOsmEditOnHold({ map, L, isBlocked: () => document.getElementById("route-builder").open });
         map.createPane("heatmapPane");
         map.getPane("heatmapPane").style.zIndex = "350";
         map.createPane("waterwayCoveragePane");
@@ -318,6 +320,33 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           onResize: refreshMapSize,
           onLayoutChange: updateRouteHitWidths
         });
+        const layoutContent = document.querySelector(".content");
+        const sidebarCollapseButton = document.getElementById("sidebar-collapse");
+        const sidebarRevealButton = document.getElementById("sidebar-reveal");
+        const sidebarCollapsedKey = "kanoroutes-sidebar-collapsed";
+        function setSidebarCollapsed(collapsed, persist = true) {
+          layoutContent.classList.toggle("is-sidebar-collapsed", collapsed);
+          sidebarCollapseButton.setAttribute("aria-expanded", String(!collapsed));
+          if (persist) {
+            try {
+              localStorage.setItem(sidebarCollapsedKey, String(collapsed));
+            } catch (error) {
+              console.warn("Voorkeur voor routeoverzicht niet opgeslagen:", error);
+            }
+          }
+        }
+        sidebarCollapseButton.addEventListener("click", () => setSidebarCollapsed(true));
+        sidebarRevealButton.addEventListener("click", () => setSidebarCollapsed(false));
+        layoutContent.addEventListener("transitionend", event => {
+          if (event.target === layoutContent) refreshMapSize();
+        });
+        let storedSidebarCollapsed = false;
+        try {
+          storedSidebarCollapsed = localStorage.getItem(sidebarCollapsedKey) === "true";
+        } catch (error) {
+          console.warn("Voorkeur voor routeoverzicht niet gelezen:", error);
+        }
+        setSidebarCollapsed(storedSidebarCollapsed, false);
         fullscreenButton.addEventListener("click", toggleFullscreen);
         document.addEventListener("fullscreenchange", () => {
           syncFullscreenButton();
@@ -347,7 +376,7 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
         let waterwayCoverageRequestId = 0;
 
         function updateWaterwayCoverage() {
-          if (!routeShowWaterwaysInput.checked) return;
+          if (!isWaterwaysShown()) return;
           const coverage = waterwayRouter.coverage(map.getBounds());
           if (!coverage) return;
 
@@ -367,7 +396,7 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
 
         async function handleWaterwayCoverageToggle() {
           const requestId = ++waterwayCoverageRequestId;
-          if (!routeShowWaterwaysInput.checked) {
+          if (!isWaterwaysShown()) {
             waterwayCoverageLayer.remove();
             waterwayPortageLayer.remove();
             waterwayCoverageLayer.setLatLngs([]);
@@ -380,10 +409,10 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           routeWaterwayCoverageStatus.textContent = "Vaarwegdekking laden…";
           try {
             await waterwayRouter.load();
-            if (requestId !== waterwayCoverageRequestId || !routeShowWaterwaysInput.checked) return;
+            if (requestId !== waterwayCoverageRequestId || !isWaterwaysShown()) return;
             updateWaterwayCoverage();
           } catch (error) {
-            if (requestId !== waterwayCoverageRequestId || !routeShowWaterwaysInput.checked) return;
+            if (requestId !== waterwayCoverageRequestId || !isWaterwaysShown()) return;
             console.error("Vaarwegdekking laden mislukt:", error);
             waterwayCoverageLayer.setLatLngs([]);
             waterwayPortageLayer.setLatLngs([]);
@@ -396,13 +425,13 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
 
         map.on("moveend", updateWaterwayCoverage);
         map.on("layeradd", event => {
-          if (event.layer !== waterwayCoverageLayer || routeShowWaterwaysInput.checked) return;
-          routeShowWaterwaysInput.checked = true;
+          if (event.layer !== waterwayCoverageLayer || isWaterwaysShown()) return;
+          setWaterwaysShown(true);
           handleWaterwayCoverageToggle();
         });
         map.on("layerremove", event => {
-          if (event.layer !== waterwayCoverageLayer || !routeShowWaterwaysInput.checked) return;
-          routeShowWaterwaysInput.checked = false;
+          if (event.layer !== waterwayCoverageLayer || !isWaterwaysShown()) return;
+          setWaterwaysShown(false);
           handleWaterwayCoverageToggle();
         });
 
@@ -417,7 +446,11 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           if (routeInteractionLocked() || selectedRoute === null || event.sourceTarget !== map) return;
           clearSelection();
         });
-        routeShowWaterwaysInput.addEventListener("change", handleWaterwayCoverageToggle);
+        routeWaterwaysToggle.addEventListener("click", () => {
+          setWaterwaysShown(!isWaterwaysShown());
+          handleWaterwayCoverageToggle();
+        });
+        handleWaterwayCoverageToggle();
 
         function applyRouteStyles() {
           const hasSelection = selectedRoute !== null;
@@ -600,7 +633,7 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
               name.className = "route-name";
               name.type = "button";
               const distanceKm = routeDistances.get(index);
-              const distanceLabel = Number.isFinite(distanceKm)
+              const distanceLabel = route.isDummy ? " (dummy – geen vaarroute)" : Number.isFinite(distanceKm)
                 ? ` (${Math.round(distanceKm).toLocaleString("nl-NL")} km)`
                 : "";
               name.textContent = `${route.name}${distanceLabel}`;
@@ -723,13 +756,15 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
               hitArea.on("mouseout", () => {
                 applyRouteStyles();
               });
-              hitArea.on("click", () => {
+              hitArea.on("click", event => {
                 if (routeInteractionLocked()) return;
+                // De routeplanner heeft de kaartklik tijdens tekenen wel nodig.
+                L.DomEvent.stopPropagation(event);
                 toggleRouteSelection(index);
                 if (selectedRoute === index) openRoutePopup(index);
               });
             });
-            const startPoint = validSegments[0][0];
+            const startPoint = route.isDummy ? route.startPoint : validSegments[0][0];
             L.circleMarker(startPoint, {
               radius: 6,
               color: "#fff",

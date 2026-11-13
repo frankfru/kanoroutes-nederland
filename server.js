@@ -19,6 +19,8 @@ const files = new Map([
   ["/shared/routes-noord-holland-data.js", ["shared/routes-noord-holland-data.js", "text/javascript; charset=utf-8"]],
   ["/shared/routes-kanoroutes-data.js", ["shared/routes-kanoroutes-data.js", "text/javascript; charset=utf-8"]],
   ["/shared/routes-utrecht-data.js", ["shared/routes-utrecht-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-tkbn-rob-nuij-data.js", ["shared/routes-tkbn-rob-nuij-data.js", "text/javascript; charset=utf-8"]],
+  ["/shared/routes-tkbn-divers-data.js", ["shared/routes-tkbn-divers-data.js", "text/javascript; charset=utf-8"]],
   ["/shared/styles.css", ["shared/styles.css", "text/css; charset=utf-8"]],
   ["/src/main.js", ["src/main.js", "text/javascript; charset=utf-8"]],
   ["/src/osm-edit.js", ["src/osm-edit.js", "text/javascript; charset=utf-8"]],
@@ -67,7 +69,10 @@ const server = http.createServer(async (request, response) => {
     return;
   }
 
-  const file = files.get(pathname);
+  const gpxPath = pathname.match(/^\/collecties\/(tkbn-rob-nuij|tkbn-divers)\/([a-z0-9-]+\.gpx)$/);
+  const file = files.get(pathname) || (gpxPath
+    ? [path.join("collecties", gpxPath[1], gpxPath[2]), "application/gpx+xml; charset=utf-8"]
+    : null);
   if (!file) {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
     response.end("Not found");

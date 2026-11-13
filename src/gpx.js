@@ -55,9 +55,15 @@ export function downloadGpxFile(fileName, gpx) {
   window.setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
 }
 
-export function downloadGpxTrack(name, segments, fallback) {
-  downloadGpxFile(
-    `${createGpxFileName(name, fallback)}.gpx`,
-    createGpxTrack(name, segments)
-  );
+export function normalizeGpxDownloadFileName(input) {
+  const baseName = input.trim().replace(/(\.gpx)+$/i, "").trim();
+  if (!baseName || /[<>:"/\\|?*\x00-\x1f]/.test(baseName) ||
+      /[. ]$/.test(baseName) || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\.|$)/i.test(baseName)) {
+    return null;
+  }
+  return `${baseName}.gpx`;
+}
+
+export function downloadGpxTrack(name, segments, fileName) {
+  downloadGpxFile(fileName, createGpxTrack(name, segments));
 }

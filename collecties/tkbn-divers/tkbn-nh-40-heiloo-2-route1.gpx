@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="TKBN dummyroute">
+  <metadata>
+    <name>DUMMY - NH 40 Heiloo-2 - Kanoroute1</name>
+    <desc>Dummy: cirkel met straal 1 km om het instappunt; geen echte vaarroute.</desc>
+    <link href="https://www.tkbn.nl/downloads/kanoroutes/NH8-Kanoroutes-GemeenteBergen.pdf">
+      <text>TKBN routebeschrijving</text>
+    </link>
+  </metadata>
+  <trk>
+    <name>DUMMY - NH 40 Heiloo-2 - Kanoroute1</name>
+    <trkseg>
+      <trkpt lat="52.61769020" lon="4.68062300" />
+      <trkpt lat="52.61765597" lon="4.68191401" />
+      <trkpt lat="52.61755355" lon="4.68319518" />
+      <trkpt lat="52.61738371" lon="4.68445677" />
+      <trkpt lat="52.61714774" lon="4.68568916" />
+      <trkpt lat="52.61684745" lon="4.68688297" />
+      <trkpt lat="52.61648511" lon="4.68802911" />
+      <trkpt lat="52.61606350" lon="4.68911886" />
+      <trkpt lat="52.61558581" lon="4.69014392" />
+      <trkpt lat="52.61505569" lon="4.69109649" />
+      <trkpt lat="52.61447718" lon="4.69196930" />
+      <trkpt lat="52.61385467" lon="4.69275574" />
+      <trkpt lat="52.61319291" lon="4.69344980" />
+      <trkpt lat="52.61249693" lon="4.69404622" />
+      <trkpt lat="52.61177204" lon="4.69454044" />
+      <trkpt lat="52.61102375" lon="4.69492873" />
+      <trkpt lat="52.61025776" lon="4.69520812" />
+      <trkpt lat="52.60947989" lon="4.69537650" />
+      <trkpt lat="52.60869608" lon="4.69543259" />
+      <trkpt lat="52.60791227" lon="4.69537597" />
+      <trkpt lat="52.60713445" lon="4.69520708" />
+      <trkpt lat="52.60636853" lon="4.69492721" />
+      <trkpt lat="52.60562033" lon="4.69453849" />
+      <trkpt lat="52.60489555" lon="4.69404389" />
+      <trkpt lat="52.60419971" lon="4.69344717" />
+      <trkpt lat="52.60353809" lon="4.69275288" />
+      <trkpt lat="52.60291574" lon="4.69196631" />
+      <trkpt lat="52.60233738" lon="4.69109344" />
+      <trkpt lat="52.60180742" lon="4.69014093" />
+      <trkpt lat="52.60132990" lon="4.68911601" />
+      <trkpt lat="52.60090843" lon="4.68802648" />
+      <trkpt lat="52.60054622" lon="4.68688064" />
+      <trkpt lat="52.60024604" lon="4.68568720" />
+      <trkpt lat="52.60001017" lon="4.68445524" />
+      <trkpt lat="52.59984040" lon="4.68319414" />
+      <trkpt lat="52.59973801" lon="4.68191348" />
+      <trkpt lat="52.59970380" lon="4.68062300" />
+      <trkpt lat="52.59973801" lon="4.67933252" />
+      <trkpt lat="52.59984040" lon="4.67805186" />
+      <trkpt lat="52.60001017" lon="4.67679076" />
+      <trkpt lat="52.60024604" lon="4.67555880" />
+      <trkpt lat="52.60054622" lon="4.67436536" />
+      <trkpt lat="52.60090843" lon="4.67321952" />
+      <trkpt lat="52.60132990" lon="4.67212999" />
+      <trkpt lat="52.60180742" lon="4.67110507" />
+      <trkpt lat="52.60233738" lon="4.67015256" />
+      <trkpt lat="52.60291574" lon="4.66927969" />
+      <trkpt lat="52.60353809" lon="4.66849312" />
+      <trkpt lat="52.60419971" lon="4.66779883" />
+      <trkpt lat="52.60489555" lon="4.66720211" />
+      <trkpt lat="52.60562033" lon="4.66670751" />
+      <trkpt lat="52.60636853" lon="4.66631879" />
+      <trkpt lat="52.60713445" lon="4.66603892" />
+      <trkpt lat="52.60791227" lon="4.66587003" />
+      <trkpt lat="52.60869608" lon="4.66581341" />
+      <trkpt lat="52.60947989" lon="4.66586950" />
+      <trkpt lat="52.61025776" lon="4.66603788" />
+      <trkpt lat="52.61102375" lon="4.66631727" />
+      <trkpt lat="52.61177204" lon="4.66670556" />
+      <trkpt lat="52.61249693" lon="4.66719978" />
+      <trkpt lat="52.61319291" lon="4.66779620" />
+      <trkpt lat="52.61385467" lon="4.66849026" />
+      <trkpt lat="52.61447718" lon="4.66927670" />
+      <trkpt lat="52.61505569" lon="4.67014951" />
+      <trkpt lat="52.61558581" lon="4.67110208" />
+      <trkpt lat="52.61606350" lon="4.67212714" />
+      <trkpt lat="52.61648511" lon="4.67321689" />
+      <trkpt lat="52.61684745" lon="4.67436303" />
+      <trkpt lat="52.61714774" lon="4.67555684" />
+      <trkpt lat="52.61738371" lon="4.67678923" />
+      <trkpt lat="52.61755355" lon="4.67805082" />
+      <trkpt lat="52.61765597" lon="4.67933199" />
+      <trkpt lat="52.61769020" lon="4.68062300" />
+    </trkseg>
+  </trk>
+</gpx>

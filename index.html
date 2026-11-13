@@ -34,6 +34,9 @@
 
       <div class="content">
         <aside class="sidebar" aria-label="Routes">
+          <button class="sidebar-collapse" id="sidebar-collapse" type="button" aria-expanded="true" aria-controls="sidebar-content" aria-label="Routeoverzicht verbergen" title="Routeoverzicht verbergen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
           <button class="sheet-toggle" id="sheet-toggle" type="button" aria-expanded="false" aria-controls="sidebar-content" aria-label="Routes openen">
             <span class="sheet-toggle-content"><span class="sheet-grip" aria-hidden="true"></span><span id="sheet-toggle-label">Routes bekijken</span></span>
           </button>
@@ -81,12 +84,16 @@
         </aside>
 
         <section class="map-wrap" aria-label="Kaart met GPX-routes">
+          <button class="sidebar-reveal" id="sidebar-reveal" type="button" aria-controls="sidebar-content" aria-label="Routeoverzicht tonen" title="Routeoverzicht tonen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
           <div id="map"></div>
           <details class="route-builder" id="route-builder">
             <summary title="Routeplanner" aria-label="Routeplanner"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2"/><circle cx="19" cy="5" r="2"/><path d="M7 18h5a4 4 0 0 0 0-8h-1a3 3 0 0 1 0-6h6"/></svg><span class="sr-only" id="route-builder-mode"></span></summary>
             <div class="route-builder-body">
               <div class="route-builder-actions" role="group" aria-label="Routeplanner">
                 <button class="route-builder-button" id="route-draw-toggle" type="button" aria-pressed="false" aria-label="Start tekenen" title="Start tekenen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 4-.8L20 7l-3-3L4.8 16zM14.5 6.5l3 3"/></svg></button>
+                <button class="route-builder-button" id="route-waterways-toggle" type="button" aria-pressed="true" aria-label="Toon beschikbare vaarwegen" title="Toon beschikbare vaarwegen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 20c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg></button>
                 <button class="route-builder-button" id="route-undo" type="button" aria-label="Punt terug" title="Punt terug (Ctrl+Z)" aria-keyshortcuts="Control+Z" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7-5 5 5 5M4 12h10a5 5 0 0 1 5 5"/></svg></button>
                 <button class="route-builder-button" id="route-redo" type="button" aria-label="Punt vooruit" title="Punt vooruit (Ctrl+Y)" aria-keyshortcuts="Control+Y" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5m5-5H10a5 5 0 0 0-5 5"/></svg></button>
                 <button class="route-builder-button" id="route-edit-toggle" type="button" aria-label="Traject aanpassen" title="Traject aanpassen" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18h3a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h8"/></svg></button>
@@ -99,12 +106,6 @@
               <div class="route-builder-info">
                 <div class="route-builder-status">
                   <p id="route-builder-status" role="status" aria-live="polite">Nog geen routepunten.</p>
-                  <p id="route-edit-help" hidden>Klik op het bestaande traject voor begin- en eindpunt; de volgorde maakt niet uit. Plaats daarna één of meer tussenpunten op de gewenste vaarweg; de omleiding verschijnt automatisch. Begin en eind moeten op hetzelfde GPX-segment liggen.</p>
-                </div>
-                <div class="route-builder-settings" id="route-settings" hidden>
-                  <input id="route-name" type="text" value="Mijn vaarroute" maxlength="80" aria-label="Routenaam">
-                  <label class="route-builder-option"><input id="route-follow-water" type="checkbox" checked> Volg vaarwegen (OpenStreetMap)</label>
-                  <label class="route-builder-option"><input id="route-show-waterways" type="checkbox"> Toon beschikbare vaarwegen</label>
                   <div class="route-waterway-coverage" id="route-waterway-coverage-info" hidden>
                     <span class="route-waterway-coverage-swatch" aria-hidden="true"></span>
                     <div class="route-waterway-coverage-copy">
@@ -113,11 +114,27 @@
                       <p>Bron: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap-bijdragers</a>. Niet elke lijn is per se bevaarbaar of toegestaan.</p>
                     </div>
                   </div>
-                  <p>Klik op de kaart om punten toe te voegen. Met &ldquo;Volg vaarwegen&rdquo; loopt de lijn over kanalen en rivieren uit OpenStreetMap (binnen 500&nbsp;m van je klik); anders verbindt de lijn de punten rechtstreeks. Kleine sloten en meren ontbreken in die data, controleer de route dus altijd zelf.</p>
+                  <p id="route-edit-help" hidden>Klik op het bestaande traject voor begin- en eindpunt; de volgorde maakt niet uit. Plaats daarna één of meer tussenpunten op de gewenste vaarweg; de omleiding verschijnt automatisch. Begin en eind moeten op hetzelfde GPX-segment liggen.</p>
+                </div>
+                <div class="route-builder-settings" id="route-settings" hidden>
+                  <input id="route-name" type="text" value="Mijn vaarroute" maxlength="80" aria-label="Routenaam">
+                  <p>Klik op de kaart om punten toe te voegen. Elk punt koppelt zich aan een vaarweg uit OpenStreetMap (binnen 500&nbsp;m van je klik); ligt er geen vaarweg, dan verbindt de lijn de punten rechtstreeks. Houd de muis of vinger 0,5 seconde ingedrukt om een vrij punt te plaatsen, zonder koppeling aan een vaarweg. Kleine sloten en meren ontbreken in die data, controleer de route dus altijd zelf.</p>
                 </div>
               </div>
             </div>
           </details>
+          <dialog class="route-download-dialog" id="route-download-dialog" aria-labelledby="route-download-title">
+            <form id="route-download-form">
+              <h2 id="route-download-title">Route downloaden</h2>
+              <label for="route-download-name">Bestandsnaam</label>
+              <input id="route-download-name" type="text" aria-describedby="route-download-error">
+              <p id="route-download-error" role="alert"></p>
+              <div class="route-download-actions">
+                <button id="route-download-cancel" type="button">Annuleren</button>
+                <button type="submit">Download GPX</button>
+              </div>
+            </form>
+          </dialog>
           <div class="map-legend"><span class="startpoint-symbol is-hidden" id="startpoint-legend-symbol" aria-hidden="true"></span><span id="startpoint-legend-label">Startpunt geselecteerde route</span></div>
           <div class="map-label" id="map-label">Dinsdaggers</div>
           <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="Kaart op volledig scherm" title="Volledig scherm">

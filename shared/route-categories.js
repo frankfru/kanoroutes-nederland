@@ -33,6 +33,24 @@ export const ROUTE_CATEGORIES = [
     dataFile: "routes-kanoroutes-data.js?v=province-groups-1",
     dataGlobal: "GPX_ROUTES_KANOROUTES",
     sourceNote: 'GPS-bron: <a href="https://kanoroutes.nl/" target="_blank" rel="noopener noreferrer">kanoroutes.nl</a>. Alleen routes in Nederland; open de routepagina voor meer informatie.'
+  },
+  {
+    id: "tkbn-rob-nuij",
+    label: "TKBN · Rob Nuij",
+    mapLabel: "TKBN · Rob Nuij",
+    color: "#70419a",
+    dataFile: "routes-tkbn-rob-nuij-data.js",
+    dataGlobal: "GPX_ROUTES_TKBN_ROB_NUIJ",
+    sourceNote: 'Bron: <a href="https://www.tkbn.nl/instappunten-nl/" target="_blank" rel="noopener noreferrer">TKBN instappunten</a>. Dummyroutes zijn geen echte vaarroutes.'
+  },
+  {
+    id: "tkbn-divers",
+    label: "TKBN · divers",
+    mapLabel: "TKBN · divers",
+    color: "#007d80",
+    dataFile: "routes-tkbn-divers-data.js",
+    dataGlobal: "GPX_ROUTES_TKBN_DIVERS",
+    sourceNote: 'Bron: <a href="https://www.tkbn.nl/instappunten-nl/" target="_blank" rel="noopener noreferrer">TKBN instappunten</a>. Dummyroutes zijn geen echte vaarroutes.'
   }
 ];
 
@@ -93,7 +111,11 @@ export function loadRouteCategory(categoryId) {
   const category = categoriesById.get(categoryId);
   if (!category) throw new Error(`Onbekende routecategorie: ${categoryId}`);
 
-  const annotateRoutes = routes => routes.map(route => ({ ...route, sourceRegion: categoryId }));
+  const annotateRoutes = routes => routes.map(route => ({
+    ...route,
+    ...(route.sourcePath ? { source: new URL(route.sourcePath, import.meta.url).href } : {}),
+    sourceRegion: categoryId
+  }));
   const loadedRoutes = globalThis[category.dataGlobal];
   if (Array.isArray(loadedRoutes)) return Promise.resolve(annotateRoutes(loadedRoutes));
 

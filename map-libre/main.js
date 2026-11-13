@@ -271,7 +271,7 @@ function renderList(filter = "") {
       name.className = "route-name";
       name.type = "button";
       const distanceKm = routeDistances.get(index);
-      const distanceLabel = Number.isFinite(distanceKm)
+      const distanceLabel = route.isDummy ? " (dummy – geen vaarroute)" : Number.isFinite(distanceKm)
         ? ` (${Math.round(distanceKm).toLocaleString("nl-NL")} km)`
         : "";
       name.textContent = `${route.name}${distanceLabel}`;
