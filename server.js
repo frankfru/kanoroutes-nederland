@@ -7,6 +7,7 @@ const port = Number(process.env.PORT || 4173);
 const files = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
+  ["/robots.txt", ["robots.txt", "text/plain; charset=utf-8"]],
   ["/map-libre", ["map-libre/index.html", "text/html; charset=utf-8"]],
   ["/map-libre/", ["map-libre/index.html", "text/html; charset=utf-8"]],
   ["/map-libre/index.html", ["map-libre/index.html", "text/html; charset=utf-8"]],
@@ -84,7 +85,8 @@ const server = http.createServer(async (request, response) => {
     response.writeHead(200, {
       "Content-Type": file[1],
       "Cache-Control": "no-store",
-      "X-Content-Type-Options": "nosniff"
+      "X-Content-Type-Options": "nosniff",
+      "X-Robots-Tag": "noindex, nofollow, noarchive, noimageindex"
     });
     response.end(request.method === "HEAD" ? undefined : body);
   } catch (error) {
