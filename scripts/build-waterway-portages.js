@@ -4,9 +4,10 @@ const { readFile, writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const projectRoot = path.resolve(__dirname, "..");
-const portagesPath = path.join(projectRoot, "canoe-portages-osm.json");
-const networkPath = path.join(projectRoot, "waterway-network.json");
-const outputPath = path.join(projectRoot, "waterway-portages.json");
+const germanyOnly = process.argv.includes("--germany-only");
+const portagesPath = path.join(projectRoot, germanyOnly ? "canoe-portages-osm-germany.json" : "canoe-portages-osm.json");
+const networkPath = path.join(projectRoot, germanyOnly ? "waterway-network-germany.json" : "waterway-network.json");
+const outputPath = path.join(projectRoot, germanyOnly ? "waterway-portages-germany.json" : "waterway-portages.json");
 const gridSize = 0.01;
 const maxSnapMeters = 100;
 const maxPortageLengthMeters = 1000;
@@ -131,7 +132,12 @@ function cleanLine(line) {
     index === 0 || distanceMeters(line[index - 1], point) > 0.01);
 }
 
-function buildWaterwayPortages(portages, network, generatedAt = new Date().toISOString()) {
+function buildWaterwayPortages(
+  portages,
+  network,
+  generatedAt = new Date().toISOString(),
+  source = "Derived from canoe-portage OSM data and its country-specific waterway network"
+) {
   if (portages.type !== "FeatureCollection" || !Array.isArray(portages.features)) {
     throw new Error("De OSM-overdraagpunten hebben een onbekend formaat.");
   }
@@ -222,7 +228,7 @@ function buildWaterwayPortages(portages, network, generatedAt = new Date().toISO
   return {
     version: 1,
     generatedAt,
-    source: "Derived from canoe-portages-osm.json and waterway-network.json",
+    source,
     osmBaseTimestamp: portages.osmBaseTimestamp || null,
     waterwayGenerated: network.generated || null,
     portageCount: portages.features.length,
@@ -238,7 +244,12 @@ async function main() {
     readFile(portagesPath, "utf8").then(JSON.parse),
     readFile(networkPath, "utf8").then(JSON.parse)
   ]);
-  const output = buildWaterwayPortages(portages, network);
+  const output = buildWaterwayPortages(
+    portages,
+    network,
+    undefined,
+    `Derived from ${path.basename(portagesPath)} and ${path.basename(networkPath)}`
+  );
   await writeFile(outputPath, `${JSON.stringify(output, null, 1)}\n`);
   console.log(
     `${output.connectionCount} overdrachten routeerbaar; ${output.unresolvedCount} onopgelost ` +

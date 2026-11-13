@@ -1,10 +1,11 @@
-// Haalt mogelijke kanosteigers en overdraagpunten uit OSM voor heel Nederland.
-// Gebruik: node scripts/build-canoe-landings.js
+// Haalt mogelijke kanosteigers en overdraagpunten uit OSM voor één land.
+// Gebruik: node scripts/build-canoe-landings.js [--germany-only]
 const { writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
-const outputPath = path.join(__dirname, "..", "canoe-landings.json");
-const portagesOutputPath = path.join(__dirname, "..", "canoe-portages-osm.json");
+const germanyOnly = process.argv.includes("--germany-only");
+const outputPath = path.join(__dirname, "..", germanyOnly ? "canoe-landings-germany.json" : "canoe-landings.json");
+const portagesOutputPath = path.join(__dirname, "..", germanyOnly ? "canoe-portages-osm-germany.json" : "canoe-portages-osm.json");
 const endpoints = [
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
@@ -14,20 +15,32 @@ const endpoints = [
 const selectors = [
   '["waterway"="access_point"]["canoe"]["canoe"!="no"]',
   '["man_made"="pier"]["canoe"]["canoe"!="no"]',
+  '["canoe"~"(^|;)put_in(;|$)"]["canoe"~"(^|;)egress(;|$)"]',
   '["canoe"="portage"]'
 ];
 
-function buildQuery() {
-  const parts = selectors.flatMap(filter => ["node", "way", "relation"].map(type => `${type}${filter}(area.nl);`));
-  return `[out:json][timeout:300];area["ISO3166-1"="NL"][admin_level=2]->.nl;(${parts.join("")});out center geom tags;`;
+function buildQuery(country = "NL") {
+  const areas = {
+    NL: 'area["ISO3166-1"="NL"][admin_level=2]->.nl;',
+    DE: 'area["ISO3166-2"~"^(DE-BE|DE-BB|DE-MV)$"]->.de;'
+  };
+  const area = areas[country];
+  if (!area) throw new Error(`Onbekend land voor kanosteigerdata: ${country}`);
+  const areaSet = country === "DE" ? "de" : "nl";
+  const parts = selectors.flatMap(filter =>
+    ["node", "way", "relation"].map(type => `${type}${filter}(area.${areaSet});`));
+  return `[out:json][timeout:300];${area}(${parts.join("")});out center geom tags;`;
 }
 
 function matchedBy(tags) {
   const canoeAllowed = "canoe" in tags && tags.canoe !== "no";
+  const canoeValues = typeof tags.canoe === "string" ? tags.canoe.split(";").map(value => value.trim()) : [];
+  const isCanoePortage = canoeValues.includes("portage") ||
+    (canoeValues.includes("put_in") && canoeValues.includes("egress"));
   return [
     canoeAllowed && tags.waterway === "access_point" ? "access-point" : null,
     canoeAllowed && tags.man_made === "pier" ? "pier-canoe" : null,
-    tags.canoe === "portage" ? "canoe-portage" : null
+    isCanoePortage ? "canoe-portage" : null
   ].filter(Boolean);
 }
 
@@ -52,11 +65,11 @@ function selectCanoeLandings(features) {
         properties: {
           ...feature.properties,
           matchedBy: matches,
-          category: tags.canoe === "portage" ? "landing-portage" : "landing",
+          category: matches.includes("canoe-portage") ? "landing-portage" : "landing",
           portageSources: []
         }
       });
-    } else if (tags.canoe === "portage") {
+    } else if (matches.includes("canoe-portage")) {
       portages.push({ ...feature, properties: { ...feature.properties, matchedBy: matches } });
     }
   }
@@ -139,7 +152,7 @@ function elementGeometry(element) {
 
 function selectCanoePortages(elements) {
   return elements
-    .filter(element => element.tags?.canoe === "portage")
+    .filter(element => matchedBy(element.tags || {}).includes("canoe-portage"))
     .map(element => ({
       type: "Feature",
       id: `${element.type}/${element.id}`,
@@ -187,7 +200,7 @@ async function fetchOverpass(query) {
 }
 
 async function main() {
-  const data = await fetchOverpass(buildQuery());
+  const data = await fetchOverpass(buildQuery(germanyOnly ? "DE" : "NL"));
   const candidates = data.elements.map(element => {
     const lat = element.lat ?? element.center?.lat;
     const lon = element.lon ?? element.center?.lon;

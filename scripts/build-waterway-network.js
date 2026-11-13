@@ -3,17 +3,20 @@ const { createHash } = require("node:crypto");
 const path = require("node:path");
 
 const projectRoot = path.resolve(__dirname, "..");
-const outputPath = path.join(projectRoot, "waterway-network.json");
 const candidatePath = path.join(projectRoot, "waterway-coverage-candidates.json");
 const mergeCandidatesOnly = process.argv.includes("--merge-candidates-only");
+const germanyOnly = process.argv.includes("--germany-only");
+const outputPath = path.join(projectRoot, germanyOnly ? "waterway-network-germany.json" : "waterway-network.json");
 const endpoints = [
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter"
 ];
-const provinces = ["NL-DR", "NL-FL", "NL-FR", "NL-GE", "NL-GR", "NL-LI", "NL-NB", "NL-NH", "NL-OV", "NL-UT", "NL-ZE", "NL-ZH"];
-const buildQuery = (province) => `[out:json][timeout:300];
-area["ISO3166-2"="${province}"]->.a;
-way(area.a)["waterway"~"^(canal|river|fairway)$"];
+const netherlandsAreas = ["NL-DR", "NL-FL", "NL-FR", "NL-GE", "NL-GR", "NL-LI", "NL-NB", "NL-NH", "NL-OV", "NL-UT", "NL-ZE", "NL-ZH"];
+const germanAreas = ["DE-BE", "DE-BB", "DE-MV"];
+const areas = germanyOnly ? germanAreas : netherlandsAreas;
+const buildQuery = area => `[out:json][timeout:300];
+area["ISO3166-2"="${area}"]->.a;
+way(area.a)["waterway"~"^(canal|river|fairway|flowline)$"];
 out body;
 >;
 out skel qt;`;
@@ -23,8 +26,8 @@ const coordinateDecimals = 5;
 const candidateJoinToleranceMeters = 4;
 const networkGridSize = 0.01;
 
-async function fetchOverpass(province) {
-  const query = buildQuery(province);
+async function fetchOverpass(area) {
+  const query = buildQuery(area);
   let lastError;
   for (let attempt = 0; attempt < 3; attempt++) {
     for (const endpoint of endpoints) {
@@ -38,7 +41,7 @@ async function fetchOverpass(province) {
         return await response.json();
       } catch (error) {
         lastError = error;
-        console.warn(`${province}: Overpass-server mislukt (${error.message}); volgende proberen.`);
+        console.warn(`${area}: Overpass-server mislukt (${error.message}); volgende proberen.`);
       }
     }
     await new Promise(resolve => setTimeout(resolve, 10000));
@@ -280,7 +283,10 @@ function mergeCoverageCandidates(network, candidates) {
 }
 
 async function main() {
-  const candidates = JSON.parse(await readFile(candidatePath, "utf8"));
+  if (germanyOnly && mergeCandidatesOnly) {
+    throw new Error("Kies één van --germany-only en --merge-candidates-only.");
+  }
+  const candidates = germanyOnly ? null : JSON.parse(await readFile(candidatePath, "utf8"));
   if (mergeCandidatesOnly) {
     const network = JSON.parse(await readFile(outputPath, "utf8"));
     const result = mergeCoverageCandidates(network, candidates);
@@ -301,9 +307,9 @@ async function main() {
   const coordinates = new Map();
   const ways = [];
   const seenWays = new Set();
-  for (const province of provinces) {
-    const data = await fetchOverpass(province);
-    console.log(`${province}: ${data.elements.length} elementen`);
+  for (const area of areas) {
+    const data = await fetchOverpass(area);
+    console.log(`${area}: ${data.elements.length} elementen`);
     for (const element of data.elements) {
       if (element.type === "node") {
         coordinates.set(element.id, [element.lat, element.lon]);
@@ -311,7 +317,8 @@ async function main() {
         if (seenWays.has(element.id)) continue;
         seenWays.add(element.id);
         const tags = element.tags || {};
-        if (tags.boat === "no" || tags.tunnel === "culvert" || tags.access === "no") continue;
+        if ((tags.boat === "no" && tags.canoe !== "yes") ||
+            tags.tunnel === "culvert" || tags.access === "no") continue;
         ways.push(element.nodes);
       }
     }
@@ -363,17 +370,25 @@ async function main() {
     if (simplified.length >= 2) resultWays.push(simplified.map(indexOf));
   }
 
+  const generated = new Date().toISOString().slice(0, 10);
   const output = {
     version: 1,
-    source: "OpenStreetMap (waterway=canal|river|fairway), © OpenStreetMap-bijdragers, ODbL",
-    generated: new Date().toISOString().slice(0, 10),
+    source: "OpenStreetMap (waterway=canal|river|fairway|flowline), © OpenStreetMap-bijdragers, ODbL",
+    generated,
+    includedAreas: areas,
     nodes: nodeList,
     ways: resultWays
   };
+  if (germanyOnly) {
+    await writeFile(outputPath, JSON.stringify(output));
+    console.log(`${resultWays.length} vaarwegen, ${nodeList.length / 2} punten in ${outputPath}`);
+    return;
+  }
+
   const merged = mergeCoverageCandidates(output, candidates);
   await writeFile(outputPath, JSON.stringify(merged.network));
   console.log(
-    `${merged.network.ways.length} vaarwegen, ${merged.network.nodes.length / 2} punten; ` +
+    `${merged.network.ways.length} Nederlandse vaarwegen, ${merged.network.nodes.length / 2} punten; ` +
     `${merged.stats.count} kandidaattrajecten opgenomen in ${outputPath}`
   );
 }

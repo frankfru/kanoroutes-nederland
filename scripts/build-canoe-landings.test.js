@@ -34,11 +34,41 @@ test("selects only canoe-enabled piers and access points, and other portages", (
   for (const selector of [
     '["waterway"="access_point"]["canoe"]["canoe"!="no"]',
     '["man_made"="pier"]["canoe"]["canoe"!="no"]',
+    '["canoe"~"(^|;)put_in(;|$)"]["canoe"~"(^|;)egress(;|$)"]',
     '["canoe"="portage"]'
   ]) {
     for (const type of ["node", "way", "relation"]) assert.ok(query.includes(`${type}${selector}(area.nl);`));
   }
   assert.ok(query.includes("out center geom tags;"));
+});
+
+test("builds the German landing query independently from the Netherlands query", () => {
+  const query = buildQuery("DE");
+  assert.ok(query.includes('area["ISO3166-2"~"^(DE-BE|DE-BB|DE-MV)$"]->.de;'));
+  assert.ok(!query.includes("area.nl"));
+  for (const selector of [
+    '["waterway"="access_point"]["canoe"]["canoe"!="no"]',
+    '["man_made"="pier"]["canoe"]["canoe"!="no"]',
+    '["canoe"~"(^|;)put_in(;|$)"]["canoe"~"(^|;)egress(;|$)"]',
+    '["canoe"="portage"]'
+  ]) {
+    for (const type of ["node", "way", "relation"]) assert.ok(query.includes(`${type}${selector}(area.de);`));
+  }
+  assert.throws(() => buildQuery("FR"), /Onbekend land/);
+});
+
+test("treats canoe=put_in;egress as a portage without changing the source tags", () => {
+  const tags = { waterway: "access_point", canoe: "put_in;egress" };
+  const landings = selectCanoeLandings([feature("node/1", 0, tags)]);
+  assert.equal(landings[0].properties.category, "landing-portage");
+  assert.deepEqual(landings[0].properties.matchedBy, ["access-point", "canoe-portage"]);
+  assert.deepEqual(landings[0].properties.tags, tags);
+
+  const portages = selectCanoePortages([
+    { type: "node", id: 1, lat: 52, lon: 5, tags }
+  ]);
+  assert.equal(portages.length, 1);
+  assert.deepEqual(portages[0].properties.tags, tags);
 });
 
 test("keeps raw portage node and way geometries separately from landing selection", () => {

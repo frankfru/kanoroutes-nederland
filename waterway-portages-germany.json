@@ -1,0 +1,3496 @@
+{
+ "version": 1,
+ "generatedAt": "2026-11-13T01:44:48.300Z",
+ "source": "Derived from canoe-portages-osm-germany.json and waterway-network-germany.json",
+ "osmBaseTimestamp": "2026-11-13T01:43:02Z",
+ "waterwayGenerated": "2026-11-13",
+ "portageCount": 196,
+ "connectionCount": 45,
+ "unresolvedCount": 148,
+ "connections": [
+  {
+   "id": "node/11247690038",
+   "sourceIds": [
+    "node/11247690038"
+   ],
+   "line": [
+    [
+     53.185694856495424,
+     13.143095612226674
+    ],
+    [
+     53.1856767,
+     13.1431221
+    ],
+    [
+     53.18613,
+     13.14356
+    ]
+   ],
+   "lengthMeters": 60.67418010626074
+  },
+  {
+   "id": "node/12149481463",
+   "sourceIds": [
+    "node/12149481463"
+   ],
+   "line": [
+    [
+     53.254271853506346,
+     12.907230801885838
+    ],
+    [
+     53.2538738,
+     12.9083318
+    ],
+    [
+     53.25401,
+     12.90697
+    ]
+   ],
+   "lengthMeters": 177.45051546954477
+  },
+  {
+   "id": "node/12269155181",
+   "sourceIds": [
+    "node/12269155181"
+   ],
+   "line": [
+    [
+     51.83040575651589,
+     14.124106190011798
+    ],
+    [
+     51.8303895,
+     14.1240939
+    ],
+    [
+     51.83036,
+     14.1243
+    ]
+   ],
+   "lengthMeters": 16.534734899666553
+  },
+  {
+   "id": "node/12269155182",
+   "sourceIds": [
+    "node/12269155182"
+   ],
+   "line": [
+    [
+     51.8303472636249,
+     14.124361862393327
+    ],
+    [
+     51.8303146,
+     14.1243445
+    ],
+    [
+     51.83039,
+     14.12416
+    ]
+   ],
+   "lengthMeters": 18.98763996809163
+  },
+  {
+   "id": "node/12271011674",
+   "sourceIds": [
+    "node/12271011674"
+   ],
+   "line": [
+    [
+     53.27242810760916,
+     12.800971452827202
+    ],
+    [
+     53.2723251,
+     12.8008473
+    ],
+    [
+     53.27212,
+     12.80173
+    ]
+   ],
+   "lengthMeters": 77.05394348740337
+  },
+  {
+   "id": "node/12278453428",
+   "sourceIds": [
+    "node/12278453428"
+   ],
+   "line": [
+    [
+     53.18656798541078,
+     12.920764749309155
+    ],
+    [
+     53.1862976,
+     12.9211782
+    ],
+    [
+     53.18617,
+     12.92005
+    ]
+   ],
+   "lengthMeters": 117.23504344749796
+  },
+  {
+   "id": "node/12468984450",
+   "sourceIds": [
+    "node/12468984450"
+   ],
+   "line": [
+    [
+     53.36584224186646,
+     12.892502917087944
+    ],
+    [
+     53.3658399,
+     12.8924909
+    ],
+    [
+     53.36503,
+     12.89292
+    ]
+   ],
+   "lengthMeters": 94.79341609637312
+  },
+  {
+   "id": "node/12470774190",
+   "sourceIds": [
+    "node/12470774190"
+   ],
+   "line": [
+    [
+     53.18549,
+     13.14271
+    ],
+    [
+     53.185346,
+     13.1425701
+    ],
+    [
+     53.18499,
+     13.14187
+    ]
+   ],
+   "lengthMeters": 79.52208820490179
+  },
+  {
+   "id": "node/12475606785",
+   "sourceIds": [
+    "node/12475606785"
+   ],
+   "line": [
+    [
+     52.54016904645283,
+     13.209164407801667
+    ],
+    [
+     52.5401881,
+     13.2093828
+    ],
+    [
+     52.53993,
+     13.20922
+    ]
+   ],
+   "lengthMeters": 45.52114343526229
+  },
+  {
+   "id": "node/12475606786",
+   "sourceIds": [
+    "node/12475606786"
+   ],
+   "line": [
+    [
+     52.54095251725973,
+     13.208982205288436
+    ],
+    [
+     52.54097,
+     13.2091826
+    ],
+    [
+     52.54122,
+     13.20892
+    ]
+   ],
+   "lengthMeters": 46.564630981479525
+  },
+  {
+   "id": "node/12492629821",
+   "sourceIds": [
+    "node/12492629821"
+   ],
+   "line": [
+    [
+     53.73599757000916,
+     11.836793551640712
+    ],
+    [
+     53.7359754,
+     11.8367715
+    ],
+    [
+     53.73584,
+     11.83724
+    ]
+   ],
+   "lengthMeters": 37.136809034255045
+  },
+  {
+   "id": "node/12497704842",
+   "sourceIds": [
+    "node/12497704842"
+   ],
+   "line": [
+    [
+     53.430830184702344,
+     11.83947127596679
+    ],
+    [
+     53.4309036,
+     11.8395233
+    ],
+    [
+     53.430701748344305,
+     11.838355160794734
+    ]
+   ],
+   "lengthMeters": 89.44269821797374
+  },
+  {
+   "id": "node/13551471086",
+   "sourceIds": [
+    "node/13551471086"
+   ],
+   "line": [
+    [
+     52.798247379258946,
+     13.295922687406243
+    ],
+    [
+     52.7983555,
+     13.2958439
+    ],
+    [
+     52.79799,
+     13.29497
+    ]
+   ],
+   "lengthMeters": 84.4340664580375
+  },
+  {
+   "id": "node/13836306982",
+   "sourceIds": [
+    "node/13836306982"
+   ],
+   "line": [
+    [
+     53.07364862141197,
+     13.389787789896435
+    ],
+    [
+     53.0735596,
+     13.3899945
+    ],
+    [
+     53.07354,
+     13.38966
+    ]
+   ],
+   "lengthMeters": 39.44528226473237
+  },
+  {
+   "id": "node/2407255449",
+   "sourceIds": [
+    "node/2407255449",
+    "node/2407255515"
+   ],
+   "line": [
+    [
+     53.728362580519665,
+     11.843516731341756
+    ],
+    [
+     53.7283047,
+     11.843388
+    ],
+    [
+     53.72796,
+     11.84401
+    ]
+   ],
+   "lengthMeters": 66.56700487843636
+  },
+  {
+   "id": "node/2449348209",
+   "sourceIds": [
+    "node/2449348209",
+    "node/2449348214"
+   ],
+   "line": [
+    [
+     53.55254,
+     13.24376
+    ],
+    [
+     53.5525527,
+     13.243806
+    ],
+    [
+     53.55223,
+     13.24438
+    ]
+   ],
+   "lengthMeters": 55.44134243089149
+  },
+  {
+   "id": "node/269642137",
+   "sourceIds": [
+    "node/269642137",
+    "node/269642140"
+   ],
+   "line": [
+    [
+     53.36544,
+     12.89272
+    ],
+    [
+     53.3654011,
+     12.8928189
+    ],
+    [
+     53.36503,
+     12.89292
+    ]
+   ],
+   "lengthMeters": 49.4191228340667
+  },
+  {
+   "id": "node/3287804684",
+   "sourceIds": [
+    "node/3287804684"
+   ],
+   "line": [
+    [
+     53.27184188187633,
+     12.802308049433517
+    ],
+    [
+     53.2717544,
+     12.802192
+    ],
+    [
+     53.27212,
+     12.80173
+    ]
+   ],
+   "lengthMeters": 63.16290242118329
+  },
+  {
+   "id": "node/3555117985",
+   "sourceIds": [
+    "node/3555117985"
+   ],
+   "line": [
+    [
+     53.42624041486543,
+     11.842867440089078
+    ],
+    [
+     53.4261726,
+     11.8427621
+    ],
+    [
+     53.42672,
+     11.84201
+    ]
+   ],
+   "lengthMeters": 88.67057258444208
+  },
+  {
+   "id": "node/3559659438",
+   "sourceIds": [
+    "node/3559659438"
+   ],
+   "line": [
+    [
+     53.4564,
+     12.26975
+    ],
+    [
+     53.45618,
+     12.2700263
+    ],
+    [
+     53.45682,
+     12.27053
+    ]
+   ],
+   "lengthMeters": 108.67174188620106
+  },
+  {
+   "id": "node/3715839079",
+   "sourceIds": [
+    "node/3715839079"
+   ],
+   "line": [
+    [
+     53.40871692349233,
+     12.907179890240446
+    ],
+    [
+     53.4087216,
+     12.9071386
+    ],
+    [
+     53.4094,
+     12.90787
+    ]
+   ],
+   "lengthMeters": 92.11406883718033
+  },
+  {
+   "id": "node/455232834",
+   "sourceIds": [
+    "node/455232834"
+   ],
+   "line": [
+    [
+     53.27992,
+     12.98506
+    ],
+    [
+     53.2799565,
+     12.9851325
+    ],
+    [
+     53.28009016846732,
+     12.984115436069402
+    ]
+   ],
+   "lengthMeters": 75.5783223427111
+  },
+  {
+   "id": "node/488648237",
+   "sourceIds": [
+    "node/488648237"
+   ],
+   "line": [
+    [
+     53.33968056992369,
+     12.684646617596572
+    ],
+    [
+     53.3390561,
+     12.6846735
+    ],
+    [
+     53.33957,
+     12.68375
+    ]
+   ],
+   "lengthMeters": 152.68630090503837
+  },
+  {
+   "id": "node/5023072842",
+   "sourceIds": [
+    "node/5023072842"
+   ],
+   "line": [
+    [
+     53.22108,
+     12.86076
+    ],
+    [
+     53.2209536,
+     12.8607758
+    ],
+    [
+     53.22037,
+     12.86013
+    ]
+   ],
+   "lengthMeters": 91.56454378822743
+  },
+  {
+   "id": "node/5069579481",
+   "sourceIds": [
+    "node/5069579481"
+   ],
+   "line": [
+    [
+     53.20789,
+     12.86281
+    ],
+    [
+     53.2076817,
+     12.8627648
+    ],
+    [
+     53.208119957108806,
+     12.862747083398961
+    ]
+   ],
+   "lengthMeters": 71.68118663674794
+  },
+  {
+   "id": "node/566502169",
+   "sourceIds": [
+    "node/566502169"
+   ],
+   "line": [
+    [
+     53.222091853174945,
+     12.96683754588283
+    ],
+    [
+     53.2220927,
+     12.966845
+    ],
+    [
+     53.22233,
+     12.96678
+    ]
+   ],
+   "lengthMeters": 27.092022815422258
+  },
+  {
+   "id": "node/9462438052",
+   "sourceIds": [
+    "node/9462438052"
+   ],
+   "line": [
+    [
+     53.40521118875849,
+     12.89883789985999
+    ],
+    [
+     53.4052145,
+     12.8988431
+    ],
+    [
+     53.40551,
+     12.89831
+    ]
+   ],
+   "lengthMeters": 48.65490028082677
+  },
+  {
+   "id": "way/1046138490",
+   "sourceIds": [
+    "way/1046138490"
+   ],
+   "line": [
+    [
+     53.69264605295688,
+     13.255894530949025
+    ],
+    [
+     53.6926611,
+     13.2556512
+    ],
+    [
+     53.6927004,
+     13.2556593
+    ],
+    [
+     53.6927413,
+     13.2556679
+    ],
+    [
+     53.6927505,
+     13.2556628
+    ],
+    [
+     53.6927684,
+     13.2556604
+    ],
+    [
+     53.6927897,
+     13.2556627
+    ],
+    [
+     53.69277398831983,
+     13.255916780577362
+    ]
+   ],
+   "lengthMeters": 47.31120141899173
+  },
+  {
+   "id": "way/1082674756",
+   "sourceIds": [
+    "way/1082674756"
+   ],
+   "line": [
+    [
+     51.84436413675334,
+     14.059305838261526
+    ],
+    [
+     51.8443976,
+     14.0593433
+    ],
+    [
+     51.844446,
+     14.0593497
+    ],
+    [
+     51.8445134,
+     14.059181
+    ],
+    [
+     51.8446019,
+     14.0589388
+    ],
+    [
+     51.8445692,
+     14.058873
+    ],
+    [
+     51.844513147839734,
+     14.058841519937214
+    ]
+   ],
+   "lengthMeters": 55.336550195340365
+  },
+  {
+   "id": "way/1469151197",
+   "sourceIds": [
+    "way/1469151197"
+   ],
+   "line": [
+    [
+     53.19213813659221,
+     13.106513271508181
+    ],
+    [
+     53.1920083,
+     13.1064464
+    ],
+    [
+     53.1919751,
+     13.1065625
+    ],
+    [
+     53.1918995,
+     13.1068395
+    ],
+    [
+     53.1917757,
+     13.1073001
+    ],
+    [
+     53.19192657253381,
+     13.107406506973565
+    ]
+   ],
+   "lengthMeters": 95.63017995729247
+  },
+  {
+   "id": "way/1469171788",
+   "sourceIds": [
+    "way/1469171788"
+   ],
+   "line": [
+    [
+     52.79795,
+     13.2924
+    ],
+    [
+     52.7981719,
+     13.2915569
+    ],
+    [
+     52.7981707,
+     13.2916344
+    ],
+    [
+     52.798166,
+     13.2921205
+    ],
+    [
+     52.7981595,
+     13.2925643
+    ],
+    [
+     52.7981512,
+     13.2929589
+    ],
+    [
+     52.798147,
+     13.2933362
+    ],
+    [
+     52.7981344,
+     13.2936685
+    ],
+    [
+     52.7981491,
+     13.2940493
+    ],
+    [
+     52.7981574,
+     13.2944439
+    ],
+    [
+     52.7981784,
+     13.2946931
+    ],
+    [
+     52.7982056,
+     13.2948731
+    ],
+    [
+     52.7982396,
+     13.2951019
+    ],
+    [
+     52.7982724,
+     13.2952734
+    ],
+    [
+     52.79835,
+     13.2955931
+    ],
+    [
+     52.7984021,
+     13.295813
+    ],
+    [
+     52.79824806942873,
+     13.29592524206456
+    ]
+   ],
+   "lengthMeters": 371.3209079538831
+  },
+  {
+   "id": "way/151078051",
+   "sourceIds": [
+    "way/151078051"
+   ],
+   "line": [
+    [
+     52.21773839223086,
+     13.772240351387337
+    ],
+    [
+     52.2178512,
+     13.7724566
+    ],
+    [
+     52.2179892,
+     13.7730422
+    ],
+    [
+     52.2180031,
+     13.7731841
+    ],
+    [
+     52.2180128,
+     13.7732621
+    ],
+    [
+     52.2182966317481,
+     13.773391262181432
+    ]
+   ],
+   "lengthMeters": 109.87987699365581
+  },
+  {
+   "id": "way/178950037",
+   "sourceIds": [
+    "way/178950037"
+   ],
+   "line": [
+    [
+     52.29575846882636,
+     14.229993451754883
+    ],
+    [
+     52.2957823,
+     14.2297065
+    ],
+    [
+     52.2958523,
+     14.2296813
+    ],
+    [
+     52.2959347,
+     14.2296644
+    ],
+    [
+     52.2959773,
+     14.2296506
+    ],
+    [
+     52.2960141,
+     14.2296468
+    ],
+    [
+     52.2960491,
+     14.2296468
+    ],
+    [
+     52.2960971,
+     14.2296575
+    ],
+    [
+     52.2961704,
+     14.2296807
+    ],
+    [
+     52.2964069,
+     14.2297647
+    ],
+    [
+     52.2964704,
+     14.2297869
+    ],
+    [
+     52.2965225,
+     14.2298153
+    ],
+    [
+     52.2966127,
+     14.2298396
+    ],
+    [
+     52.2967193,
+     14.2298539
+    ],
+    [
+     52.296753,
+     14.2298642
+    ],
+    [
+     52.29672469856862,
+     14.230204993177747
+    ]
+   ],
+   "lengthMeters": 152.32585044548907
+  },
+  {
+   "id": "way/178954495",
+   "sourceIds": [
+    "way/178954495"
+   ],
+   "line": [
+    [
+     52.35403966707424,
+     14.064861637449825
+    ],
+    [
+     52.3541896,
+     14.0648224
+    ],
+    [
+     52.3541794,
+     14.0648745
+    ],
+    [
+     52.3541753,
+     14.0649316
+    ],
+    [
+     52.35418,
+     14.0651308
+    ],
+    [
+     52.3540691880666,
+     14.065159799472703
+    ]
+   ],
+   "lengthMeters": 50.37388951522431
+  },
+  {
+   "id": "way/178954496",
+   "sourceIds": [
+    "way/178954496"
+   ],
+   "line": [
+    [
+     52.354171638749214,
+     14.06690314629166
+    ],
+    [
+     52.3543612,
+     14.0669126
+    ],
+    [
+     52.3543509,
+     14.0668462
+    ],
+    [
+     52.3543165,
+     14.0666403
+    ],
+    [
+     52.3542965,
+     14.0665184
+    ],
+    [
+     52.35417900866895,
+     14.066512540545498
+    ]
+   ],
+   "lengthMeters": 61.69825154952611
+  },
+  {
+   "id": "way/178954497",
+   "sourceIds": [
+    "way/178954497"
+   ],
+   "line": [
+    [
+     52.3540691880666,
+     14.065159799472703
+    ],
+    [
+     52.35418,
+     14.0651308
+    ],
+    [
+     52.3541892,
+     14.0652628
+    ],
+    [
+     52.3541918,
+     14.0653645
+    ],
+    [
+     52.3542036,
+     14.0655309
+    ],
+    [
+     52.3542678,
+     14.0663433
+    ],
+    [
+     52.3542787,
+     14.0663849
+    ],
+    [
+     52.3542881,
+     14.0664349
+    ],
+    [
+     52.3542965,
+     14.0665184
+    ],
+    [
+     52.35417900866895,
+     14.066512540545498
+    ]
+   ],
+   "lengthMeters": 120.81482948834804
+  },
+  {
+   "id": "way/236363291",
+   "sourceIds": [
+    "way/236363291"
+   ],
+   "line": [
+    [
+     53.69265,
+     13.25476
+    ],
+    [
+     53.692768,
+     13.2548849
+    ],
+    [
+     53.692754,
+     13.2549476
+    ],
+    [
+     53.6927242,
+     13.2550809
+    ],
+    [
+     53.6926693,
+     13.2555334
+    ],
+    [
+     53.6926652,
+     13.2555921
+    ],
+    [
+     53.6926611,
+     13.2556512
+    ],
+    [
+     53.69264605295688,
+     13.255894530949025
+    ]
+   ],
+   "lengthMeters": 83.60099943445653
+  },
+  {
+   "id": "way/282497793",
+   "sourceIds": [
+    "way/282497793"
+   ],
+   "line": [
+    [
+     51.91758539224473,
+     13.94415716862338
+    ],
+    [
+     51.917549,
+     13.9441404
+    ],
+    [
+     51.9175389,
+     13.9441403
+    ],
+    [
+     51.9174569,
+     13.9441203
+    ],
+    [
+     51.9174178,
+     13.9441585
+    ],
+    [
+     51.9173986,
+     13.9442171
+    ],
+    [
+     51.9173905,
+     13.944363
+    ],
+    [
+     51.9173824,
+     13.9445102
+    ],
+    [
+     51.9174126,
+     13.9445735
+    ],
+    [
+     51.9175093,
+     13.944596
+    ],
+    [
+     51.9175179,
+     13.9446
+    ],
+    [
+     51.917555019933246,
+     13.944595418598189
+    ]
+   ],
+   "lengthMeters": 65.66300652903338
+  },
+  {
+   "id": "way/282792187",
+   "sourceIds": [
+    "way/282792187"
+   ],
+   "line": [
+    [
+     53.04076969346937,
+     12.906367547754972
+    ],
+    [
+     53.0407713,
+     12.906367
+    ],
+    [
+     53.0408035,
+     12.9063176
+    ],
+    [
+     53.0408043,
+     12.9062619
+    ],
+    [
+     53.0407939,
+     12.9061981
+    ],
+    [
+     53.0407667,
+     12.9061042
+    ],
+    [
+     53.0407056,
+     12.9058934
+    ],
+    [
+     53.04070909438711,
+     12.905888305627505
+    ]
+   ],
+   "lengthMeters": 36.3152615060423
+  },
+  {
+   "id": "way/295430899",
+   "sourceIds": [
+    "way/295430899"
+   ],
+   "line": [
+    [
+     52.10744,
+     13.75941
+    ],
+    [
+     52.1068286,
+     13.7600406
+    ],
+    [
+     52.1067631,
+     13.760166
+    ],
+    [
+     52.1066898,
+     13.7603644
+    ],
+    [
+     52.1066465,
+     13.7604817
+    ],
+    [
+     52.1065845,
+     13.7606586
+    ],
+    [
+     52.1064906,
+     13.7609454
+    ],
+    [
+     52.10644,
+     13.76123
+    ]
+   ],
+   "lengthMeters": 172.8632884149993
+  },
+  {
+   "id": "way/424428914",
+   "sourceIds": [
+    "way/424428914"
+   ],
+   "line": [
+    [
+     52.41146,
+     12.56433
+    ],
+    [
+     52.4114411,
+     12.5646666
+    ],
+    [
+     52.4114335,
+     12.5647344
+    ],
+    [
+     52.4114031,
+     12.565077
+    ],
+    [
+     52.4113959,
+     12.5651549
+    ],
+    [
+     52.4113894,
+     12.5651931
+    ],
+    [
+     52.4113808,
+     12.5652498
+    ],
+    [
+     52.4113682,
+     12.565318
+    ],
+    [
+     52.4113428,
+     12.5653695
+    ],
+    [
+     52.4112982,
+     12.5654317
+    ],
+    [
+     52.4112788,
+     12.5654577
+    ],
+    [
+     52.41124,
+     12.56555
+    ]
+   ],
+   "lengthMeters": 89.32832338731328
+  },
+  {
+   "id": "way/60256598",
+   "sourceIds": [
+    "way/60256598"
+   ],
+   "line": [
+    [
+     53.69182398323953,
+     13.255671373530872
+    ],
+    [
+     53.6918146,
+     13.2557479
+    ],
+    [
+     53.6918146,
+     13.2557668
+    ],
+    [
+     53.6918214,
+     13.2558183
+    ],
+    [
+     53.6918249,
+     13.2558296
+    ],
+    [
+     53.6918311,
+     13.2558358
+    ],
+    [
+     53.6919571,
+     13.2558839
+    ],
+    [
+     53.6920452,
+     13.2558845
+    ],
+    [
+     53.6920495,
+     13.2558775
+    ],
+    [
+     53.6920511,
+     13.2558645
+    ],
+    [
+     53.69206460618618,
+     13.255754346960751
+    ]
+   ],
+   "lengthMeters": 44.48288972404916
+  },
+  {
+   "id": "way/60256934",
+   "sourceIds": [
+    "way/60256934"
+   ],
+   "line": [
+    [
+     53.64747,
+     13.26278
+    ],
+    [
+     53.6474617,
+     13.2629397
+    ],
+    [
+     53.6474673,
+     13.2629703
+    ],
+    [
+     53.6475388,
+     13.2629864
+    ],
+    [
+     53.6477969,
+     13.2630018
+    ],
+    [
+     53.6479654,
+     13.2630183
+    ],
+    [
+     53.6481929,
+     13.2631948
+    ],
+    [
+     53.6483569,
+     13.263335
+    ],
+    [
+     53.6484218,
+     13.263352
+    ],
+    [
+     53.6484608,
+     13.2633521
+    ],
+    [
+     53.64851746566182,
+     13.263258311339603
+    ]
+   ],
+   "lengthMeters": 136.31429284913042
+  },
+  {
+   "id": "way/60258008",
+   "sourceIds": [
+    "way/60258008"
+   ],
+   "line": [
+    [
+     53.792079443583944,
+     13.312175765072078
+    ],
+    [
+     53.7917311,
+     13.3114599
+    ],
+    [
+     53.7917963,
+     13.3113566
+    ],
+    [
+     53.7922424,
+     13.3116464
+    ],
+    [
+     53.79228083297346,
+     13.31167240346378
+    ]
+   ],
+   "lengthMeters": 128.1666894680222
+  },
+  {
+   "id": "way/8772160",
+   "sourceIds": [
+    "way/8772160"
+   ],
+   "line": [
+    [
+     52.77553,
+     13.24301
+    ],
+    [
+     52.7756814,
+     13.2428349
+    ],
+    [
+     52.7756511,
+     13.2427859
+    ],
+    [
+     52.7755333,
+     13.242605
+    ],
+    [
+     52.7755166,
+     13.242578
+    ],
+    [
+     52.7752432,
+     13.2420819
+    ],
+    [
+     52.7751852,
+     13.2419763
+    ],
+    [
+     52.77506872503542,
+     13.242651034900192
+    ]
+   ],
+   "lengthMeters": 147.44862648733132
+  }
+ ],
+ "unresolved": [
+  {
+   "id": "node/101515367",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9705186,
+     53.2218564
+    ]
+   }
+  },
+  {
+   "id": "node/255259954",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7895447,
+     53.2072289
+    ]
+   }
+  },
+  {
+   "id": "node/287290638",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6941863,
+     53.3241614
+    ]
+   }
+  },
+  {
+   "id": "node/297208376",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8060715,
+     53.3009579
+    ]
+   }
+  },
+  {
+   "id": "node/455232089",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9889147,
+     53.2819159
+    ]
+   }
+  },
+  {
+   "id": "node/459063991",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7796599,
+     53.371308
+    ]
+   }
+  },
+  {
+   "id": "node/493339624",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.870078,
+     52.8484352
+    ]
+   }
+  },
+  {
+   "id": "node/633332294",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8061662,
+     53.300666
+    ]
+   }
+  },
+  {
+   "id": "node/748234290",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4272736,
+     53.2812681
+    ]
+   }
+  },
+  {
+   "id": "node/748771457",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9757155,
+     53.3410457
+    ]
+   }
+  },
+  {
+   "id": "node/1081294796",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7886885,
+     53.228167
+    ]
+   }
+  },
+  {
+   "id": "node/1444721990",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0265409,
+     53.4614837
+    ]
+   }
+  },
+  {
+   "id": "node/1569585020",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7774991,
+     53.3708456
+    ]
+   }
+  },
+  {
+   "id": "node/1684108023",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6819937,
+     53.2921724
+    ]
+   }
+  },
+  {
+   "id": "node/1697858600",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8229786,
+     53.3464323
+    ]
+   }
+  },
+  {
+   "id": "node/1768972840",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9557815,
+     53.3169172
+    ]
+   }
+  },
+  {
+   "id": "node/1768972863",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9567759,
+     53.3179637
+    ]
+   }
+  },
+  {
+   "id": "node/1893102683",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0648224,
+     52.3541896
+    ]
+   }
+  },
+  {
+   "id": "node/1893102736",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0669126,
+     52.3543612
+    ]
+   }
+  },
+  {
+   "id": "node/2242854437",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0264697,
+     53.4603895
+    ]
+   }
+  },
+  {
+   "id": "node/2254484184",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0894236,
+     51.8772529
+    ]
+   }
+  },
+  {
+   "id": "node/2255646991",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0895954,
+     51.8770113
+    ]
+   }
+  },
+  {
+   "id": "node/2419753337",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.948872,
+     53.425315
+    ]
+   }
+  },
+  {
+   "id": "node/2443976893",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2558748,
+     53.6929552
+    ]
+   }
+  },
+  {
+   "id": "node/2443976895",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2546982,
+     53.6926434
+    ]
+   }
+  },
+  {
+   "id": "node/2451691695",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8684192,
+     52.8469696
+    ]
+   }
+  },
+  {
+   "id": "node/3406739510",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1416748,
+     52.7891123
+    ]
+   }
+  },
+  {
+   "id": "node/3406739514",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1433231,
+     52.7893036
+    ]
+   }
+  },
+  {
+   "id": "node/3559659363",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0298213,
+     53.4635102
+    ]
+   }
+  },
+  {
+   "id": "node/4932491022",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9780618,
+     53.2936321
+    ]
+   }
+  },
+  {
+   "id": "node/5069567651",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8603327,
+     53.2204054
+    ]
+   }
+  },
+  {
+   "id": "node/5659076132",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8965802,
+     53.399285
+    ]
+   }
+  },
+  {
+   "id": "node/6695911862",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9464999,
+     53.2266815
+    ]
+   }
+  },
+  {
+   "id": "node/7549478137",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8352956,
+     52.9595727
+    ]
+   }
+  },
+  {
+   "id": "node/9203445000",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2558449,
+     53.6920539
+    ]
+   }
+  },
+  {
+   "id": "node/9203445007",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.255739,
+     53.6918152
+    ]
+   }
+  },
+  {
+   "id": "node/10585434158",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9752004,
+     53.2807312
+    ]
+   }
+  },
+  {
+   "id": "node/11189001478",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.9826958,
+     53.8530882
+    ]
+   }
+  },
+  {
+   "id": "node/11579861912",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7770465,
+     53.3709568
+    ]
+   }
+  },
+  {
+   "id": "node/12143810756",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9570953,
+     53.3312903
+    ]
+   }
+  },
+  {
+   "id": "node/12175276833",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.981902,
+     51.4834132
+    ]
+   }
+  },
+  {
+   "id": "node/12193296660",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.061504,
+     51.8682895
+    ]
+   }
+  },
+  {
+   "id": "node/12193296662",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0610691,
+     51.8683248
+    ]
+   }
+  },
+  {
+   "id": "node/12193296674",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0892669,
+     51.8675114
+    ]
+   }
+  },
+  {
+   "id": "node/12193296675",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.089556,
+     51.8674834
+    ]
+   }
+  },
+  {
+   "id": "node/12250448081",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0557202,
+     51.893542
+    ]
+   }
+  },
+  {
+   "id": "node/12250448082",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0554079,
+     51.8937387
+    ]
+   }
+  },
+  {
+   "id": "node/12264530221",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1176773,
+     51.8726166
+    ]
+   }
+  },
+  {
+   "id": "node/12264530222",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1173241,
+     51.8727216
+    ]
+   }
+  },
+  {
+   "id": "node/12264619628",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0914649,
+     51.8569392
+    ]
+   }
+  },
+  {
+   "id": "node/12264619630",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0917632,
+     51.8568006
+    ]
+   }
+  },
+  {
+   "id": "node/12269106975",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0948513,
+     51.8313782
+    ]
+   }
+  },
+  {
+   "id": "node/12269106976",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0952856,
+     51.8313544
+    ]
+   }
+  },
+  {
+   "id": "node/12269530019",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1216358,
+     51.8330218
+    ]
+   }
+  },
+  {
+   "id": "node/12269530020",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1217817,
+     51.8331307
+    ]
+   }
+  },
+  {
+   "id": "node/12274554192",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1347128,
+     51.830358
+    ]
+   }
+  },
+  {
+   "id": "node/12274554193",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1349593,
+     51.8302967
+    ]
+   }
+  },
+  {
+   "id": "node/12277223655",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.9519968,
+     51.8978874
+    ]
+   }
+  },
+  {
+   "id": "node/12277223656",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.9524342,
+     51.8978214
+    ]
+   }
+  },
+  {
+   "id": "node/12466603380",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8236912,
+     53.3486722
+    ]
+   }
+  },
+  {
+   "id": "node/12466603389",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8103283,
+     53.281489
+    ]
+   }
+  },
+  {
+   "id": "node/12466631726",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.859731,
+     53.2075669
+    ]
+   }
+  },
+  {
+   "id": "node/12466762703",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9726485,
+     53.22043
+    ]
+   }
+  },
+  {
+   "id": "node/12466837241",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.903165,
+     53.1994925
+    ]
+   }
+  },
+  {
+   "id": "node/12466837245",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9046118,
+     53.1987004
+    ]
+   }
+  },
+  {
+   "id": "node/12468703063",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9221761,
+     53.3537435
+    ]
+   }
+  },
+  {
+   "id": "node/12468795372",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9332832,
+     53.4264909
+    ]
+   }
+  },
+  {
+   "id": "node/12470657959",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9196352,
+     53.2267251
+    ]
+   }
+  },
+  {
+   "id": "node/12470731067",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9193866,
+     53.1871177
+    ]
+   }
+  },
+  {
+   "id": "node/12470774188",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1420545,
+     53.1850217
+    ]
+   }
+  },
+  {
+   "id": "node/12470774192",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1435143,
+     53.1838924
+    ]
+   }
+  },
+  {
+   "id": "node/12470887780",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9211474,
+     53.3474147
+    ]
+   }
+  },
+  {
+   "id": "node/12470989977",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9661457,
+     53.3223926
+    ]
+   }
+  },
+  {
+   "id": "node/12471603545",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9885587,
+     53.2743865
+    ]
+   }
+  },
+  {
+   "id": "node/12471603546",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9894315,
+     53.2737612
+    ]
+   }
+  },
+  {
+   "id": "node/12473476935",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9725478,
+     53.2263474
+    ]
+   }
+  },
+  {
+   "id": "node/12475452762",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4421926,
+     53.3031832
+    ]
+   }
+  },
+  {
+   "id": "node/12475452764",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4428716,
+     53.3030996
+    ]
+   }
+  },
+  {
+   "id": "node/12475472399",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4329897,
+     53.2832826
+    ]
+   }
+  },
+  {
+   "id": "node/12475508645",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8354826,
+     52.9588624
+    ]
+   }
+  },
+  {
+   "id": "node/12492580960",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8320407,
+     53.7449052
+    ]
+   }
+  },
+  {
+   "id": "node/12492666221",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.7999718,
+     53.7277578
+    ]
+   }
+  },
+  {
+   "id": "node/12497532698",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2491229,
+     53.4565588
+    ]
+   }
+  },
+  {
+   "id": "node/12497624102",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2456539,
+     53.4574239
+    ]
+   }
+  },
+  {
+   "id": "node/12497624116",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1361477,
+     53.4906024
+    ]
+   }
+  },
+  {
+   "id": "node/12497639669",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.031533,
+     53.464347
+    ]
+   }
+  },
+  {
+   "id": "node/12497667950",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0146289,
+     53.4008744
+    ]
+   }
+  },
+  {
+   "id": "node/12497704844",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8424731,
+     53.429592
+    ]
+   }
+  },
+  {
+   "id": "node/12847424863",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8811899,
+     53.3986894
+    ]
+   }
+  },
+  {
+   "id": "node/13529659196",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8536658,
+     52.7861876
+    ]
+   }
+  },
+  {
+   "id": "node/13529659197",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8538597,
+     52.7859186
+    ]
+   }
+  },
+  {
+   "id": "node/13535977614",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1374364,
+     53.4904971
+    ]
+   }
+  },
+  {
+   "id": "node/13539253111",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1678127,
+     53.8763973
+    ]
+   }
+  },
+  {
+   "id": "node/13547409477",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2444271,
+     52.7766071
+    ]
+   }
+  },
+  {
+   "id": "node/13547409478",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2418946,
+     52.7752469
+    ]
+   }
+  },
+  {
+   "id": "node/13551471087",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2895282,
+     52.7980735
+    ]
+   }
+  },
+  {
+   "id": "node/13551480277",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2086341,
+     52.780574
+    ]
+   }
+  },
+  {
+   "id": "node/13551480278",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.207327,
+     52.7810366
+    ]
+   }
+  },
+  {
+   "id": "node/13709113770",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8917714,
+     52.8485018
+    ]
+   }
+  },
+  {
+   "id": "node/13709113771",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8924903,
+     52.8481568
+    ]
+   }
+  },
+  {
+   "id": "node/13763576458",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.0043478,
+     53.3059997
+    ]
+   }
+  },
+  {
+   "id": "node/13836306979",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3923518,
+     53.0748529
+    ]
+   }
+  },
+  {
+   "id": "node/13836306980",
+   "reason": "ambiguous-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3909746,
+     53.074559
+    ]
+   }
+  },
+  {
+   "id": "node/13990827474",
+   "reason": "fewer-than-two-waterway-matches",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6481897,
+     53.2754342
+    ]
+   }
+  },
+  {
+   "id": "node/13990827475",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6431629,
+     53.2692974
+    ]
+   }
+  },
+  {
+   "id": "way/38724404",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7794544,
+      53.371285
+     ],
+     [
+      12.7796599,
+      53.371308
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/39905861",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.4152931,
+      53.2664386
+     ],
+     [
+      13.4156423,
+      53.2665073
+     ],
+     [
+      13.4160499,
+      53.266699
+     ],
+     [
+      13.4165523,
+      53.2670337
+     ],
+     [
+      13.4166193,
+      53.2671146
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/169636997",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.4275996,
+      53.2815076
+     ],
+     [
+      13.4295752,
+      53.2828664
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/178760889",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.86212,
+      52.0187428
+     ],
+     [
+      13.8621124,
+      52.0187705
+     ],
+     [
+      13.8620875,
+      52.018788
+     ],
+     [
+      13.8619251,
+      52.0189022
+     ],
+     [
+      13.8618893,
+      52.0189062
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/178760891",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.8621085,
+      52.0187357
+     ],
+     [
+      13.86212,
+      52.0187428
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/178760893",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.861872,
+      52.0188983
+     ],
+     [
+      13.8618893,
+      52.0189062
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/210983072",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3921978,
+      53.241868
+     ],
+     [
+      13.3915805,
+      53.2420925
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/210983074",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3923625,
+      53.2423226
+     ],
+     [
+      13.3933842,
+      53.2424685
+     ],
+     [
+      13.3935964,
+      53.2426393
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/223029654",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0420268,
+      51.8192475
+     ],
+     [
+      14.0420599,
+      51.8192872
+     ],
+     [
+      14.0421316,
+      51.8193184
+     ],
+     [
+      14.0422345,
+      51.8193574
+     ],
+     [
+      14.0422401,
+      51.819349
+     ],
+     [
+      14.0420852,
+      51.8192826
+     ],
+     [
+      14.0420367,
+      51.8192344
+     ],
+     [
+      14.0418778,
+      51.8192571
+     ],
+     [
+      14.0415125,
+      51.8193705
+     ],
+     [
+      14.0415285,
+      51.8193849
+     ],
+     [
+      14.0418847,
+      51.8192692
+     ],
+     [
+      14.0420268,
+      51.8192475
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/236363290",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558523,
+      53.6929567
+     ],
+     [
+      13.2558406,
+      53.6928975
+     ],
+     [
+      13.2558151,
+      53.6928994
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/431519505",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3151104,
+      53.2115487
+     ],
+     [
+      13.3153056,
+      53.2115902
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/431519506",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3153056,
+      53.2115902
+     ],
+     [
+      13.3153606,
+      53.2116447
+     ],
+     [
+      13.3154233,
+      53.2116819
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/431519508",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3147382,
+      53.2114812
+     ],
+     [
+      13.3148027,
+      53.2114778
+     ],
+     [
+      13.314839,
+      53.2114865
+     ],
+     [
+      13.3151104,
+      53.2115487
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/683936455",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3923625,
+      53.2423226
+     ],
+     [
+      13.3923022,
+      53.2421298
+     ],
+     [
+      13.3922102,
+      53.2419454
+     ],
+     [
+      13.3921978,
+      53.241868
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/714860510",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546451,
+      53.6928013
+     ],
+     [
+      13.2548849,
+      53.692768
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/714860511",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2544994,
+      53.6926648
+     ],
+     [
+      13.2544891,
+      53.6926696
+     ],
+     [
+      13.2545528,
+      53.6927907
+     ],
+     [
+      13.2545621,
+      53.6928004
+     ],
+     [
+      13.2545746,
+      53.6928069
+     ],
+     [
+      13.2545899,
+      53.6928091
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/906336951",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546982,
+      53.6926434
+     ],
+     [
+      13.2546825,
+      53.6926427
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/945838281",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0595277,
+      51.8443192
+     ],
+     [
+      14.0595154,
+      51.8443114
+     ],
+     [
+      14.0593898,
+      51.844366
+     ],
+     [
+      14.0592672,
+      51.8444193
+     ],
+     [
+      14.0592756,
+      51.8444262
+     ],
+     [
+      14.0593433,
+      51.8443976
+     ],
+     [
+      14.059429,
+      51.8443613
+     ],
+     [
+      14.0595277,
+      51.8443192
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/945838282",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0589891,
+      51.8445267
+     ],
+     [
+      14.0589796,
+      51.8445206
+     ],
+     [
+      14.0588625,
+      51.8445629
+     ],
+     [
+      14.0587389,
+      51.8446076
+     ],
+     [
+      14.0587478,
+      51.8446151
+     ],
+     [
+      14.058873,
+      51.8445692
+     ],
+     [
+      14.0589891,
+      51.8445267
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/967633332",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7793882,
+      53.3712662
+     ],
+     [
+      12.77892,
+      53.3711332
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/996731656",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558645,
+      53.6920511
+     ],
+     [
+      13.2558449,
+      53.6920539
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/996731657",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2557479,
+      53.6918146
+     ],
+     [
+      13.255739,
+      53.6918152
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1026539208",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2545899,
+      53.6928091
+     ],
+     [
+      13.2546451,
+      53.6928013
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1026539218",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546825,
+      53.6926427
+     ],
+     [
+      13.2544994,
+      53.6926648
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1026539219",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2556627,
+      53.6927897
+     ],
+     [
+      13.2556828,
+      53.6928703
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1031871104",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7794544,
+      53.371285
+     ],
+     [
+      12.7793882,
+      53.3712662
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1198140662",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0575939,
+      51.8322149
+     ],
+     [
+      14.0576841,
+      51.8321148
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1198140663",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0428662,
+      51.8189673
+     ],
+     [
+      14.0426314,
+      51.8191582
+     ],
+     [
+      14.0426526,
+      51.8191681
+     ],
+     [
+      14.0428873,
+      51.8189772
+     ],
+     [
+      14.0428662,
+      51.8189673
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1435489802",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3864494,
+      53.2339701
+     ],
+     [
+      13.3864012,
+      53.2338684
+     ],
+     [
+      13.386307,
+      53.2336697
+     ],
+     [
+      13.3861742,
+      53.233566
+     ],
+     [
+      13.3859854,
+      53.2334931
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1435489814",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.377218,
+      53.2216915
+     ],
+     [
+      13.377317,
+      53.221709
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1435489816",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3769022,
+      53.220583
+     ],
+     [
+      13.3770596,
+      53.2203644
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1469713726",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428242,
+      52.775742
+     ],
+     [
+      13.2431982,
+      52.7759695
+     ],
+     [
+      13.2444767,
+      52.7765612
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1477026464",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2418946,
+      52.7752469
+     ],
+     [
+      13.2419763,
+      52.7751852
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481946951",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428782,
+      52.7757079
+     ],
+     [
+      13.2428242,
+      52.775742
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481946953",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428349,
+      52.7756814
+     ],
+     [
+      13.2428782,
+      52.7757079
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481946955",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2444767,
+      52.7765612
+     ],
+     [
+      13.2444271,
+      52.7766071
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481951434",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2895333,
+      52.7981667
+     ],
+     [
+      13.2895282,
+      52.7980735
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481951435",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2958439,
+      52.7983555
+     ],
+     [
+      13.295813,
+      52.7984021
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481951437",
+   "reason": "waterway-not-found-near-endpoint",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2915582,
+      52.7981328
+     ],
+     [
+      13.291486,
+      52.7981326
+     ],
+     [
+      13.2910484,
+      52.7981405
+     ],
+     [
+      13.2900701,
+      52.798153
+     ],
+     [
+      13.2895333,
+      52.7981667
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1481951438",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2915569,
+      52.7981719
+     ],
+     [
+      13.2915582,
+      52.7981328
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1513633350",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558523,
+      53.6929567
+     ],
+     [
+      13.2558748,
+      53.6929552
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1513633351",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.255781,
+      53.6929017
+     ],
+     [
+      13.2558151,
+      53.6928994
+     ]
+    ]
+   }
+  },
+  {
+   "id": "way/1513633352",
+   "reason": "endpoints-too-close",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2556828,
+      53.6928703
+     ],
+     [
+      13.2556954,
+      53.6928837
+     ],
+     [
+      13.2557217,
+      53.6928949
+     ],
+     [
+      13.2557468,
+      53.6929015
+     ],
+     [
+      13.255781,
+      53.6929017
+     ]
+    ]
+   }
+  }
+ ]
+}

@@ -33,11 +33,15 @@ const files = new Map([
   ["/src/waterway-router.js", ["src/waterway-router.js", "text/javascript; charset=utf-8"]],
   ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]],
   ["/waterway-network.json", ["waterway-network.json", "application/json; charset=utf-8"]],
+  ["/waterway-network-germany.json", ["waterway-network-germany.json", "application/json; charset=utf-8"]],
   ["/waterway-portages.json", ["waterway-portages.json", "application/json; charset=utf-8"]],
+  ["/waterway-portages-germany.json", ["waterway-portages-germany.json", "application/json; charset=utf-8"]],
   ["/lake-waterway-lines.json", ["lake-waterway-lines.json", "application/json; charset=utf-8"]],
   ["/waterway-coverage-candidates.json", ["waterway-coverage-candidates.json", "application/json; charset=utf-8"]],
   ["/waterway-coverage-gaps.json", ["waterway-coverage-gaps.json", "application/json; charset=utf-8"]],
   ["/canoe-landings.json", ["canoe-landings.json", "application/json; charset=utf-8"]],
+  ["/canoe-landings-germany.json", ["canoe-landings-germany.json", "application/json; charset=utf-8"]],
+  ["/canoe-portages-osm-germany.json", ["canoe-portages-osm-germany.json", "application/json; charset=utf-8"]],
   ["/canoe-landings-previous-only.json", ["canoe-landings-previous-only.json", "application/json; charset=utf-8"]]
 ]);
 

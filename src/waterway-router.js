@@ -14,17 +14,34 @@ export function createWaterwayRouter() {
             return Math.hypot((longitude2 - longitude1) * lngScale, (latitude2 - latitude1) * latScale);
           }
 
-          function build(data, portageData) {
+          function build(data, germanyData, portageData, germanyPortageData) {
             if (data.version !== 1 || !Array.isArray(data.nodes) || data.nodes.length % 2 !== 0 ||
                 !Array.isArray(data.ways) || data.nodes.length === 0) {
               throw new Error("Het vaarwegennetwerk heeft een onbekend formaat.");
             }
+            if (germanyData.version !== 1 || !Array.isArray(germanyData.nodes) ||
+                germanyData.nodes.length % 2 !== 0 || !Array.isArray(germanyData.ways)) {
+              throw new Error("Het Duitse vaarwegennetwerk heeft een onbekend formaat.");
+            }
             if (portageData.version !== 1 || !Array.isArray(portageData.connections) ||
                 portageData.waterwayGenerated !== (data.generated || null) ||
                 portageData.connectionCount !== portageData.connections.length) {
-              throw new Error("De overdraagverbindingen horen niet bij dit vaarwegennetwerk.");
+              throw new Error("De Nederlandse overdraagverbindingen horen niet bij het Nederlandse vaarwegennetwerk.");
             }
-            const nodes = data.nodes.slice();
+            if (germanyPortageData.version !== 1 || !Array.isArray(germanyPortageData.connections) ||
+                germanyPortageData.waterwayGenerated !== (germanyData.generated || null) ||
+                germanyPortageData.connectionCount !== germanyPortageData.connections.length) {
+              throw new Error("De Duitse overdraagverbindingen horen niet bij het Duitse vaarwegennetwerk.");
+            }
+            const germanyOffset = data.nodes.length / 2;
+            const ways = [
+              ...data.ways,
+              ...germanyData.ways.map(way =>
+                Array.isArray(way)
+                  ? way.map(index => Number.isInteger(index) ? index + germanyOffset : index)
+                  : way)
+            ];
+            const nodes = [...data.nodes, ...germanyData.nodes];
             let nodeCount = nodes.length / 2;
             const adjacency = Array.from({ length: nodeCount }, () => []);
             const segments = [];
@@ -34,7 +51,7 @@ export function createWaterwayRouter() {
             const coveragePortages = [];
             const coordinate = index => [nodes[index * 2], nodes[index * 2 + 1]];
 
-            for (const way of data.ways) {
+            for (const way of ways) {
               if (!Array.isArray(way)) continue;
               if (way.length > 1 && way.every(index =>
                 Number.isInteger(index) && index >= 0 && index < nodeCount)) {
@@ -77,10 +94,11 @@ export function createWaterwayRouter() {
 
             const built = {
               nodes, nodeCount, adjacency, segments, grid, coverageWays, coveragePortages,
-              virtualNodesBySegment, coordinate, generated: data.generated
+              virtualNodesBySegment, coordinate, generated: data.generated,
+              germanyGenerated: germanyData.generated
             };
             network = built;
-            for (const connection of portageData.connections) {
+            for (const connection of [...portageData.connections, ...germanyPortageData.connections]) {
               if (!Array.isArray(connection.line) || connection.line.length < 2 ||
                   connection.line.some(point =>
                     !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite))) {
@@ -132,19 +150,29 @@ export function createWaterwayRouter() {
               .filter(portage => portage.north >= south && portage.south <= north &&
                 portage.east >= west && portage.west <= east)
               .map(portage => portage.line);
-            return { lines, portages, generated: network.generated };
+            return {
+              lines,
+              portages,
+              generated: network.generated,
+              germanyGenerated: network.germanyGenerated
+            };
           }
 
           function load() {
             if (network) return Promise.resolve(network);
-            loading ||= Promise.all(["waterway-network.json", "waterway-portages.json"].map(file =>
+            loading ||= Promise.all([
+              "waterway-network.json",
+              "waterway-network-germany.json",
+              "waterway-portages.json",
+              "waterway-portages-germany.json"
+            ].map(file =>
               fetch(file).then(response => {
                 if (!response.ok) throw new Error(`Het bestand ${file} kon niet worden geladen.`);
                 return response.json();
               })
             ))
-              .then(([data, portageData]) => {
-                network = build(data, portageData);
+              .then(([data, germanyData, portageData, germanyPortageData]) => {
+                network = build(data, germanyData, portageData, germanyPortageData);
                 return network;
               })
               .catch(error => {

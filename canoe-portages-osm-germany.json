@@ -1,0 +1,5102 @@
+{
+ "type": "FeatureCollection",
+ "generatedAt": "2026-11-13T01:44:31.879Z",
+ "source": "OpenStreetMap via Overpass API",
+ "osmBaseTimestamp": "2026-11-13T01:43:02Z",
+ "count": 196,
+ "features": [
+  {
+   "type": "Feature",
+   "id": "node/101515367",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9705186,
+     53.2218564
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 101515367,
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Ein Bootswagen kann beim Kanuhof Wustrow gemietet werden",
+     "fee": "no",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/255259954",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7895447,
+     53.2072289
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 255259954,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Zethner See bei Schwarz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/269642137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8928189,
+     53.3654011
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 269642137,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Alte Schleuse Babke",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/269642140",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8929901,
+     53.3651074
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 269642140,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/287290638",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6941863,
+     53.3241614
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 287290638,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Vipperow an der Straßenbrücke",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/297208376",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8060715,
+     53.3009579
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 297208376,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Granzow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/455232089",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9889147,
+     53.2819159
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 455232089,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "ft_link": "www.freietonne.de?edit=9024",
+     "leisure": "slipway",
+     "name": "Wesenberg, Badestelle am Woblitzsee",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/455232834",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9851325,
+     53.2799565
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 455232834,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "ft_link": "www.freietonne.de?edit=9026",
+     "name": "Kanumühle Wesenberg",
+     "operator": "Kanumühle Wesenberg",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/459063991",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7796599,
+     53.371308
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 459063991,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Bootssteg mit Rollen, genau an diesem Punkt, für ein canoe zur Zeit",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/488648237",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6846735,
+     53.3390561
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 488648237,
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Seichtes Ufer",
+     "fee": "no",
+     "name": "Vipperow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/493339624",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.870078,
+     52.8484352
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 493339624,
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Zugang für Kanus oder Faltboote. Rastplatz evtl. mit Biwakmöglichkeit",
+     "fee": "no",
+     "ft_link": "www.freietonne.de?edit=11361",
+     "name": "Wasserzugangsstelle Wustrau",
+     "trailer": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/566502169",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.966845,
+     53.2220927
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 566502169,
+    "tags": {
+     "boat": "no",
+     "canoe": "put_in;egress",
+     "description": "Ein Bootswagen kann beim Kanuhof Wustrow gemietet werden",
+     "fee": "no",
+     "motorboat": "no",
+     "name": "Kanuhof Wustrow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/633332294",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8061662,
+     53.300666
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 633332294,
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/748234290",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4272736,
+     53.2812681
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 748234290,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/748771457",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9757155,
+     53.3410457
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 748771457,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Userin",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1081294796",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7886885,
+     53.228167
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1081294796,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schwarzer See bei Schwarz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1444721990",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0265409,
+     53.4614837
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1444721990,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Schleuse Lübz (unterhalb)"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1569585020",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7774991,
+     53.3708456
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1569585020,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Seichtes Ufer",
+     "fee": "no",
+     "motorboat": "no",
+     "name": "Alte Bolter Mühle",
+     "operator": "Nationalparkamt Müritz",
+     "surface": "sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1684108023",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6819937,
+     53.2921724
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1684108023,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Ausbau",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1697858600",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8229786,
+     53.3464323
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1697858600,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "fee": "yes",
+     "name": "Campingplatz Leppinsee",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1768972840",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9557815,
+     53.3169172
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1768972840,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1768972863",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9567759,
+     53.3179637
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1768972863,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1893102683",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0648224,
+     52.3541896
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1893102683,
+    "tags": {
+     "canoe": "portage",
+     "leisure": "slipway",
+     "portage": "designated",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1893102736",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0669126,
+     52.3543612
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1893102736,
+    "tags": {
+     "canoe": "portage",
+     "leisure": "slipway",
+     "portage": "designated",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2242854437",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0264697,
+     53.4603895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2242854437,
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "name": "Stadtmarina Lübz",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2254484184",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0894236,
+     51.8772529
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2254484184,
+    "tags": {
+     "canoe": "put_in;egress",
+     "whitewater": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2255646991",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0895954,
+     51.8770113
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2255646991,
+    "tags": {
+     "canoe": "put_in;egress",
+     "whitewater": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2407255449",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8438646,
+     53.7279026
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2407255449,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point",
+     "whitewater": "egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2407255515",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.843388,
+     53.7283047
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2407255515,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2419753337",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.948872,
+     53.425315
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2419753337,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Offizielle Einsatzstelle für Wasserwanderer",
+     "fee": "no",
+     "name": "Kratzeburg Badestelle",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2443976893",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2558748,
+     53.6929552
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2443976893,
+    "tags": {
+     "canoe": "put_in;egress",
+     "operator": "Stadt Altentreptow"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2443976895",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2546982,
+     53.6926434
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2443976895,
+    "tags": {
+     "canoe": "put_in;egress",
+     "operator": "Stadt Altentreptow"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2449348209",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2444024,
+     53.5522679
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2449348209,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2449348214",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.243806,
+     53.5525527
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2449348214,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2451691695",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8684192,
+     52.8469696
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2451691695,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Wasserzugangsstelle (slipway) Wustrau",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3287804684",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.802192,
+     53.2717544
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3287804684,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Schleuse Mirow Umtrage",
+     "fee": "no",
+     "noname": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3406739510",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1416748,
+     52.7891123
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3406739510,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3406739514",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1433231,
+     52.7893036
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3406739514,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3555117985",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8427621,
+     53.4261726
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3555117985,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Hafen Parchim",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3559659363",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0298213,
+     53.4635102
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3559659363,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Lübz am Stadtpark",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3559659438",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2700263,
+     53.45618
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3559659438,
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "name": "Wasserwanderrastplatz Plau am See",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3715839079",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9071386,
+     53.4087216
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3715839079,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Granzin",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/4932491022",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9780618,
+     53.2936321
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 4932491022,
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Slipanlage Kleinboote",
+     "informal": "yes",
+     "leisure": "slipway",
+     "surface": "grass;sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5023072842",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8607758,
+     53.2209536
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5023072842,
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Wagen gegen Pfand bei Pack&Paddel",
+     "fee": "no",
+     "leisure": "slipway",
+     "surface": "sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5069567651",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8603327,
+     53.2204054
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5069567651,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Wagen gegen Pfand bei Pack&Paddel",
+     "fee": "no",
+     "leisure": "slipway",
+     "name": "Fleether Mühle",
+     "surface": "sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5069579481",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8627648,
+     53.2076817
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5069579481,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5659076132",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8965802,
+     53.399285
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5659076132,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/6695911862",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9464999,
+     53.2266815
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 6695911862,
+    "tags": {
+     "access": "yes",
+     "boat": "discouraged",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "leisure": "slipway",
+     "surface": "sand"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/7549478137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8352956,
+     52.9595727
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 7549478137,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Alt Ruppin",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9203445000",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2558449,
+     53.6920539
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9203445000,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9203445007",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.255739,
+     53.6918152
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9203445007,
+    "tags": {
+     "canoe": "put_in;egress",
+     "operator": "Stadt Altentreptow"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9462438052",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8988431,
+     53.4052145
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9462438052,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Granziner Mühle",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/10585434158",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9752004,
+     53.2807312
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 10585434158,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwanderrastplatz Wesenberg",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11189001478",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.9826958,
+     53.8530882
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11189001478,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11247690038",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1431221,
+     53.1856767
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11247690038,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwander-Rastplatz Fürstenberg",
+     "waterway": "access_point",
+     "whitewater": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11579861912",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7770465,
+     53.3709568
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11579861912,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Sandstrand",
+     "operator": "Feriendorf \"Alte Fahrt\"",
+     "surface": "sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12143810756",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9570953,
+     53.3312903
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12143810756,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Campingplatz am Useriner See",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12149481463",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9083318,
+     53.2538738
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12149481463,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Einsatzstelle für Wasserwanderer",
+     "name": "FKK Campingplatz am Rätzsee",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12175276833",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.981902,
+     51.4834132
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12175276833,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296660",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.061504,
+     51.8682895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296660,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296662",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0610691,
+     51.8683248
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296662,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296674",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0892669,
+     51.8675114
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296674,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296675",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.089556,
+     51.8674834
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296675,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12250448081",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0557202,
+     51.893542
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12250448081,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12250448082",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0554079,
+     51.8937387
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12250448082,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264530221",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1176773,
+     51.8726166
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264530221,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264530222",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1173241,
+     51.8727216
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264530222,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264619628",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0914649,
+     51.8569392
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264619628,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264619630",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0917632,
+     51.8568006
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264619630,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269106975",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0948513,
+     51.8313782
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269106975,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269106976",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0952856,
+     51.8313544
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269106976,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269155181",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1240939,
+     51.8303895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269155181,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269155182",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1243445,
+     51.8303146
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269155182,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269530019",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1216358,
+     51.8330218
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269530019,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269530020",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1217817,
+     51.8331307
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269530020,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12271011674",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8008473,
+     53.2723251
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12271011674,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Schleuse Mirow Umtrage",
+     "fee": "no",
+     "noname": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12274554192",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1347128,
+     51.830358
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12274554192,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12274554193",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1349593,
+     51.8302967
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12274554193,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12277223655",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.9519968,
+     51.8978874
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12277223655,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12277223656",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.9524342,
+     51.8978214
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12277223656,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12278453428",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9211782,
+     53.1862976
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12278453428,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466603380",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8236912,
+     53.3486722
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466603380,
+    "tags": {
+     "access": "customers",
+     "boat": "no",
+     "canoe": "put_in;egress",
+     "fee": "yes",
+     "motorboat": "no",
+     "name": "Leppinsee",
+     "operator": "Paddel-Paul",
+     "surface": "sand",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466603389",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8103283,
+     53.281489
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466603389,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Strandbad Mirow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466631726",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.859731,
+     53.2075669
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466631726,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Diemitzer Schleuse",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466762703",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9726485,
+     53.22043
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466762703,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wustrow, Plätlinsee Strasener Chaussee",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466837241",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.903165,
+     53.1994925
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466837241,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Lorenbahn Canower Schleuse",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466837245",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9046118,
+     53.1987004
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466837245,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468703063",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9221761,
+     53.3537435
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468703063,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Blankenförde / Kakeldütt",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468795372",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9332832,
+     53.4264909
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468795372,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Kanuvermietung Kanu-Hecht",
+     "operator": "Kanu-Hecht",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468984450",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8924909,
+     53.3658399
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468984450,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Babke",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470657959",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9196352,
+     53.2267251
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470657959,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Offizielle Einsatzstelle für Wasserwanderer",
+     "fee": "no",
+     "name": "Campingplatz Am Gobenowsee",
+     "surface": "wood",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470731067",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9193866,
+     53.1871177
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470731067,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Kleinzerlang",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774188",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1420545,
+     53.1850217
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774188,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Kanu-Fischpass Fürstenberg",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774190",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1425701,
+     53.185346
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774190,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774192",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1435143,
+     53.1838924
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774192,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Fürstenberg, Havelstraße",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470887780",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9211474,
+     53.3474147
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470887780,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "floating": "yes",
+     "operator": "Campingplatz Zum Hexenwäldchen",
+     "trailer": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470989977",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9661457,
+     53.3223926
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470989977,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Useriner Mühle",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12471603545",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9885587,
+     53.2743865
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12471603545,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Wesenberg",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12471603546",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9894315,
+     53.2737612
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12471603546,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12473476935",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9725478,
+     53.2263474
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12473476935,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Einsetzen am niedrigen Holzsteg oder am seichten Strand",
+     "fee": "no",
+     "name": "Wustrow Badestelle",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475452762",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4421926,
+     53.3031832
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475452762,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Carvitz in die Bäk",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475452764",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4428716,
+     53.3030996
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475452764,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475472399",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4329897,
+     53.2832826
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475472399,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475508645",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8354826,
+     52.9588624
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475508645,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475606785",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2093828,
+     52.5401881
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475606785,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475606786",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2091826,
+     52.54097
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475606786,
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Spandau",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492580960",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8320407,
+     53.7449052
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492580960,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Straßenbrücke Sternberger Burg - Groß Görnow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492629821",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8367715,
+     53.7359754
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492629821,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "floating": "yes",
+     "name": "Sternberger Burg",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492666221",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.7999718,
+     53.7277578
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492666221,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "floating": "yes",
+     "name": "Sagsdorf",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497532698",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2491229,
+     53.4565588
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497532698,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Kanuteam Plau",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497624102",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2456539,
+     53.4574239
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497624102,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Eldeufer",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497624116",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1361477,
+     53.4906024
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497624116,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "WWR Bermudadreieck (unterhalb)",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497639669",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.031533,
+     53.464347
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497639669,
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Lübz an der Fußgängerbrücke",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497667950",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0146289,
+     53.4008744
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497667950,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwanderrastplatz Burow",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497704842",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8395233,
+     53.4309036
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497704842,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497704844",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8424731,
+     53.429592
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497704844,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Parchim in den Färbergraben",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12847424863",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8811899,
+     53.3986894
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12847424863,
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13529659196",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8536658,
+     52.7861876
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13529659196,
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "portage": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13529659197",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8538597,
+     52.7859186
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13529659197,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13535977614",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1374364,
+     53.4904971
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13535977614,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "floating": "yes",
+     "name": "WWRP Bermudadreieck",
+     "operator": "Bermudadreieck Naturcamping & Hafen GmbH",
+     "surface": "ground",
+     "trailer": "no",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13539253111",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1678127,
+     53.8763973
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13539253111,
+    "tags": {
+     "canoe": "put_in;egress"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13547409477",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2444271,
+     52.7766071
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13547409477,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13547409478",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2418946,
+     52.7752469
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13547409478,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551471086",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2958439,
+     52.7983555
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551471086,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551471087",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2895282,
+     52.7980735
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551471087,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551480277",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2086341,
+     52.780574
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551480277,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551480278",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.207327,
+     52.7810366
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551480278,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13709113770",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8917714,
+     52.8485018
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13709113770,
+    "tags": {
+     "canoe": "put_in;egress",
+     "man_made": "pier",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13709113771",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8924903,
+     52.8481568
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13709113771,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13763576458",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.0043478,
+     53.3059997
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13763576458,
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Wasserwanderer Besucher",
+     "fee": "no",
+     "operator": "Havelberge Camping Resort",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306979",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3923518,
+     53.0748529
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306979,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306980",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3909746,
+     53.074559
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306980,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306982",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3899945,
+     53.0735596
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306982,
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13990827474",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6481897,
+     53.2754342
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13990827474,
+    "tags": {
+     "access": "permit",
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13990827475",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6431629,
+     53.2692974
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13990827475,
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/8772160",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428349,
+      52.7756814
+     ],
+     [
+      13.2427859,
+      52.7756511
+     ],
+     [
+      13.242605,
+      52.7755333
+     ],
+     [
+      13.242578,
+      52.7755166
+     ],
+     [
+      13.2420819,
+      52.7752432
+     ],
+     [
+      13.2419763,
+      52.7751852
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 8772160,
+    "tags": {
+     "canoe": "portage",
+     "highway": "service",
+     "name": "Weg zur Biberfarm",
+     "oneway": "no",
+     "postal_code": "16515",
+     "smoothness": "good",
+     "source:width": "estimated",
+     "surface": "concrete:lanes",
+     "width": "3.0"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/38724404",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7794544,
+      53.371285
+     ],
+     [
+      12.7796599,
+      53.371308
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 38724404,
+    "tags": {
+     "canoe": "portage",
+     "colour": "brown",
+     "description": "Steg ist sehr hoch, von der Wasserlinie aus gesehen. Im Hochsommer kann das bei Niedrigwasser ca. ein Meter sein.",
+     "fee": "no",
+     "foot": "yes",
+     "lit": "no",
+     "man_made": "pier",
+     "operator": "Nationalparkamt Müritz",
+     "surface": "plastic"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/39905861",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.4152931,
+      53.2664386
+     ],
+     [
+      13.4156423,
+      53.2665073
+     ],
+     [
+      13.4160499,
+      53.266699
+     ],
+     [
+      13.4165523,
+      53.2670337
+     ],
+     [
+      13.4166193,
+      53.2671146
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 39905861,
+    "tags": {
+     "canoe": "portage",
+     "highway": "footway",
+     "portage": "yes",
+     "surface": "dirt",
+     "tracktype": "grade5"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/60256598",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2557479,
+      53.6918146
+     ],
+     [
+      13.2557668,
+      53.6918146
+     ],
+     [
+      13.2558183,
+      53.6918214
+     ],
+     [
+      13.2558296,
+      53.6918249
+     ],
+     [
+      13.2558358,
+      53.6918311
+     ],
+     [
+      13.2558839,
+      53.6919571
+     ],
+     [
+      13.2558845,
+      53.6920452
+     ],
+     [
+      13.2558775,
+      53.6920495
+     ],
+     [
+      13.2558645,
+      53.6920511
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 60256598,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "note": "Es gibt gar keine Möglichkeit von einem anderen Weg hierher zu kommen.",
+     "operator": "Stadt Altentreptow",
+     "surface": "grass",
+     "trail_visibility": "bad"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/60256934",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2629397,
+      53.6474617
+     ],
+     [
+      13.2629703,
+      53.6474673
+     ],
+     [
+      13.2629864,
+      53.6475388
+     ],
+     [
+      13.2630018,
+      53.6477969
+     ],
+     [
+      13.2630183,
+      53.6479654
+     ],
+     [
+      13.2631948,
+      53.6481929
+     ],
+     [
+      13.263335,
+      53.6483569
+     ],
+     [
+      13.263352,
+      53.6484218
+     ],
+     [
+      13.2633521,
+      53.6484608
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 60256934,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/60258008",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3114599,
+      53.7917311
+     ],
+     [
+      13.3113566,
+      53.7917963
+     ],
+     [
+      13.3116464,
+      53.7922424
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 60258008,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/151078051",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.7724566,
+      52.2178512
+     ],
+     [
+      13.7730422,
+      52.2179892
+     ],
+     [
+      13.7731841,
+      52.2180031
+     ],
+     [
+      13.7732621,
+      52.2180128
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 151078051,
+    "tags": {
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "rail",
+     "highway": "path",
+     "name": "Bootschleppe Prieros",
+     "portage": "designated",
+     "wikimedia_commons": "File:Bootschleppe Prieros.jpg"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/169636997",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.4275996,
+      53.2815076
+     ],
+     [
+      13.4295752,
+      53.2828664
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 169636997,
+    "tags": {
+     "canoe": "portage",
+     "check_date:surface": "2025-11-14",
+     "highway": "track",
+     "incline": "down",
+     "portage": "yes",
+     "surface": "unpaved",
+     "tracktype": "grade4"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178760889",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.86212,
+      52.0187428
+     ],
+     [
+      13.8621124,
+      52.0187705
+     ],
+     [
+      13.8620875,
+      52.018788
+     ],
+     [
+      13.8619251,
+      52.0189022
+     ],
+     [
+      13.8618893,
+      52.0189062
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178760889,
+    "tags": {
+     "access:conditional": "no @ (Mar 01-Jun 30)",
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "no",
+     "highway": "path",
+     "surface": "grass"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178760891",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.8621085,
+      52.0187357
+     ],
+     [
+      13.86212,
+      52.0187428
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178760891,
+    "tags": {
+     "access:conditional": "no @ (Mar 01-Jun 30)",
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "no",
+     "highway": "steps",
+     "surface": "concrete",
+     "width": "10"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178760893",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.861872,
+      52.0188983
+     ],
+     [
+      13.8618893,
+      52.0189062
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178760893,
+    "tags": {
+     "access:conditional": "no @ (Mar 01-Jun 30)",
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "no",
+     "highway": "steps",
+     "surface": "concrete",
+     "width": "10"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178950037",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.2297065,
+      52.2957823
+     ],
+     [
+      14.2296813,
+      52.2958523
+     ],
+     [
+      14.2296644,
+      52.2959347
+     ],
+     [
+      14.2296506,
+      52.2959773
+     ],
+     [
+      14.2296468,
+      52.2960141
+     ],
+     [
+      14.2296468,
+      52.2960491
+     ],
+     [
+      14.2296575,
+      52.2960971
+     ],
+     [
+      14.2296807,
+      52.2961704
+     ],
+     [
+      14.2297647,
+      52.2964069
+     ],
+     [
+      14.2297869,
+      52.2964704
+     ],
+     [
+      14.2298153,
+      52.2965225
+     ],
+     [
+      14.2298396,
+      52.2966127
+     ],
+     [
+      14.2298539,
+      52.2967193
+     ],
+     [
+      14.2298642,
+      52.296753
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178950037,
+    "tags": {
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "rail",
+     "highway": "path",
+     "maxweight": "0.5",
+     "name": "Bootsschleppe Drahendorf"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178954495",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0648224,
+      52.3541896
+     ],
+     [
+      14.0648745,
+      52.3541794
+     ],
+     [
+      14.0649316,
+      52.3541753
+     ],
+     [
+      14.0651308,
+      52.35418
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178954495,
+    "tags": {
+     "access": "no",
+     "cable_winch": "yes",
+     "canoe": "portage",
+     "description": "schienengebundene Bootsschleppe",
+     "dolly": "rail",
+     "highway": "footway",
+     "portage": "designated"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178954496",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0669126,
+      52.3543612
+     ],
+     [
+      14.0668462,
+      52.3543509
+     ],
+     [
+      14.0666403,
+      52.3543165
+     ],
+     [
+      14.0665184,
+      52.3542965
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178954496,
+    "tags": {
+     "access": "no",
+     "cable_winch": "yes",
+     "canoe": "portage",
+     "description": "schienengebundene Bootsschleppe",
+     "dolly": "rail",
+     "highway": "footway",
+     "portage": "designated"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/178954497",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0651308,
+      52.35418
+     ],
+     [
+      14.0652628,
+      52.3541892
+     ],
+     [
+      14.0653645,
+      52.3541918
+     ],
+     [
+      14.0655309,
+      52.3542036
+     ],
+     [
+      14.0663433,
+      52.3542678
+     ],
+     [
+      14.0663849,
+      52.3542787
+     ],
+     [
+      14.0664349,
+      52.3542881
+     ],
+     [
+      14.0665184,
+      52.3542965
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 178954497,
+    "tags": {
+     "access": "no",
+     "canoe": "portage",
+     "highway": "footway",
+     "portage": "designated",
+     "surface": "paving_stones",
+     "width": "1.5"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/210983072",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3921978,
+      53.241868
+     ],
+     [
+      13.3915805,
+      53.2420925
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 210983072,
+    "tags": {
+     "canoe": "portage",
+     "highway": "track",
+     "portage": "yes",
+     "surface": "ground",
+     "tracktype": "grade2"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/210983074",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3923625,
+      53.2423226
+     ],
+     [
+      13.3933842,
+      53.2424685
+     ],
+     [
+      13.3935964,
+      53.2426393
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 210983074,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "portage": "yes",
+     "surface": "ground"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/223029654",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0420268,
+      51.8192475
+     ],
+     [
+      14.0420599,
+      51.8192872
+     ],
+     [
+      14.0421316,
+      51.8193184
+     ],
+     [
+      14.0422345,
+      51.8193574
+     ],
+     [
+      14.0422401,
+      51.819349
+     ],
+     [
+      14.0420852,
+      51.8192826
+     ],
+     [
+      14.0420367,
+      51.8192344
+     ],
+     [
+      14.0418778,
+      51.8192571
+     ],
+     [
+      14.0415125,
+      51.8193705
+     ],
+     [
+      14.0415285,
+      51.8193849
+     ],
+     [
+      14.0418847,
+      51.8192692
+     ],
+     [
+      14.0420268,
+      51.8192475
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 223029654,
+    "tags": {
+     "canoe": "put_in;egress",
+     "man_made": "pier"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/236363290",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558523,
+      53.6929567
+     ],
+     [
+      13.2558406,
+      53.6928975
+     ],
+     [
+      13.2558151,
+      53.6928994
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 236363290,
+    "tags": {
+     "canoe": "portage",
+     "floating": "no",
+     "man_made": "pier",
+     "operator": "Stadt Altentreptow",
+     "surface": "wood"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/236363291",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2548849,
+      53.692768
+     ],
+     [
+      13.2549476,
+      53.692754
+     ],
+     [
+      13.2550809,
+      53.6927242
+     ],
+     [
+      13.2555334,
+      53.6926693
+     ],
+     [
+      13.2555921,
+      53.6926652
+     ],
+     [
+      13.2556512,
+      53.6926611
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 236363291,
+    "tags": {
+     "canoe": "portage",
+     "footway": "sidewalk",
+     "highway": "footway",
+     "operator": "Stadt Altentreptow",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/282497793",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.9441404,
+      51.917549
+     ],
+     [
+      13.9441403,
+      51.9175389
+     ],
+     [
+      13.9441203,
+      51.9174569
+     ],
+     [
+      13.9441585,
+      51.9174178
+     ],
+     [
+      13.9442171,
+      51.9173986
+     ],
+     [
+      13.944363,
+      51.9173905
+     ],
+     [
+      13.9445102,
+      51.9173824
+     ],
+     [
+      13.9445735,
+      51.9174126
+     ],
+     [
+      13.944596,
+      51.9175093
+     ],
+     [
+      13.9446,
+      51.9175179
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 282497793,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "surface": "concrete"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/282792187",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.906367,
+      53.0407713
+     ],
+     [
+      12.9063176,
+      53.0408035
+     ],
+     [
+      12.9062619,
+      53.0408043
+     ],
+     [
+      12.9061981,
+      53.0407939
+     ],
+     [
+      12.9061042,
+      53.0407667
+     ],
+     [
+      12.9058934,
+      53.0407056
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 282792187,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "portage": "yes"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/295430899",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.7600406,
+      52.1068286
+     ],
+     [
+      13.760166,
+      52.1067631
+     ],
+     [
+      13.7603644,
+      52.1066898
+     ],
+     [
+      13.7604817,
+      52.1066465
+     ],
+     [
+      13.7606586,
+      52.1065845
+     ],
+     [
+      13.7609454,
+      52.1064906
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 295430899,
+    "tags": {
+     "bicycle": "no",
+     "boat": "no",
+     "cable_winch": "yes",
+     "canoe": "portage",
+     "description": "schienengebundene Bootsschleppe",
+     "dolly": "rail",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/424428914",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.5646666,
+      52.4114411
+     ],
+     [
+      12.5647344,
+      52.4114335
+     ],
+     [
+      12.565077,
+      52.4114031
+     ],
+     [
+      12.5651549,
+      52.4113959
+     ],
+     [
+      12.5651931,
+      52.4113894
+     ],
+     [
+      12.5652498,
+      52.4113808
+     ],
+     [
+      12.565318,
+      52.4113682
+     ],
+     [
+      12.5653695,
+      52.4113428
+     ],
+     [
+      12.5654317,
+      52.4112982
+     ],
+     [
+      12.5654577,
+      52.4112788
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 424428914,
+    "tags": {
+     "cable_winch": "no",
+     "canoe": "portage",
+     "dolly": "rail",
+     "electrified": "no",
+     "gauge": "700",
+     "name": "Bootsschleppe",
+     "portage": "yes",
+     "railway": "narrow_gauge"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/431519505",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3151104,
+      53.2115487
+     ],
+     [
+      13.3153056,
+      53.2115902
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 431519505,
+    "tags": {
+     "canoe": "portage",
+     "highway": "footway",
+     "lit": "yes",
+     "opening_hours": "06:00-22:00",
+     "portage": "yes",
+     "surface": "wood",
+     "tunnel": "building_passage"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/431519506",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3153056,
+      53.2115902
+     ],
+     [
+      13.3153606,
+      53.2116447
+     ],
+     [
+      13.3154233,
+      53.2116819
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 431519506,
+    "tags": {
+     "canoe": "portage",
+     "highway": "footway",
+     "layer": "-1",
+     "lit": "yes",
+     "opening_hours": "06:00-22:00",
+     "portage": "yes",
+     "surface": "wood",
+     "tunnel": "yes"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/431519508",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3147382,
+      53.2114812
+     ],
+     [
+      13.3148027,
+      53.2114778
+     ],
+     [
+      13.314839,
+      53.2114865
+     ],
+     [
+      13.3151104,
+      53.2115487
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 431519508,
+    "tags": {
+     "canoe": "portage",
+     "highway": "footway",
+     "lit": "no",
+     "opening_hours": "06:00-22:00",
+     "portage": "yes",
+     "surface": "wood"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/683936455",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3923625,
+      53.2423226
+     ],
+     [
+      13.3923022,
+      53.2421298
+     ],
+     [
+      13.3922102,
+      53.2419454
+     ],
+     [
+      13.3921978,
+      53.241868
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 683936455,
+    "tags": {
+     "canoe": "portage",
+     "highway": "unclassified",
+     "name": "Kolbatzer Mühle",
+     "portage": "yes",
+     "surface": "ground"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/714860510",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546451,
+      53.6928013
+     ],
+     [
+      13.2548849,
+      53.692768
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 714860510,
+    "tags": {
+     "bridge": "yes",
+     "canoe": "portage",
+     "footway": "sidewalk",
+     "highway": "footway",
+     "layer": "1",
+     "operator": "Stadt Altentreptow",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/714860511",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2544994,
+      53.6926648
+     ],
+     [
+      13.2544891,
+      53.6926696
+     ],
+     [
+      13.2545528,
+      53.6927907
+     ],
+     [
+      13.2545621,
+      53.6928004
+     ],
+     [
+      13.2545746,
+      53.6928069
+     ],
+     [
+      13.2545899,
+      53.6928091
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 714860511,
+    "tags": {
+     "canoe": "portage",
+     "foot": "yes",
+     "highway": "path",
+     "operator": "Stadt Altentreptow",
+     "surface": "sand"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/906336951",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546982,
+      53.6926434
+     ],
+     [
+      13.2546825,
+      53.6926427
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 906336951,
+    "tags": {
+     "canoe": "portage",
+     "floating": "no",
+     "foot": "yes",
+     "man_made": "pier",
+     "operator": "Stadt Altentreptow",
+     "surface": "wood"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/945838281",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0595277,
+      51.8443192
+     ],
+     [
+      14.0595154,
+      51.8443114
+     ],
+     [
+      14.0593898,
+      51.844366
+     ],
+     [
+      14.0592672,
+      51.8444193
+     ],
+     [
+      14.0592756,
+      51.8444262
+     ],
+     [
+      14.0593433,
+      51.8443976
+     ],
+     [
+      14.059429,
+      51.8443613
+     ],
+     [
+      14.0595277,
+      51.8443192
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 945838281,
+    "tags": {
+     "area": "yes",
+     "canoe": "put_in;egress",
+     "man_made": "pier",
+     "name": "Dubkowmühle",
+     "portage": "yes"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/945838282",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0589891,
+      51.8445267
+     ],
+     [
+      14.0589796,
+      51.8445206
+     ],
+     [
+      14.0588625,
+      51.8445629
+     ],
+     [
+      14.0587389,
+      51.8446076
+     ],
+     [
+      14.0587478,
+      51.8446151
+     ],
+     [
+      14.058873,
+      51.8445692
+     ],
+     [
+      14.0589891,
+      51.8445267
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 945838282,
+    "tags": {
+     "area": "yes",
+     "canoe": "put_in;egress",
+     "man_made": "pier",
+     "name": "Dubkowmühle",
+     "portage": "yes"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/967633332",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7793882,
+      53.3712662
+     ],
+     [
+      12.77892,
+      53.3711332
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 967633332,
+    "tags": {
+     "canoe": "portage",
+     "description": "Kanu-Umtragestrecke",
+     "fee": "no",
+     "hand_cart": "designated",
+     "highway": "footway",
+     "incline": "up",
+     "operator": "Nationalparkamt Müritz",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/996731656",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558645,
+      53.6920511
+     ],
+     [
+      13.2558449,
+      53.6920539
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 996731656,
+    "tags": {
+     "canoe": "portage",
+     "man_made": "pier",
+     "operator": "Stadt Altentreptow"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/996731657",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2557479,
+      53.6918146
+     ],
+     [
+      13.255739,
+      53.6918152
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 996731657,
+    "tags": {
+     "canoe": "portage",
+     "man_made": "pier",
+     "operator": "Stadt Altentreptow"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1026539208",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2545899,
+      53.6928091
+     ],
+     [
+      13.2546451,
+      53.6928013
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1026539208,
+    "tags": {
+     "canoe": "portage",
+     "footway": "sidewalk",
+     "highway": "footway",
+     "operator": "Stadt Altentreptow",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1026539218",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2546825,
+      53.6926427
+     ],
+     [
+      13.2544994,
+      53.6926648
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1026539218,
+    "tags": {
+     "canoe": "portage",
+     "foot": "yes",
+     "highway": "path",
+     "operator": "Stadt Altentreptow",
+     "smoothness": "intermediate",
+     "surface": "grass",
+     "trail_visibility": "bad"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1026539219",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2556627,
+      53.6927897
+     ],
+     [
+      13.2556828,
+      53.6928703
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1026539219,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "operator": "Stadt Altentreptow",
+     "surface": "ground"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1031871104",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      12.7794544,
+      53.371285
+     ],
+     [
+      12.7793882,
+      53.3712662
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1031871104,
+    "tags": {
+     "canoe": "portage",
+     "colour": "brown",
+     "description": "Kanu-Umtragestrecke",
+     "fee": "no",
+     "hand_cart": "designated",
+     "highway": "footway",
+     "operator": "Nationalparkamt Müritz",
+     "surface": "plastic"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1046138490",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2556512,
+      53.6926611
+     ],
+     [
+      13.2556593,
+      53.6927004
+     ],
+     [
+      13.2556679,
+      53.6927413
+     ],
+     [
+      13.2556628,
+      53.6927505
+     ],
+     [
+      13.2556604,
+      53.6927684
+     ],
+     [
+      13.2556627,
+      53.6927897
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1046138490,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "operator": "Stadt Altentreptow",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1082674756",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0593433,
+      51.8443976
+     ],
+     [
+      14.0593497,
+      51.844446
+     ],
+     [
+      14.059181,
+      51.8445134
+     ],
+     [
+      14.0589388,
+      51.8446019
+     ],
+     [
+      14.058873,
+      51.8445692
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1082674756,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "name": "Dubkowmühle",
+     "portage": "yes",
+     "surface": "ground"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1198140662",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0575939,
+      51.8322149
+     ],
+     [
+      14.0576841,
+      51.8321148
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1198140662,
+    "tags": {
+     "canoe": "put_in;egress",
+     "man_made": "pier"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1198140663",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      14.0428662,
+      51.8189673
+     ],
+     [
+      14.0426314,
+      51.8191582
+     ],
+     [
+      14.0426526,
+      51.8191681
+     ],
+     [
+      14.0428873,
+      51.8189772
+     ],
+     [
+      14.0428662,
+      51.8189673
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1198140663,
+    "tags": {
+     "canoe": "put_in;egress",
+     "man_made": "pier"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1435489802",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3864494,
+      53.2339701
+     ],
+     [
+      13.3864012,
+      53.2338684
+     ],
+     [
+      13.386307,
+      53.2336697
+     ],
+     [
+      13.3861742,
+      53.233566
+     ],
+     [
+      13.3859854,
+      53.2334931
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1435489802,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "portage": "canoe"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1435489814",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.377218,
+      53.2216915
+     ],
+     [
+      13.377317,
+      53.221709
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1435489814,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "portage": "yes",
+     "surface": "grass"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1435489816",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.3769022,
+      53.220583
+     ],
+     [
+      13.3770596,
+      53.2203644
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1435489816,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "incline": "down",
+     "portage": "yes",
+     "surface": "ground"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1469151197",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.1064464,
+      53.1920083
+     ],
+     [
+      13.1065625,
+      53.1919751
+     ],
+     [
+      13.1068395,
+      53.1918995
+     ],
+     [
+      13.1073001,
+      53.1917757
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1469151197,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "portage": "designated",
+     "railway": "narrow_gauge",
+     "surface": "concrete"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1469171788",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2915569,
+      52.7981719
+     ],
+     [
+      13.2916344,
+      52.7981707
+     ],
+     [
+      13.2921205,
+      52.798166
+     ],
+     [
+      13.2925643,
+      52.7981595
+     ],
+     [
+      13.2929589,
+      52.7981512
+     ],
+     [
+      13.2933362,
+      52.798147
+     ],
+     [
+      13.2936685,
+      52.7981344
+     ],
+     [
+      13.2940493,
+      52.7981491
+     ],
+     [
+      13.2944439,
+      52.7981574
+     ],
+     [
+      13.2946931,
+      52.7981784
+     ],
+     [
+      13.2948731,
+      52.7982056
+     ],
+     [
+      13.2951019,
+      52.7982396
+     ],
+     [
+      13.2952734,
+      52.7982724
+     ],
+     [
+      13.2955931,
+      52.79835
+     ],
+     [
+      13.295813,
+      52.7984021
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1469171788,
+    "tags": {
+     "canoe": "portage",
+     "check_date": "2023-07-04",
+     "highway": "track",
+     "image": "https://commons.wikimedia.org/wiki/File:Befestigter_Weg_entlang_des_Malzer_Kanals.jpg",
+     "tracktype": "grade3"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1469713726",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428242,
+      52.775742
+     ],
+     [
+      13.2431982,
+      52.7759695
+     ],
+     [
+      13.2444767,
+      52.7765612
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1469713726,
+    "tags": {
+     "canoe": "portage",
+     "check_date": "2023-07-04",
+     "description": "Weg",
+     "highway": "service",
+     "surface": "dirt",
+     "vehicle": "destination"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1477026464",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2418946,
+      52.7752469
+     ],
+     [
+      13.2419763,
+      52.7751852
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1477026464,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481946951",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428782,
+      52.7757079
+     ],
+     [
+      13.2428242,
+      52.775742
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481946951,
+    "tags": {
+     "canoe": "portage",
+     "footway": "sidewalk",
+     "highway": "footway",
+     "surface": "paving_stones"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481946953",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2428349,
+      52.7756814
+     ],
+     [
+      13.2428782,
+      52.7757079
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481946953,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481946955",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2444767,
+      52.7765612
+     ],
+     [
+      13.2444271,
+      52.7766071
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481946955,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481951434",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2895333,
+      52.7981667
+     ],
+     [
+      13.2895282,
+      52.7980735
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481951434,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481951435",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2958439,
+      52.7983555
+     ],
+     [
+      13.295813,
+      52.7984021
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481951435,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481951437",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2915582,
+      52.7981328
+     ],
+     [
+      13.291486,
+      52.7981326
+     ],
+     [
+      13.2910484,
+      52.7981405
+     ],
+     [
+      13.2900701,
+      52.798153
+     ],
+     [
+      13.2895333,
+      52.7981667
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481951437,
+    "tags": {
+     "canoe": "portage",
+     "highway": "track",
+     "tracktype": "grade3"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1481951438",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2915569,
+      52.7981719
+     ],
+     [
+      13.2915582,
+      52.7981328
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1481951438,
+    "tags": {
+     "canoe": "portage",
+     "cycleway:both": "no",
+     "highway": "residential",
+     "lane_markings": "no",
+     "lit": "yes",
+     "maxspeed": "50",
+     "maxspeed:type": "DE:urban",
+     "name": "An der Schleuse",
+     "sidewalk": "no",
+     "smoothness": "excellent",
+     "surface": "asphalt",
+     "zone:traffic": "DE:urban"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1513633350",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2558523,
+      53.6929567
+     ],
+     [
+      13.2558748,
+      53.6929552
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1513633350,
+    "tags": {
+     "canoe": "portage",
+     "floating": "yes",
+     "man_made": "pier",
+     "operator": "Stadt Altentreptow",
+     "surface": "wood"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1513633351",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.255781,
+      53.6929017
+     ],
+     [
+      13.2558151,
+      53.6928994
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1513633351,
+    "tags": {
+     "canoe": "portage",
+     "highway": "steps",
+     "operator": "Stadt Altentreptow",
+     "surface": "concrete"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1513633352",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      13.2556828,
+      53.6928703
+     ],
+     [
+      13.2556954,
+      53.6928837
+     ],
+     [
+      13.2557217,
+      53.6928949
+     ],
+     [
+      13.2557468,
+      53.6929015
+     ],
+     [
+      13.255781,
+      53.6929017
+     ]
+    ]
+   },
+   "properties": {
+    "osmType": "way",
+    "osmId": 1513633352,
+    "tags": {
+     "canoe": "portage",
+     "highway": "path",
+     "operator": "Stadt Altentreptow",
+     "surface": "grass"
+    }
+   }
+  }
+ ]
+}

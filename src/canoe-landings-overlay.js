@@ -4,6 +4,7 @@ const categories = {
   landing: { label: "Mogelijke kanosteiger", color: "#174f45", fillColor: "#42c99a" },
   portage: { label: "Overdraagpunt", color: "#7a3d00", fillColor: "#f5a623" }
 };
+const dataFiles = ["canoe-landings.json", "canoe-landings-germany.json"];
 
 function isValidFeature(feature) {
   const coordinates = feature?.geometry?.coordinates;
@@ -103,20 +104,27 @@ export function createCanoeLandingsOverlay({ map, L, showError }) {
   }
 
   function load() {
-    loading ||= fetch("canoe-landings.json")
-      .then(response => {
+    loading ||= Promise.all(dataFiles.map(file =>
+      fetch(file).then(response => {
         if (!response.ok) {
-          throw new Error(`De kanosteigerdata kon niet worden geladen (HTTP ${response.status}). Zorg dat canoe-landings.json naast index.html staat.`);
+          throw new Error(`De kanosteigerdata in ${file} kon niet worden geladen (HTTP ${response.status}).`);
         }
         return response.json();
-      })
-      .then(data => {
+      }).then(data => {
         if (data.type !== "FeatureCollection" || !Array.isArray(data.features) ||
             data.count !== data.features.length ||
             typeof data.selectionIncomplete !== "boolean" ||
             data.features.some(feature => !isValidFeature(feature))) {
-          throw new Error("De kanosteigerdata heeft een onbekend of ongeldig GeoJSON-formaat.");
+          throw new Error(`De kanosteigerdata in ${file} heeft een onbekend of ongeldig GeoJSON-formaat.`);
         }
+        return data;
+      })
+    ))
+      .then(datasets => {
+        const data = {
+          features: datasets.flatMap(dataset => dataset.features),
+          selectionIncomplete: datasets.some(dataset => dataset.selectionIncomplete)
+        };
         markersLayer = L.geoJSON(data, {
           pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
             radius: 5,

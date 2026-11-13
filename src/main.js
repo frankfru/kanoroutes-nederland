@@ -361,7 +361,8 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
             : `${count.toLocaleString("nl-NL")} vaarwegdelen in dit kaartbeeld`;
           routeWaterwayCoverageStatus.textContent =
             `${label} · ${coverage.portages.length.toLocaleString("nl-NL")} routeerbare overdrachten` +
-            ` · OpenStreetMap-routerdata van ${coverage.generated || "onbekende datum"}.`;
+            ` · OpenStreetMap-routerdata NL ${coverage.generated || "onbekend"}, ` +
+            `DE ${coverage.germanyGenerated || "onbekend"}.`;
         }
 
         async function handleWaterwayCoverageToggle() {

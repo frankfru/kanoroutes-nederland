@@ -1,0 +1,3524 @@
+{
+ "type": "FeatureCollection",
+ "generatedAt": "2026-11-13T01:44:31.879Z",
+ "source": "OpenStreetMap via Overpass API",
+ "osmBaseTimestamp": "2026-11-13T01:43:02Z",
+ "selectionIncomplete": false,
+ "count": 130,
+ "features": [
+  {
+   "type": "Feature",
+   "id": "node/101515367",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9705186,
+     53.2218564
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 101515367,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Ein Bootswagen kann beim Kanuhof Wustrow gemietet werden",
+     "fee": "no",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/10585434158",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9752004,
+     53.2807312
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 10585434158,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwanderrastplatz Wesenberg",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1081294796",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7886885,
+     53.228167
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1081294796,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schwarzer See bei Schwarz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11189001478",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.9826958,
+     53.8530882
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11189001478,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11247690038",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1431221,
+     53.1856767
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11247690038,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwander-Rastplatz Fürstenberg",
+     "waterway": "access_point",
+     "whitewater": "put_in;egress"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/11579861912",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7770465,
+     53.3709568
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 11579861912,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Sandstrand",
+     "operator": "Feriendorf \"Alte Fahrt\"",
+     "surface": "sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12143810756",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9570953,
+     53.3312903
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12143810756,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Campingplatz am Useriner See",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12149481463",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9083318,
+     53.2538738
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12149481463,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Einsatzstelle für Wasserwanderer",
+     "name": "FKK Campingplatz am Rätzsee",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12175276833",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.981902,
+     51.4834132
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12175276833,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296660",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.061504,
+     51.8682895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296660,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12193296662"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12193296674",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0892669,
+     51.8675114
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12193296674,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12193296675"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12250448081",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0557202,
+     51.893542
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12250448081,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12250448082"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264530221",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1176773,
+     51.8726166
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264530221,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12264530222"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12264619628",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0914649,
+     51.8569392
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12264619628,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12264619630"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269106975",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0948513,
+     51.8313782
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269106975,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12269106976"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269155181",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1240939,
+     51.8303895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269155181,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12269155182"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12269530019",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1216358,
+     51.8330218
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12269530019,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12269530020"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12271011674",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8008473,
+     53.2723251
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12271011674,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Schleuse Mirow Umtrage",
+     "fee": "no",
+     "noname": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12274554192",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1347128,
+     51.830358
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12274554192,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12274554193"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12277223655",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.9519968,
+     51.8978874
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12277223655,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/12277223656"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12278453428",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9211782,
+     53.1862976
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12278453428,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466603380",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8236912,
+     53.3486722
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466603380,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "boat": "no",
+     "canoe": "put_in;egress",
+     "fee": "yes",
+     "motorboat": "no",
+     "name": "Leppinsee",
+     "operator": "Paddel-Paul",
+     "surface": "sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466603389",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8103283,
+     53.281489
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466603389,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Strandbad Mirow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466631726",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.859731,
+     53.2075669
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466631726,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Diemitzer Schleuse",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466762703",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9726485,
+     53.22043
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466762703,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wustrow, Plätlinsee Strasener Chaussee",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466837241",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.903165,
+     53.1994925
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466837241,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Lorenbahn Canower Schleuse",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12466837245",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9046118,
+     53.1987004
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12466837245,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468703063",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9221761,
+     53.3537435
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468703063,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Blankenförde / Kakeldütt",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468795372",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9332832,
+     53.4264909
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468795372,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Kanuvermietung Kanu-Hecht",
+     "operator": "Kanu-Hecht",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12468984450",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8924909,
+     53.3658399
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12468984450,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Babke",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470657959",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9196352,
+     53.2267251
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470657959,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Offizielle Einsatzstelle für Wasserwanderer",
+     "fee": "no",
+     "name": "Campingplatz Am Gobenowsee",
+     "surface": "wood",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470731067",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9193866,
+     53.1871177
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470731067,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Kleinzerlang",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774188",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1420545,
+     53.1850217
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774188,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Kanu-Fischpass Fürstenberg",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774190",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1425701,
+     53.185346
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774190,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470774192",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1435143,
+     53.1838924
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470774192,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Fürstenberg, Havelstraße",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470887780",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9211474,
+     53.3474147
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470887780,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "floating": "yes",
+     "operator": "Campingplatz Zum Hexenwäldchen",
+     "trailer": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12470989977",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9661457,
+     53.3223926
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12470989977,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Useriner Mühle",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12471603545",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9885587,
+     53.2743865
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12471603545,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Wesenberg",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12471603546",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9894315,
+     53.2737612
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12471603546,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12473476935",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9725478,
+     53.2263474
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12473476935,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Einsetzen am niedrigen Holzsteg oder am seichten Strand",
+     "fee": "no",
+     "name": "Wustrow Badestelle",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475452762",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4421926,
+     53.3031832
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475452762,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Carvitz in die Bäk",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475452764",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4428716,
+     53.3030996
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475452764,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475472399",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4329897,
+     53.2832826
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475472399,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475508645",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8354826,
+     52.9588624
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475508645,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475606785",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2093828,
+     52.5401881
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475606785,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12475606786",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2091826,
+     52.54097
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12475606786,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Spandau",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492580960",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8320407,
+     53.7449052
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492580960,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Straßenbrücke Sternberger Burg - Groß Görnow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492629821",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8367715,
+     53.7359754
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492629821,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "floating": "yes",
+     "name": "Sternberger Burg",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12492666221",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.7999718,
+     53.7277578
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12492666221,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "floating": "yes",
+     "name": "Sagsdorf",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497532698",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2491229,
+     53.4565588
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497532698,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "name": "Kanuteam Plau",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497624102",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2456539,
+     53.4574239
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497624102,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Eldeufer",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497624116",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1361477,
+     53.4906024
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497624116,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "WWR Bermudadreieck (unterhalb)",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497639669",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.031533,
+     53.464347
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497639669,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Lübz an der Fußgängerbrücke",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497667950",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0146289,
+     53.4008744
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497667950,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Wasserwanderrastplatz Burow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497704842",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8395233,
+     53.4309036
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497704842,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12497704844",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8424731,
+     53.429592
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12497704844,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Parchim in den Färbergraben",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/12847424863",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8811899,
+     53.3986894
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 12847424863,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13529659196",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8536658,
+     52.7861876
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13529659196,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "portage": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13529659197",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8538597,
+     52.7859186
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13529659197,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13535977614",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.1374364,
+     53.4904971
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13535977614,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "floating": "yes",
+     "name": "WWRP Bermudadreieck",
+     "operator": "Bermudadreieck Naturcamping & Hafen GmbH",
+     "surface": "ground",
+     "trailer": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13539253111",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1678127,
+     53.8763973
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13539253111,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13547409477",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2444271,
+     52.7766071
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13547409477,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13547409478",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2418946,
+     52.7752469
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13547409478,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551471086",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2958439,
+     52.7983555
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551471086,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551471087",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2895282,
+     52.7980735
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551471087,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551480277",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2086341,
+     52.780574
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551480277,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13551480278",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.207327,
+     52.7810366
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13551480278,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13709113770",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8917714,
+     52.8485018
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13709113770,
+    "matchedBy": [
+     "access-point",
+     "pier-canoe",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "man_made": "pier",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13709113771",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8924903,
+     52.8481568
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13709113771,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13759112910",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.0851096,
+     53.2488324
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13759112910,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "permissive",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13763576458",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.0043478,
+     53.3059997
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13763576458,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "description": "Wasserwanderer Besucher",
+     "fee": "no",
+     "operator": "Havelberge Camping Resort",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13828504136",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4398999,
+     53.299427
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13828504136,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "put_in",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13828504137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4376261,
+     53.2980331
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13828504137,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "put_in",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306979",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3923518,
+     53.0748529
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306979,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306980",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3909746,
+     53.074559
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306980,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13836306982",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.3899945,
+     53.0735596
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13836306982,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13990827474",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6481897,
+     53.2754342
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13990827474,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permit",
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/13990827475",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6431629,
+     53.2692974
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 13990827475,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1444721990",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0265409,
+     53.4614837
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1444721990,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Schleuse Lübz (unterhalb)"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1569585020",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7774991,
+     53.3708456
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1569585020,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Seichtes Ufer",
+     "fee": "no",
+     "motorboat": "no",
+     "name": "Alte Bolter Mühle",
+     "operator": "Nationalparkamt Müritz",
+     "surface": "sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1639168524",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.7724566,
+     52.2178512
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1639168524,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "put_in",
+     "description": "Slipwagen für Kanus",
+     "leisure": "slipway",
+     "portage": "designated",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1684108023",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6819937,
+     53.2921724
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1684108023,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Ausbau",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1697858600",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8229786,
+     53.3464323
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1697858600,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "fee": "yes",
+     "name": "Campingplatz Leppinsee",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1768972840",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9557815,
+     53.3169172
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1768972840,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1768972863",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9567759,
+     53.3179637
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1768972863,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1893102683",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0648224,
+     52.3541896
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1893102683,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "portage",
+     "leisure": "slipway",
+     "portage": "designated",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/1893102736",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0669126,
+     52.3543612
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 1893102736,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "portage",
+     "leisure": "slipway",
+     "portage": "designated",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2242854437",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0264697,
+     53.4603895
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2242854437,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "name": "Stadtmarina Lübz",
+     "seamark:small_craft_facility:category": "slipway",
+     "seamark:type": "small_craft_facility"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2254484184",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.0894236,
+     51.8772529
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2254484184,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "whitewater": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/2255646991"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2407255449",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8438646,
+     53.7279026
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2407255449,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point",
+     "whitewater": "egress"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2407255515",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.843388,
+     53.7283047
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2407255515,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2419753337",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.948872,
+     53.425315
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2419753337,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Offizielle Einsatzstelle für Wasserwanderer",
+     "fee": "no",
+     "name": "Kratzeburg Badestelle",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2449348209",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2444024,
+     53.5522679
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2449348209,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/2449348214"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/2451691695",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8684192,
+     52.8469696
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 2451691695,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Wasserzugangsstelle (slipway) Wustrau",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/255259954",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7895447,
+     53.2072289
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 255259954,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Zethner See bei Schwarz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/269642137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8928189,
+     53.3654011
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 269642137,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Alte Schleuse Babke",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/269642140",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8929901,
+     53.3651074
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 269642140,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/287290638",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6941863,
+     53.3241614
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 287290638,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Vipperow an der Straßenbrücke",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/297208376",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8060715,
+     53.3009579
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 297208376,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Granzow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3287804684",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.802192,
+     53.2717544
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3287804684,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Schleuse Mirow Umtrage",
+     "fee": "no",
+     "noname": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3406739509",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1448221,
+     52.7905212
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3406739509,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "yes",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3406739510",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1416748,
+     52.7891123
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3406739510,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3406739514",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.1433231,
+     52.7893036
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3406739514,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "portage": "designated",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3555117985",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.8427621,
+     53.4261726
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3555117985,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Hafen Parchim",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3559659363",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.0298213,
+     53.4635102
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3559659363,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Lübz am Stadtpark",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3559659438",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.2700263,
+     53.45618
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3559659438,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "name": "Wasserwanderrastplatz Plau am See",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/3715839079",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9071386,
+     53.4087216
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 3715839079,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Granzin",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/455232089",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9889147,
+     53.2819159
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 455232089,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "ft_link": "www.freietonne.de?edit=9024",
+     "leisure": "slipway",
+     "name": "Wesenberg, Badestelle am Woblitzsee",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/455232834",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9851325,
+     53.2799565
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 455232834,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "customers",
+     "canoe": "put_in;egress",
+     "ft_link": "www.freietonne.de?edit=9026",
+     "name": "Kanumühle Wesenberg",
+     "operator": "Kanumühle Wesenberg",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/459063991",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.7796599,
+     53.371308
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 459063991,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Bootssteg mit Rollen, genau an diesem Punkt, für ein canoe zur Zeit",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/466332485",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.906367,
+     53.0407713
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 466332485,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "egress",
+     "note": "Die folgende Brücke (westlich) kann nicht unterquert und muss umtragen werden.",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/466332532",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9058934,
+     53.0407056
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 466332532,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "put_in",
+     "waterway": "access_point"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/488648237",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.6846735,
+     53.3390561
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 488648237,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Seichtes Ufer",
+     "fee": "no",
+     "name": "Vipperow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/4932491022",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9780618,
+     53.2936321
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 4932491022,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Slipanlage Kleinboote",
+     "informal": "yes",
+     "leisure": "slipway",
+     "surface": "grass;sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/493339624",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.870078,
+     52.8484352
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 493339624,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Zugang für Kanus oder Faltboote. Rastplatz evtl. mit Biwakmöglichkeit",
+     "fee": "no",
+     "ft_link": "www.freietonne.de?edit=11361",
+     "name": "Wasserzugangsstelle Wustrau",
+     "trailer": "yes",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5023072842",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8607758,
+     53.2209536
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5023072842,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "description": "Wagen gegen Pfand bei Pack&Paddel",
+     "fee": "no",
+     "leisure": "slipway",
+     "surface": "sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5069567651",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8603327,
+     53.2204054
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5069567651,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "description": "Wagen gegen Pfand bei Pack&Paddel",
+     "fee": "no",
+     "leisure": "slipway",
+     "name": "Fleether Mühle",
+     "surface": "sand",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5069579481",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8627648,
+     53.2076817
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5069579481,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/5659076132",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8965802,
+     53.399285
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 5659076132,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/566502169",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.966845,
+     53.2220927
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 566502169,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "boat": "no",
+     "canoe": "put_in;egress",
+     "description": "Ein Bootswagen kann beim Kanuhof Wustrow gemietet werden",
+     "fee": "no",
+     "motorboat": "no",
+     "name": "Kanuhof Wustrow",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/633332294",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8061662,
+     53.300666
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 633332294,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "leisure": "slipway",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/6695911862",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9464999,
+     53.2266815
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 6695911862,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "boat": "discouraged",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "leisure": "slipway",
+     "surface": "sand"
+    },
+    "category": "portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/748234290",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.4272736,
+     53.2812681
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 748234290,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/748771457",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.9757155,
+     53.3410457
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 748771457,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress",
+     "name": "Userin",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/7549478137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8352956,
+     52.9595727
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 7549478137,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "permissive",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Schleuse Alt Ruppin",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/7851971073",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.343675,
+     53.2105967
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 7851971073,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "put_in",
+     "leisure": "slipway",
+     "sport": "canoe",
+     "waterway": "access_point",
+     "whitewater": "put_in"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9203445000",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.2558449,
+     53.6920539
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9203445000,
+    "matchedBy": [
+     "canoe-portage"
+    ],
+    "tags": {
+     "canoe": "put_in;egress"
+    },
+    "category": "portage",
+    "portageSources": [
+     "node/2443976893",
+     "node/2443976895",
+     "node/9203445007"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9462438052",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8988431,
+     53.4052145
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9462438052,
+    "matchedBy": [
+     "access-point",
+     "canoe-portage"
+    ],
+    "tags": {
+     "access": "yes",
+     "canoe": "put_in;egress",
+     "fee": "no",
+     "name": "Granziner Mühle",
+     "operator": "Nationalparkamt Müritz",
+     "waterway": "access_point"
+    },
+    "category": "landing-portage",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9855935169",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1197463,
+     51.8702799
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9855935169,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "yes",
+     "waterway": "access_point",
+     "whitewater": "put_in;egress"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/9855935170",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.1196583,
+     51.8702637
+    ]
+   },
+   "properties": {
+    "osmType": "node",
+    "osmId": 9855935170,
+    "matchedBy": [
+     "access-point"
+    ],
+    "tags": {
+     "canoe": "yes",
+     "waterway": "access_point",
+     "whitewater": "put_in;egress"
+    },
+    "category": "landing",
+    "portageSources": []
+   }
+  }
+ ]
+}
