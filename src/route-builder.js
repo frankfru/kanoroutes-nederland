@@ -694,7 +694,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           updateDraftRouteControls();
         }
 
-        async function useRouteAsBase(route, routeName, fitMap = false) {
+        async function useRouteAsBase(route, routeName, isImported = false, onLoaded = () => {}) {
           if (isAddingRoutePoint) throw new Error("Wacht tot het huidige routepunt is verwerkt.");
           const segments = route.segments;
           if ((draftRoutePoints.length > 0 || draftRouteBaseSegments.length > 0) &&
@@ -704,7 +704,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
 
           cancelRouteEdit();
           clearDraftRoute();
-          if (fitMap) draftRouteNote = "GPX: alleen routelijn en naam overgenomen";
+          if (isImported) draftRouteNote = "GPX: alleen routelijn en naam overgenomen";
           draftRouteBaseSegments = segments.map(segment => segment.map(([latitude, longitude]) => [latitude, longitude]));
           const endpoint = L.latLng(...draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1));
           draftRoutePoints.push(endpoint);
@@ -715,8 +715,8 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           isAddingRoutePoint = true;
           setRouteDrawing(true);
           map.closePopup();
-          if (fitMap) map.fitBounds(L.latLngBounds(segments.flat()), { padding: [36, 36], maxZoom: 15 });
           updateDraftRouteControls();
+          onLoaded();
 
           routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
           try {
@@ -848,6 +848,6 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   return {
     isLocked: routeInteractionLocked,
     useSelectedRouteAsBase,
-    importRoute: route => useRouteAsBase(route, route.name, true)
+    importRoute: (route, onLoaded) => useRouteAsBase(route, route.name, true, onLoaded)
   };
 }

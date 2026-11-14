@@ -132,10 +132,14 @@ test("confirms before replacing the current route with an imported GPX", async t
   t.mock.timers.tick(500);
   container.handlers.pointerup(touch("pointerup"));
   const route = { name: "Nieuwe route", segments: [[[52, 5], [52.1, 5.1]]] };
-  assert.equal(await builder.importRoute(route), false);
+  let loaded = 0;
+  assert.equal(await builder.importRoute(route, () => loaded++), false);
+  assert.equal(loaded, 0);
   assert.match(elements.get("route-builder-status").textContent, /1 punt/);
   confirmed = true;
-  assert.equal(await builder.importRoute(route), true);
+  const importing = builder.importRoute(route, () => loaded++);
+  assert.equal(loaded, 1);
+  assert.equal(await importing, true);
   assert.equal(elements.get("route-name").value, "Nieuwe route");
   assert.match(elements.get("route-builder-status").textContent, /alleen routelijn en naam/);
 });

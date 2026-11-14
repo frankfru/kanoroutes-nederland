@@ -443,7 +443,24 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
         async function importGpxFile(file) {
           try {
             const route = await readGpxFile(file);
-            return await routeBuilder.importRoute(route);
+            return await routeBuilder.importRoute(route, () => {
+              changeRegions(new Set()).catch(error => {
+                console.error("Routegebieden uitschakelen mislukt:", error);
+                showError("De routegebieden konden niet worden uitgeschakeld.");
+              });
+              if (mobileLayout.matches) setSheetExpanded(false);
+              const mapBounds = map.getContainer().getBoundingClientRect();
+              const infoBounds = document.querySelector(".route-builder-info").getBoundingClientRect();
+              const topPadding = Math.max(36, Math.ceil(infoBounds.bottom - mapBounds.top + 16));
+              const bottomPadding = mobileLayout.matches
+                ? Math.max(36, Math.ceil(sheetToggle.getBoundingClientRect().height + 16))
+                : 36;
+              map.fitBounds(L.latLngBounds(route.segments.flat()), {
+                paddingTopLeft: [36, topPadding],
+                paddingBottomRight: [36, bottomPadding],
+                maxZoom: 15
+              });
+            });
           } catch (error) {
             console.error("GPX importeren mislukt:", error);
             showError(error.message || "Het GPX-bestand kon niet worden geopend.");

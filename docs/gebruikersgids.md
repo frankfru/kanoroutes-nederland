@@ -77,6 +77,8 @@ Met de routeplanner teken je zelf een route en download je die als GPX-bestand.
 
 Kies **Open GPX** in de routeplanner en selecteer een GPX-bestand van maximaal 10 MB. Tracks en routes worden als routelijnen geladen. Staat er al een route in de planner, dan wordt eerst om bevestiging gevraagd.
 
+Na het openen of delen van een GPX worden alle routegebieden uitgeschakeld en wordt op de geïmporteerde route ingezoomd. Je kunt de routegebieden daarna weer inschakelen.
+
 Alleen de routenaam en routelijnen worden overgenomen. Hoogtes, tijden en losse waypoints worden niet meegenomen wanneer je de route opnieuw downloadt.
 
 Op Android kan de geïnstalleerde webapp ook verschijnen als je vanuit een andere app een GPX deelt. Dit hangt af van de browser en de app die het bestand deelt. Op iPhone gebruik je **Open GPX**.
