@@ -83,7 +83,7 @@ test("holds the map still while positioning a free touch point and restores drag
   container.handlers.pointermove(touch("pointermove", 40, 120));
   container.handlers.pointerup(touch("pointerup", 40, 120));
   assert.equal(map.dragging.enabled(), true);
-  assert.deepEqual(markers, [{ lat: 40, lng: 40 }]);
+  assert.deepEqual(markers, [{ lat: 60, lng: 40 }]);
   assert.match(elements.get("route-builder-status").textContent, /1 punt.*vrij punt/);
 });
 

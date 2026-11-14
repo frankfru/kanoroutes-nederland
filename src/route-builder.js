@@ -42,7 +42,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   const draftRouteSnaps = [];
   const LONG_PRESS_MS = 500;
   const LONG_PRESS_MOVE_PX = 10;
-  const TOUCH_POINT_OFFSET_PX = 80;
+  const TOUCH_POINT_OFFSET_PX = 60;
   let longPressTimer = null;
   let longPressOrigin = null;
   let longPressIsTouch = false;
