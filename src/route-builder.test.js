@@ -51,19 +51,22 @@ async function setup(t, draggingInitiallyEnabled = true) {
       disable() { dragging = false; }
     },
     mouseEventToLatLng: event => ({ lat: event.clientY, lng: event.clientX }),
+    fitBounds() {},
     closePopup() {},
     on() {},
     off() {}
   };
-  const layer = () => ({ addTo() { return this; }, setLatLngs() {} });
+  const layer = () => ({ addTo() { return this; }, setLatLngs() {}, clearLayers() {} });
   const markers = [];
   const L = {
     featureGroup: layer,
     polyline: layer,
+    latLng: (lat, lng) => ({ lat, lng }),
+    latLngBounds: coordinates => coordinates,
     circleMarker(point) { markers.push(point); return layer(); }
   };
-  createRouteBuilder({
-    map, L, waterwayRouter: {}, calculateDistanceKm: () => 0,
+  const builder = createRouteBuilder({
+    map, L, waterwayRouter: { load: async () => {}, snap: () => null }, calculateDistanceKm: () => 0,
     routeButtons: [], applyRouteStyles() {}, getActiveRoutes: () => []
   });
   const planner = elements.get("route-builder");
@@ -72,7 +75,7 @@ async function setup(t, draggingInitiallyEnabled = true) {
   const touch = (type, x = 20, y = 100) => ({
     type, pointerType: "touch", clientX: x, clientY: y
   });
-  return { container, elements, map, markers, touch };
+  return { builder, container, elements, map, markers, touch };
 }
 
 test("holds the map still while positioning a free touch point and restores dragging", async t => {
@@ -117,4 +120,22 @@ test("keeps normal dragging available when moving before the hold completes", as
   t.mock.timers.tick(500);
   assert.equal(map.dragging.enabled(), true);
   assert.equal(container.classList.contains("route-long-press-ready"), false);
+});
+
+test("confirms before replacing the current route with an imported GPX", async t => {
+  const { builder, container, elements, touch } = await setup(t);
+  const previousWindow = global.window;
+  let confirmed = false;
+  global.window = { confirm: () => confirmed, clearTimeout };
+  t.after(() => { global.window = previousWindow; });
+  container.handlers.pointerdown(touch("pointerdown"));
+  t.mock.timers.tick(500);
+  container.handlers.pointerup(touch("pointerup"));
+  const route = { name: "Nieuwe route", segments: [[[52, 5], [52.1, 5.1]]] };
+  assert.equal(await builder.importRoute(route), false);
+  assert.match(elements.get("route-builder-status").textContent, /1 punt/);
+  confirmed = true;
+  assert.equal(await builder.importRoute(route), true);
+  assert.equal(elements.get("route-name").value, "Nieuwe route");
+  assert.match(elements.get("route-builder-status").textContent, /alleen routelijn en naam/);
 });

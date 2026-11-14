@@ -35,6 +35,7 @@ De kaart toont kajakroutes uit Noord-Nederland, Noord-Holland, Utrecht en het ge
 
 - Het routepaneel open je of sluit je met de handgreep. Sleep omhoog om de lijst te zien en omlaag om de kaart vrij te maken.
 - Met de knop rechtsboven zet je de kaart op volledig scherm.
+- Installeer de webapp via het browsermenu op Android, of via **Delen → Zet op beginscherm** in Safari op iPhone. Voor de kaart en vaarwegdata blijft internet nodig.
 
 ## De routeplanner
 
@@ -71,6 +72,14 @@ Met de routeplanner teken je zelf een route en download je die als GPX-bestand.
 1. Klik op **Download GPX** in de werkbalk.
 2. Pas de bestandsnaam aan als je wilt en bevestig met **Download GPX**.
 3. De routenaam in de GPX blijft ongewijzigd.
+
+### GPX openen
+
+Kies **Open GPX** in de routeplanner en selecteer een GPX-bestand van maximaal 10 MB. Tracks en routes worden als routelijnen geladen. Staat er al een route in de planner, dan wordt eerst om bevestiging gevraagd.
+
+Alleen de routenaam en routelijnen worden overgenomen. Hoogtes, tijden en losse waypoints worden niet meegenomen wanneer je de route opnieuw downloadt.
+
+Op Android kan de geïnstalleerde webapp ook verschijnen als je vanuit een andere app een GPX deelt. Dit hangt af van de browser en de app die het bestand deelt. Op iPhone gebruik je **Open GPX**.
 
 ### Routenaam wijzigen
 

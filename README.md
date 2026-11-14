@@ -14,6 +14,12 @@ Open daarna [http://localhost:4173](http://localhost:4173).
 
 `index.html` bevat de pagina-opbouw en laadt de gedeelde stijlen en routecategorieën uit `shared/`. De Leaflet-applicatiecode staat in native JavaScript-modules: `src/main.js` verbindt kaart en routes, `src/heatmap.js` beheert de heatmap, `src/route-builder.js` de routebouwer en trajectbewerking, en `src/waterway-router.js` het vaarwegennetwerk. De MapLibre-versie staat in `map-libre/`; beide kaartversies gebruiken dezelfde routegegevens, categoriedefinities, afstandsberekening, mobiele routekiezer en stylesheet. De scripts voor het genereren en vernieuwen van routedata staan in `scripts/`; de gegenereerde routebestanden staan in `shared/`.
 
+De Leaflet-versie is installeerbaar als webapp. Gebruik op Android het browsermenu om de app te installeren; kies op iPhone in Safari **Delen → Zet op beginscherm**. De kaart en vaarwegdata blijven een internetverbinding nodig hebben; installatie maakt ze niet offline beschikbaar.
+
+Met **Open GPX** in de routeplanner importeer je een track of route van maximaal 10 MB. De bestaande plannerroute wordt alleen na bevestiging vervangen. Alleen de naam en routelijnen worden overgenomen; onder meer hoogte, tijdstippen en losse waypoints blijven niet behouden in een nieuw gedownloade GPX. Op ondersteunde Android-browsers kan een geïnstalleerde webapp ook als doel verschijnen bij het delen van een GPX uit een andere app. Welke bestanden aangeboden worden hangt af van de delende app en de browser; op iPhone gebruik je **Open GPX**.
+
+Het manifest staat in `manifest.webmanifest`. `service-worker.js` ontvangt gedeelde bestanden lokaal via de Web Share Target API; `src/pwa.js` opent ze in de planner. Een gedeeld bestand wordt na verwerking verwijderd uit browseropslag; achtergebleven bestanden worden bij een volgende deelactie na 24 uur opgeruimd. De serviceworker cachet geen kaarttegels of appbestanden voor offline gebruik.
+
 De MapLibre-versie is lokaal bereikbaar via [http://localhost:4173/map-libre](http://localhost:4173/map-libre). Deze pagina toont de OpenFreeMap Liberty-basiskaart en kan dezelfde routecategorieën tonen als de Leaflet-versie.
 
 ## Routedata vernieuwen

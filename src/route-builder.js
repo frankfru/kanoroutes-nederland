@@ -694,31 +694,28 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           updateDraftRouteControls();
         }
 
-        async function useSelectedRouteAsBase(index) {
-          if (routeInteractionLocked() || isAddingRoutePoint) return;
-          const route = getActiveRoutes()[index];
-          const segments = Array.isArray(route?.segments)
-            ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
-            : [];
-          if (!route || segments.length === 0) return;
+        async function useRouteAsBase(route, routeName, fitMap = false) {
+          if (isAddingRoutePoint) throw new Error("Wacht tot het huidige routepunt is verwerkt.");
+          const segments = route.segments;
           if ((draftRoutePoints.length > 0 || draftRouteBaseSegments.length > 0) &&
-              !window.confirm("De huidige route wordt vervangen door de geselecteerde route. Doorgaan?")) {
-            return;
+              !window.confirm("De huidige route wordt vervangen. Doorgaan?")) {
+            return false;
           }
 
           cancelRouteEdit();
           clearDraftRoute();
+          if (fitMap) draftRouteNote = "GPX: alleen routelijn en naam overgenomen";
           draftRouteBaseSegments = segments.map(segment => segment.map(([latitude, longitude]) => [latitude, longitude]));
           const endpoint = L.latLng(...draftRouteBaseSegments[draftRouteBaseSegments.length - 1].at(-1));
           draftRoutePoints.push(endpoint);
           draftRouteSnaps.push(null);
           rebuildDraftRouteLayer();
-          const routeName = `Nieuwe route op basis van ${route.name}`;
           routeNameInput.value = routeName.slice(0, routeNameInput.maxLength);
           routeBuilderDetails.open = true;
           isAddingRoutePoint = true;
           setRouteDrawing(true);
           map.closePopup();
+          if (fitMap) map.fitBounds(L.latLngBounds(segments.flat()), { padding: [36, 36], maxZoom: 15 });
           updateDraftRouteControls();
 
           routeBuilderStatus.textContent = "Basisroute geladen · vaarwegen laden…";
@@ -727,15 +724,28 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             await waitForPlannerOpen();
             const snappedEndpoint = waterwayRouter.snap([endpoint.lat, endpoint.lng]);
             draftRouteSnaps[0] = snappedEndpoint;
-            if (!snappedEndpoint) draftRouteNote = "eindpunt basisroute ligt niet op een beschikbare vaarweg";
+            if (!snappedEndpoint) {
+              draftRouteNote = [draftRouteNote, "eindpunt basisroute ligt niet op een beschikbare vaarweg"].filter(Boolean).join(" · ");
+            }
           } catch (error) {
             console.error("Vaarwegennetwerk laden mislukt:", error);
             await waitForPlannerOpen();
-            draftRouteNote = "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden";
+            draftRouteNote = [draftRouteNote, "vaarwegen niet beschikbaar, nieuwe punten worden rechtstreeks verbonden"].filter(Boolean).join(" · ");
           } finally {
             isAddingRoutePoint = false;
           }
           updateDraftRouteControls();
+          return true;
+        }
+
+        async function useSelectedRouteAsBase(index) {
+          if (routeInteractionLocked() || isAddingRoutePoint) return;
+          const route = getActiveRoutes()[index];
+          const segments = Array.isArray(route?.segments)
+            ? route.segments.filter(segment => Array.isArray(segment) && segment.length > 1)
+            : [];
+          if (!route || segments.length === 0) return;
+          await useRouteAsBase({ segments }, `Nieuwe route op basis van ${route.name}`);
         }
 
         function downloadDraftRoute() {
@@ -835,5 +845,9 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         updateDraftRouteControls();
 
 
-  return { isLocked: routeInteractionLocked, useSelectedRouteAsBase };
+  return {
+    isLocked: routeInteractionLocked,
+    useSelectedRouteAsBase,
+    importRoute: route => useRouteAsBase(route, route.name, true)
+  };
 }

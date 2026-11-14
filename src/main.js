@@ -6,8 +6,9 @@ import { createCanoeLandingsOverlay } from "./canoe-landings-overlay.js";
 import { createPreviousCanoeLandingsOverlay } from "./canoe-landings-previous-overlay.js";
 import { createHeatmapFeature } from "./heatmap.js";
 import { createRouteBuilder } from "./route-builder.js";
-import { createGpxTrack, createGpxFileName, downloadGpxFile } from "./gpx.js";
+import { createGpxTrack, createGpxFileName, downloadGpxFile, readGpxFile } from "./gpx.js";
 import { enableOsmEditOnHold } from "./osm-edit.js";
+import { setupPwa } from "./pwa.js";
 import { calculateDistanceKm } from "../shared/route-geometry.js";
 import { createRoutePopupContent } from "../shared/route-popup.js";
 import {
@@ -439,6 +440,23 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
           map, L, waterwayRouter, calculateDistanceKm, routeButtons, applyRouteStyles,
           getActiveRoutes: () => activeRoutes
         });
+        async function importGpxFile(file) {
+          try {
+            const route = await readGpxFile(file);
+            return await routeBuilder.importRoute(route);
+          } catch (error) {
+            console.error("GPX importeren mislukt:", error);
+            showError(error.message || "Het GPX-bestand kon niet worden geopend.");
+            return false;
+          }
+        }
+        const routeImportFile = document.getElementById("route-import-file");
+        document.getElementById("route-import").addEventListener("click", () => routeImportFile.click());
+        routeImportFile.addEventListener("change", async () => {
+          const file = routeImportFile.files[0];
+          routeImportFile.value = "";
+          if (file) await importGpxFile(file);
+        });
         function routeInteractionLocked() {
           return routeBuilder.isLocked();
         }
@@ -863,6 +881,7 @@ import { setupMobileRouteSheet } from "../shared/mobile-route-sheet.js";
         const sharedUrl = new URL(location.href);
         const initialRegions = parseRouteCategories(sharedUrl.searchParams.get("region"));
         const initialRouteId = sharedUrl.searchParams.get("route");
+        setupPwa({ importGpxFile, showError });
         changeRegions(initialRegions, { syncUrl: false, routeId: initialRouteId });
 
         window.addEventListener("popstate", () => {

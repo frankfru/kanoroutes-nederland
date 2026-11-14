@@ -7,6 +7,10 @@ const port = Number(process.env.PORT || 4173);
 const files = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
+  ["/manifest.webmanifest", ["manifest.webmanifest", "application/manifest+json; charset=utf-8"]],
+  ["/service-worker.js", ["service-worker.js", "text/javascript; charset=utf-8"]],
+  ["/icons/icon-192.png", ["icons/icon-192.png", "image/png"]],
+  ["/icons/icon-512.png", ["icons/icon-512.png", "image/png"]],
   ["/robots.txt", ["robots.txt", "text/plain; charset=utf-8"]],
   ["/map-libre", ["map-libre/index.html", "text/html; charset=utf-8"]],
   ["/map-libre/", ["map-libre/index.html", "text/html; charset=utf-8"]],
@@ -32,6 +36,7 @@ const files = new Map([
   ["/src/canoe-landings-previous-overlay.js", ["src/canoe-landings-previous-overlay.js", "text/javascript; charset=utf-8"]],
   ["/src/heatmap.js", ["src/heatmap.js", "text/javascript; charset=utf-8"]],
   ["/src/gpx.js", ["src/gpx.js", "text/javascript; charset=utf-8"]],
+  ["/src/pwa.js", ["src/pwa.js", "text/javascript; charset=utf-8"]],
   ["/src/route-builder.js", ["src/route-builder.js", "text/javascript; charset=utf-8"]],
   ["/src/waterway-router.js", ["src/waterway-router.js", "text/javascript; charset=utf-8"]],
   ["/kayak-heatmap-data.json", ["kayak-heatmap-data.json", "application/json; charset=utf-8"]],
