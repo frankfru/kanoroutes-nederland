@@ -86,13 +86,13 @@ Open **Route-instellingen** in de werkbalk om de naam van de route te wijzigen.
 
 ## Vaarwegen
 
-Met het vaarwegpictogram in de werkbalk zet je **Toon beschikbare vaarwegen** aan of uit. Die staat standaard aan.
+Met het vaarwegpictogram in de werkbalk zet je **Toon beschikbare vaarwegen** aan of uit. Die staat standaard uit.
 
 - Routeerbare overdrachten zijn oranje stippellijnen. Dit zijn plekken waar je het water kunt verlaten en weer kunt instappen, bijvoorbeeld bij een sluis.
 - De planner gebruikt deze overdrachten automatisch als dat past.
 - Onduidelijke overdrachten worden niet gebruikt.
 
-Het vaarwegnetwerk laadt pas als je het eerste routepunt zet. De eerste keer kan dat even duren.
+Het vaarwegnetwerk laadt als je het eerste routepunt zet of de vaarwegdekking aanzet. De eerste keer kan dat even duren.
 
 ## Lang indrukken voor een OSM-link
 
@@ -121,7 +121,7 @@ Vastklikken werkt alleen binnen 500 meter van een kanaal of rivier uit OpenStree
 Die knop verschijnt alleen als je browser GPX-bestanden kan delen. Anders wordt de GPX gedownload.
 
 **Ik zie geen vaarwegen op de kaart. Wat nu?**
-Controleer of **Toon beschikbare vaarwegen** aan staat (vaarwegpictogram in de werkbalk). Het netwerk laadt pas na het eerste routepunt.
+Controleer of **Toon beschikbare vaarwegen** aan staat (vaarwegpictogram in de werkbalk). Het netwerk wordt dan geladen als dat nog niet gebeurd is.
 
 **Ik heb per ongeluk een punt gezet. Hoe haal ik dat weg?**
 Gebruik **Ctrl+Z** om de laatste stap ongedaan te maken.

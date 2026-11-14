@@ -47,6 +47,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   let longPressOrigin = null;
   let longPressIsTouch = false;
   let longPressPoint = null;
+  let restoreMapDragging = false;
   let manualPointArmed = false;
   let skipNextClick = false;
   const draftRouteMarkers = [];
@@ -137,6 +138,13 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           routeEditHelp.hidden = !isEditingRoute;
         }
 
+        function restoreLongPressDragging() {
+          if (restoreMapDragging) {
+            restoreMapDragging = false;
+            map.dragging.enable();
+          }
+        }
+
         function resetLongPress() {
           clearTimeout(longPressTimer);
           longPressTimer = null;
@@ -145,6 +153,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           longPressPoint = null;
           manualPointArmed = false;
           skipNextClick = false;
+          restoreLongPressDragging();
           const container = map.getContainer();
           if (container.classList.contains("route-long-press-ready")) {
             container.classList.remove("route-long-press-ready");
@@ -168,6 +177,10 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           longPressTimer = setTimeout(() => {
             longPressTimer = null;
             manualPointArmed = true;
+            if (longPressIsTouch && map.dragging.enabled()) {
+              restoreMapDragging = true;
+              map.dragging.disable();
+            }
             longPressPoint = longPressIsTouch
               ? { x: event.clientX, y: event.clientY - TOUCH_POINT_OFFSET_PX }
               : { x: event.clientX, y: event.clientY };
@@ -200,6 +213,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             : map.mouseEventToLatLng(event);
           longPressOrigin = null;
           map.getContainer().classList.remove("route-long-press-ready");
+          restoreLongPressDragging();
           addDraftRoutePoint({ latlng });
           skipNextClick = true;
         }
@@ -207,6 +221,7 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         function setRouteDrawing(active) {
           if (active && isEditingRoute) return;
           if (isDrawingRoute === active) return;
+          if (!active) resetLongPress();
           isDrawingRoute = active;
           routeDrawToggle.setAttribute("aria-pressed", String(active));
           setRouteButtonLabel(routeDrawToggle, active ? "Stop tekenen" : "Start tekenen");
