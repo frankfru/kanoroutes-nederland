@@ -42,8 +42,11 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
   const draftRouteSnaps = [];
   const LONG_PRESS_MS = 500;
   const LONG_PRESS_MOVE_PX = 10;
+  const TOUCH_POINT_OFFSET_PX = 80;
   let longPressTimer = null;
   let longPressOrigin = null;
+  let longPressIsTouch = false;
+  let longPressPoint = null;
   let manualPointArmed = false;
   let skipNextClick = false;
   const draftRouteMarkers = [];
@@ -138,6 +141,8 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           clearTimeout(longPressTimer);
           longPressTimer = null;
           longPressOrigin = null;
+          longPressIsTouch = false;
+          longPressPoint = null;
           manualPointArmed = false;
           skipNextClick = false;
           const container = map.getContainer();
@@ -147,24 +152,39 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
           }
         }
 
+        function showLongPressIndicator(clientX, clientY) {
+          const container = map.getContainer();
+          const rect = container.getBoundingClientRect();
+          container.style.setProperty("--long-press-x", `${clientX - rect.left}px`);
+          container.style.setProperty("--long-press-y", `${clientY - rect.top}px`);
+          container.classList.add("route-long-press-ready");
+        }
+
         function startLongPress(event) {
           resetLongPress();
           if (!isDrawingRoute || isEditingRoute) return;
-          const container = map.getContainer();
-          const rect = container.getBoundingClientRect();
           longPressOrigin = { x: event.clientX, y: event.clientY };
+          longPressIsTouch = event.pointerType === "touch";
           longPressTimer = setTimeout(() => {
             longPressTimer = null;
             manualPointArmed = true;
-            container.style.setProperty("--long-press-x", `${event.clientX - rect.left}px`);
-            container.style.setProperty("--long-press-y", `${event.clientY - rect.top}px`);
-            container.classList.add("route-long-press-ready");
-            routeBuilderStatus.textContent = "Vrij punt: laat los om te plaatsen";
+            longPressPoint = longPressIsTouch
+              ? { x: event.clientX, y: event.clientY - TOUCH_POINT_OFFSET_PX }
+              : { x: event.clientX, y: event.clientY };
+            showLongPressIndicator(longPressPoint.x, longPressPoint.y);
+            routeBuilderStatus.textContent = longPressIsTouch
+              ? "Vrij punt: sleep en laat los om te plaatsen"
+              : "Vrij punt: laat los om te plaatsen";
           }, LONG_PRESS_MS);
         }
 
         function moveLongPress(event) {
           if (!longPressOrigin) return;
+          if (manualPointArmed && longPressTimer === null && longPressIsTouch) {
+            longPressPoint = { x: event.clientX, y: event.clientY - TOUCH_POINT_OFFSET_PX };
+            showLongPressIndicator(longPressPoint.x, longPressPoint.y);
+            return;
+          }
           const distance = Math.hypot(event.clientX - longPressOrigin.x, event.clientY - longPressOrigin.y);
           if (distance > LONG_PRESS_MOVE_PX) resetLongPress();
         }
@@ -175,10 +195,12 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
             resetLongPress();
             return;
           }
+          const latlng = longPressIsTouch
+            ? map.mouseEventToLatLng({ clientX: longPressPoint.x, clientY: longPressPoint.y })
+            : map.mouseEventToLatLng(event);
           longPressOrigin = null;
           map.getContainer().classList.remove("route-long-press-ready");
-          manualPointArmed = true;
-          addDraftRoutePoint({ latlng: map.mouseEventToLatLng(event) });
+          addDraftRoutePoint({ latlng });
           skipNextClick = true;
         }
 
