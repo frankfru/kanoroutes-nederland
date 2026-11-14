@@ -521,6 +521,10 @@
         accent-color: var(--green);
       }
 
+      .leaflet-container.route-long-press-ready {
+        touch-action: none;
+      }
+
       .route-long-press-ready::after {
         content: "";
         position: absolute;

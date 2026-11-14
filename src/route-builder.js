@@ -804,6 +804,11 @@ export function createRouteBuilder({ map, L, waterwayRouter, calculateDistanceKm
         routeEditApplyButton.addEventListener("click", applyRouteEdit);
         const mapContainer = map.getContainer();
         mapContainer.addEventListener("pointerdown", startLongPress);
+        mapContainer.addEventListener("pointermove", event => {
+          if (!manualPointArmed || longPressTimer !== null || !longPressIsTouch) return;
+          event.stopPropagation();
+          moveLongPress(event);
+        }, { capture: true });
         mapContainer.addEventListener("pointermove", moveLongPress);
         mapContainer.addEventListener("pointerup", endLongPress);
         mapContainer.addEventListener("pointercancel", endLongPress);
